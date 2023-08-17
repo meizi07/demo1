@@ -1,0 +1,94 @@
+@charset "utf-8";
+
+/******************************
+      schedule
+******************************/
+
+.scd_content {
+  padding: 0 8px;
+}
+
+.scd_right {
+  span {
+    margin-bottom: 3px;
+    text-align: right;
+    display: block;
+    white-space: pre;
+  }
+
+  h5 {
+    margin-bottom: 0;
+    white-space: pre;
+
+    &.delay {
+      color: var(--bs-text-danger);
+    }
+  }
+}
+
+/******************************
+      to do list
+******************************/
+
+.tdl_content {
+  padding: 0 8px;
+}
+
+/******************************
+      common_box
+******************************/
+
+.common_box .counted {
+  line-height: normal;
+}
+
+.file_list .card {
+  width: calc(33.333% - 1.5rem);
+}
+
+.case_status .card {
+  width: calc(50% - 1.5rem);
+}
+
+@media screen and (max-width: 991px) {
+  .file_list .card {
+    width: calc(50% - 1.5rem);
+  }
+}
+
+/******************************
+      msg_board
+******************************/
+
+.msg_board_content {
+  padding: 0 8px;
+
+  > .d-flex:not(:last-child) {
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--bs-border-color);
+  }
+}
+
+/******************************
+      project_progress
+******************************/
+
+.dataTables_scrollBody {
+  padding: 0 4px;
+}
+
+.dataTables_scrollHeadInner {
+  width: 100% !important;
+}
+
+@media screen and (max-width: 991px) {
+  .index_datatable td .d-flex {
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .progress {
+      margin-right: 0 !important;
+    }
+  }
+}
