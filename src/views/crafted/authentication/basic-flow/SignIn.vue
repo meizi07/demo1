@@ -7,7 +7,11 @@
       id="kt_login_signin_form"
       @submit="onSubmitLogin"
       :validation-schema="login"
-      :initial-values="{ email: 'admin@demo.com', password: 'demo' }"
+      :initial-values="{
+        orgId: 'O20230601',
+        account: 'admin',
+        password: 'admin',
+      }"
     >
       <!--begin::Heading-->
       <div class="row g-3 mb-5">
@@ -39,6 +43,29 @@
       <!--begin::Input group-->
       <div class="fv-row mb-10">
         <!--begin::Label-->
+        <label class="form-label fs-6 fw-bold text-dark">企業碼</label>
+        <!--end::Label-->
+
+        <!--begin::Input-->
+        <Field
+          tabindex="1"
+          class="form-control form-control-lg form-control-solid"
+          type="text"
+          name="orgId"
+          autocomplete="off"
+        />
+        <!--end::Input-->
+        <div class="fv-plugins-message-container">
+          <div class="fv-help-block">
+            <ErrorMessage name="orgId" />
+          </div>
+        </div>
+      </div>
+      <!--end::Input group-->
+
+      <!--begin::Input group-->
+      <div class="fv-row mb-10">
+        <!--begin::Label-->
         <label class="form-label fs-6 fw-bold text-dark">帳號</label>
         <!--end::Label-->
 
@@ -47,13 +74,13 @@
           tabindex="1"
           class="form-control form-control-lg form-control-solid"
           type="text"
-          name="email"
+          name="account"
           autocomplete="off"
         />
         <!--end::Input-->
         <div class="fv-plugins-message-container">
           <div class="fv-help-block">
-            <ErrorMessage name="email" />
+            <ErrorMessage name="account" />
           </div>
         </div>
       </div>
@@ -158,8 +185,9 @@ export default defineComponent({
 
     //Create form validation object
     const login = Yup.object().shape({
-      email: Yup.string().email().required().label("Email"),
-      password: Yup.string().min(4).required().label("Password"),
+      orgId: Yup.string().min(4).required().label("orgId"),
+      account: Yup.string().min(4).required().label("account"),
+      password: Yup.string().min(4).required().label("password"),
     });
 
     //Form submit function
@@ -167,7 +195,6 @@ export default defineComponent({
       values = values as User;
       // Clear existing errors
       store.logout();
-
       if (submitButton.value) {
         // eslint-disable-next-line
         submitButton.value!.disabled = true;
@@ -175,8 +202,13 @@ export default defineComponent({
         submitButton.value.setAttribute("data-kt-indicator", "on");
       }
 
+      const formData = new FormData();
+      for (const key in values) {
+        formData.append(key, values[key]);
+      }
+
       // Send login request
-      await store.login(values);
+      await store.login(formData);
       const error = Object.values(store.errors);
 
       if (error.length === 0) {
@@ -198,7 +230,7 @@ export default defineComponent({
           text: error[0] as string,
           icon: "error",
           buttonsStyling: false,
-          confirmButtonText: "Try again!",
+          confirmButtonText: "再試一次!",
           heightAuto: false,
           customClass: {
             confirmButton: "btn fw-semobold btn-light-danger",

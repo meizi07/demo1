@@ -4,9 +4,8 @@ import ApiService from "@/core/services/ApiService";
 import JwtService from "@/core/services/JwtService";
 
 export interface User {
-  name: string;
-  surname: string;
-  email: string;
+  orgId: string;
+  account: string;
   password: string;
   api_token: string;
 }
@@ -34,12 +33,18 @@ export const useAuthStore = defineStore("auth", () => {
     JwtService.destroyToken();
   }
 
-  function login(credentials: User) {
-    return ApiService.post("login", credentials)
+  function login(formData: FormData) {
+    return ApiService.post("login/checkLogin.php", formData)
       .then(({ data }) => {
-        setAuth(data);
+        // 成功時的回應
+        if (data.success) {
+          setAuth(data.success.OrgInfo);
+        } else {
+          setError({ code: data.ErrorCode, message: data.ErrorMsg });
+        }
       })
       .catch(({ response }) => {
+        // 處理其他錯誤，如網路問題等
         setError(response.data.errors);
       });
   }
@@ -71,7 +76,9 @@ export const useAuthStore = defineStore("auth", () => {
   function verifyAuth() {
     if (JwtService.getToken()) {
       ApiService.setHeader();
-      ApiService.post("verify_token", { api_token: JwtService.getToken() })
+      ApiService.post("login/checkLogin.php", {
+        api_token: JwtService.getToken(),
+      })
         .then(({ data }) => {
           setAuth(data);
         })
