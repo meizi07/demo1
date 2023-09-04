@@ -417,8 +417,6 @@
 
           <PaymentMethods card-classes="mb-6 mb-xl-9"></PaymentMethods>
 
-          <CreditBalance card-classes="mb-6 mb-xl-9"></CreditBalance>
-
           <Invoices card-classes="mb-6 mb-xl-9"></Invoices>
         </div>
         <!--end:::Tab pane-->
@@ -461,7 +459,6 @@ import Dropdown3 from "@/components/dropdown/Dropdown3.vue";
 import NewCardModal from "@/components/modals/forms/NewCardModal.vue";
 import PaymentRecords from "@/components/customers/cards/overview/PaymentRecords.vue";
 import PaymentMethods from "@/components/customers/cards/overview/PaymentMethods.vue";
-import CreditBalance from "@/components/customers/cards/overview/CreditBalance.vue";
 import Invoices from "@/components/customers/cards/overview/Invoices.vue";
 
 import Events from "@/components/customers/cards/events-and-logs/Events.vue";
@@ -475,7 +472,6 @@ export default defineComponent({
   components: {
     PaymentRecords,
     PaymentMethods,
-    CreditBalance,
     Invoices,
     Events,
     Logs,

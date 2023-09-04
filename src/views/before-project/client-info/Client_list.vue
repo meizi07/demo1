@@ -65,6 +65,7 @@ export default defineComponent({
           responseData.value.success.CloseCase =
             response.data.success.CloseCase;
           statistics.value = response.data.success.Statistics;
+          console.log(responseData);
         } else {
           console.error("获取客户数据失败，状态码：", response.status);
         }

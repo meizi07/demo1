@@ -113,8 +113,11 @@
               <router-link
                 :to="{
                   name: 'bj-client-details',
-                  params: { customerId: AllCustomer.CustomerID },
+                  params: {
+                    customerId: AllCustomer.CustomerID,
+                  },
                 }"
+                @click="setThisUUID(AllCustomer.UUID)"
                 class="text-gray-800 text-hover-primary"
               >
                 {{ AllCustomer.CustomerID }}
@@ -153,9 +156,14 @@
             <template v-slot:ServiceItem="{ row: AllCustomer }">
               {{ AllCustomer.ServiceItem }}
             </template>
-            <template v-slot:action>
+            <template v-slot:action="{ row: AllCustomer }">
               <router-link
-                to="/"
+                :to="{
+                  name: 'bj-client-details',
+                  params: {
+                    customerId: AllCustomer.CustomerID,
+                  },
+                }"
                 class="btn btn-icon btn-active-color-primary btn-sm me-1"
               >
                 <KTIcon icon-name="pencil" icon-class="fs-3" />
@@ -213,43 +221,49 @@
             :data="tableData2"
             :items-per-page-dropdown-enabled="true"
           >
-            <template v-slot:CustomerID="{ row: AllCustomer }">
-              <router-link to="/" class="text-gray-800 text-hover-primary">
-                {{ AllCustomer.CustomerID }}
+            <template v-slot:CustomerID="{ row: FollowUp }">
+              <router-link
+                :to="{
+                  name: 'bj-client-details',
+                  params: { customerId: FollowUp.CustomerID },
+                }"
+                class="text-gray-800 text-hover-primary"
+              >
+                {{ FollowUp.CustomerID }}
               </router-link>
             </template>
-            <template v-slot:Name="{ row: AllCustomer }">
+            <template v-slot:Name="{ row: FollowUp }">
               <span>
-                {{ AllCustomer.Name }}
+                {{ FollowUp.Name }}
               </span>
             </template>
-            <template v-slot:Telephone="{ row: AllCustomer }">
+            <template v-slot:Telephone="{ row: FollowUp }">
               <span>
-                {{ AllCustomer.Telephone }}
+                {{ FollowUp.Telephone }}
               </span>
             </template>
-            <template v-slot:Mobile="{ row: AllCustomer }">
+            <template v-slot:Mobile="{ row: FollowUp }">
               <span>
-                {{ AllCustomer.Mobile }}
+                {{ FollowUp.Mobile }}
               </span>
             </template>
-            <template v-slot:ContactAddress="{ row: AllCustomer }">
-              <span>{{ AllCustomer.ContactAddress }}</span>
+            <template v-slot:ContactAddress="{ row: FollowUp }">
+              <span>{{ FollowUp.ContactAddress }}</span>
             </template>
-            <template v-slot:CustomerSource="{ row: AllCustomer }">
-              {{ AllCustomer.CustomerSource }}
+            <template v-slot:CustomerSource="{ row: FollowUp }">
+              {{ FollowUp.CustomerSource }}
             </template>
-            <template v-slot:Contactor="{ row: AllCustomer }">
-              {{ AllCustomer.Contactor }}
+            <template v-slot:Contactor="{ row: FollowUp }">
+              {{ FollowUp.Contactor }}
             </template>
-            <template v-slot:FirstContactDate="{ row: AllCustomer }">
-              {{ AllCustomer.FirstContactDate }}
+            <template v-slot:FirstContactDate="{ row: FollowUp }">
+              {{ FollowUp.FirstContactDate }}
             </template>
-            <template v-slot:UpdateDate="{ row: AllCustomer }">
-              {{ AllCustomer.UpdateDate }}
+            <template v-slot:UpdateDate="{ row: FollowUp }">
+              {{ FollowUp.UpdateDate }}
             </template>
-            <template v-slot:ServiceItem="{ row: AllCustomer }">
-              {{ AllCustomer.ServiceItem }}
+            <template v-slot:ServiceItem="{ row: FollowUp }">
+              {{ FollowUp.ServiceItem }}
             </template>
             <template v-slot:action>
               <router-link
@@ -311,43 +325,49 @@
             :data="tableData3"
             :items-per-page-dropdown-enabled="true"
           >
-            <template v-slot:CustomerID="{ row: AllCustomer }">
-              <router-link to="/" class="text-gray-800 text-hover-primary">
-                {{ AllCustomer.CustomerID }}
+            <template v-slot:CustomerID="{ row: CloseCase }">
+              <router-link
+                :to="{
+                  name: 'bj-client-details',
+                  params: { customerId: CloseCase.CustomerID },
+                }"
+                class="text-gray-800 text-hover-primary"
+              >
+                {{ CloseCase.CustomerID }}
               </router-link>
             </template>
-            <template v-slot:Name="{ row: AllCustomer }">
+            <template v-slot:Name="{ row: CloseCase }">
               <span>
-                {{ AllCustomer.Name }}
+                {{ CloseCase.Name }}
               </span>
             </template>
-            <template v-slot:Telephone="{ row: AllCustomer }">
+            <template v-slot:Telephone="{ row: CloseCase }">
               <span>
-                {{ AllCustomer.Telephone }}
+                {{ CloseCase.Telephone }}
               </span>
             </template>
-            <template v-slot:Mobile="{ row: AllCustomer }">
+            <template v-slot:Mobile="{ row: CloseCase }">
               <span>
-                {{ AllCustomer.Mobile }}
+                {{ CloseCase.Mobile }}
               </span>
             </template>
-            <template v-slot:ContactAddress="{ row: AllCustomer }">
-              <span>{{ AllCustomer.ContactAddress }}</span>
+            <template v-slot:ContactAddress="{ row: CloseCase }">
+              <span>{{ CloseCase.ContactAddress }}</span>
             </template>
-            <template v-slot:CustomerSource="{ row: AllCustomer }">
-              {{ AllCustomer.CustomerSource }}
+            <template v-slot:CustomerSource="{ row: CloseCase }">
+              {{ CloseCase.CustomerSource }}
             </template>
-            <template v-slot:Contactor="{ row: AllCustomer }">
-              {{ AllCustomer.Contactor }}
+            <template v-slot:Contactor="{ row: CloseCase }">
+              {{ CloseCase.Contactor }}
             </template>
-            <template v-slot:FirstContactDate="{ row: AllCustomer }">
-              {{ AllCustomer.FirstContactDate }}
+            <template v-slot:FirstContactDate="{ row: CloseCase }">
+              {{ CloseCase.FirstContactDate }}
             </template>
-            <template v-slot:UpdateDate="{ row: AllCustomer }">
-              {{ AllCustomer.UpdateDate }}
+            <template v-slot:UpdateDate="{ row: CloseCase }">
+              {{ CloseCase.UpdateDate }}
             </template>
-            <template v-slot:ServiceItem="{ row: AllCustomer }">
-              {{ AllCustomer.ServiceItem }}
+            <template v-slot:ServiceItem="{ row: CloseCase }">
+              {{ CloseCase.ServiceItem }}
             </template>
             <template v-slot:action>
               <router-link
@@ -367,6 +387,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watchEffect } from "vue";
+import { useUUIDStore } from "@/stores/useUUID";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import type { PropType } from "vue";
 
@@ -390,7 +411,8 @@ export default defineComponent({
     Datatable,
   },
   setup(props) {
-    // console.log("Received clientData:", props.clientData);
+    const useUUID = useUUIDStore();
+
     const tableHeader = ref([
       {
         columnName: "客戶編號",
@@ -457,7 +479,6 @@ export default defineComponent({
       if (props.clientData && props.clientData.success) {
         if (props.clientData.success.AllCustomer) {
           tableData1.value = props.clientData.success.AllCustomer;
-          // console.log(tableData1.value);
         }
         if (props.clientData.success.FollowUp) {
           tableData2.value = props.clientData.success.FollowUp;
@@ -467,7 +488,12 @@ export default defineComponent({
         }
       }
     });
-    return { tableHeader, tableData1, tableData2, tableData3 };
+
+    function setThisUUID(uuid: string) {
+      useUUID.setUUID(uuid);
+      // console.log(uuid);
+    }
+    return { tableHeader, tableData1, tableData2, tableData3, setThisUUID };
   },
 });
 </script>

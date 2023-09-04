@@ -12,9 +12,8 @@
           <!--begin::Content wrapper-->
           <div class="d-flex flex-column flex-column-fluid">
             <KTToolbar />
-            <div id="kt_app_content" class="app-content flex-column-fluid">
-              <KTContent></KTContent>
-            </div>
+
+            <KTContent></KTContent>
           </div>
           <!--end::Content wrapper-->
           <!-- <KTFooter /> -->
