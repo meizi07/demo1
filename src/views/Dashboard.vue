@@ -27,32 +27,32 @@
         <div class="card-body d-inline-flex flex-wrap gap-6">
           <StatisticsWidget7
             title="合約"
-            description="3"
+            :description="3"
             widget-classes="equal-3"
           ></StatisticsWidget7>
           <StatisticsWidget7
             title="請款單"
-            description="4"
+            :description="4"
             widget-classes="equal-3"
           ></StatisticsWidget7>
           <StatisticsWidget7
             title="報價單"
-            description="2"
+            :description="2"
             widget-classes="equal-3"
           ></StatisticsWidget7>
           <StatisticsWidget7
             title="需求單"
-            description="2"
+            :description="2"
             widget-classes="equal-3"
           ></StatisticsWidget7>
           <StatisticsWidget7
             title="採購單"
-            description="2"
+            :description="2"
             widget-classes="equal-3"
           ></StatisticsWidget7>
           <StatisticsWidget7
             title="總驗收單"
-            description="2"
+            :description="2"
             widget-classes="equal-3"
           ></StatisticsWidget7>
         </div>
@@ -66,22 +66,22 @@
         <div class="position-relative card-body d-inline-flex flex-wrap gap-6">
           <StatisticsWidget7
             title="未開始專案"
-            description="3"
+            :description="3"
             widget-classes="equal-2"
           ></StatisticsWidget7>
           <StatisticsWidget7
             title="執行中專案"
-            description="4"
+            :description="4"
             widget-classes="equal-2"
           ></StatisticsWidget7>
           <StatisticsWidget7
             title="執行中專案"
-            description="2"
+            :description="2"
             widget-classes="equal-2"
           ></StatisticsWidget7>
           <StatisticsWidget7
             title="已結案專案"
-            description="2"
+            :description="2"
             widget-classes="equal-2"
           ></StatisticsWidget7>
         </div>
@@ -119,6 +119,7 @@ import StatisticsWidget7 from "@/components/widgets/statsistics/Widget7.vue";
 import ListsWidget2 from "@/components/widgets/lists/Widget2.vue";
 
 import dashboardDatatable from "@/components/customers/datatable/dashboard-datatable.vue";
+import { useAuthStore } from "@/stores/auth";
 
 export default defineComponent({
   name: "main-dashboard",
@@ -130,6 +131,8 @@ export default defineComponent({
     dashboardDatatable,
   },
   setup() {
+    const store = useAuthStore();
+    console.log(store.user.token);
     return {
       getAssetPath,
     };

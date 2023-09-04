@@ -7,7 +7,7 @@ export interface User {
   orgId: string;
   account: string;
   password: string;
-  api_token: string;
+  token: string;
 }
 
 export const useAuthStore = defineStore("auth", () => {
@@ -17,9 +17,17 @@ export const useAuthStore = defineStore("auth", () => {
 
   function setAuth(authUser: User) {
     isAuthenticated.value = true;
-    user.value = authUser;
+    const modifiedAuthUser = {
+      ...authUser,
+      //orgId: authUser.OrgID, // 将 "OrgID" 的值赋给 "orgId"
+      //account, // 保留 account 字段
+    };
+    //delete modifiedAuthUser.OrgID; // 删除 "OrgID" 键
+
+    user.value = modifiedAuthUser;
+    console.log(user.value);
     errors.value = {};
-    JwtService.saveToken(user.value.api_token);
+    JwtService.saveToken(user.value.token);
   }
 
   function setError(error: any) {
@@ -39,6 +47,7 @@ export const useAuthStore = defineStore("auth", () => {
         // 成功時的回應
         if (data.success) {
           setAuth(data.success.OrgInfo);
+          console.log(data.success.OrgInfo);
         } else {
           setError({ code: data.ErrorCode, message: data.ErrorMsg });
         }
@@ -53,15 +62,15 @@ export const useAuthStore = defineStore("auth", () => {
     purgeAuth();
   }
 
-  function register(credentials: User) {
-    return ApiService.post("register", credentials)
-      .then(({ data }) => {
-        setAuth(data);
-      })
-      .catch(({ response }) => {
-        setError(response.data.errors);
-      });
-  }
+  // function register(credentials: User) {
+  //   return ApiService.post("register", credentials)
+  //     .then(({ data }) => {
+  //       setAuth(data);
+  //     })
+  //     .catch(({ response }) => {
+  //       setError(response.data.errors);
+  //     });
+  // }
 
   function forgotPassword(email: string) {
     return ApiService.post("forgot_password", email)
@@ -75,17 +84,18 @@ export const useAuthStore = defineStore("auth", () => {
 
   function verifyAuth() {
     if (JwtService.getToken()) {
-      ApiService.setHeader();
-      ApiService.post("login/checkLogin.php", {
-        api_token: JwtService.getToken(),
-      })
-        .then(({ data }) => {
-          setAuth(data);
-        })
-        .catch(({ response }) => {
-          setError(response.data.errors);
-          purgeAuth();
-        });
+      // ApiService.setHeader();
+      // ApiService.post("login/checkLogin.php", )
+      //   .then(({ data }) => {
+      //     console.log(data);
+      //     setAuth(data);
+      //   })
+      //   .catch(({ response }) => {
+      //     setError(response.data.errors);
+      //     purgeAuth();
+      //   });
+      console.log("verifyAuth");
+      console.log(user.value);
     } else {
       purgeAuth();
     }
@@ -97,7 +107,7 @@ export const useAuthStore = defineStore("auth", () => {
     isAuthenticated,
     login,
     logout,
-    register,
+    // register,
     forgotPassword,
     verifyAuth,
   };

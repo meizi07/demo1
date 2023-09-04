@@ -21,7 +21,7 @@ export default defineComponent({
   name: "kt-widget-7",
   props: {
     title: String,
-    description: String,
+    description: Number,
     widgetClasses: String,
   },
   components: {},
