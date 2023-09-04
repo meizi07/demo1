@@ -93,6 +93,15 @@ const routes: Array<RouteRecordRaw> = [
             },
           },
           {
+            path: "client-details/:customerId", // 动态参数 ":customerId"
+            name: "bj-client-details",
+            component: () =>
+              import("@/views/before-project/client-info/ClientDetails.vue"), // 创建客户资料详情组件
+            meta: {
+              pageTitle: "客户資料",
+            },
+          },
+          {
             path: "demand-list",
             name: "bj-demand-list",
             component: () =>
