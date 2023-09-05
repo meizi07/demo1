@@ -26,34 +26,11 @@
         </div>
         <div class="card-body d-inline-flex flex-wrap gap-6">
           <StatisticsWidget7
-            title="合約"
-            :description="3"
+            v-for="(docitem, index) in docList"
+            :key="index"
             widget-classes="equal-3"
-          ></StatisticsWidget7>
-          <StatisticsWidget7
-            title="請款單"
-            :description="4"
-            widget-classes="equal-3"
-          ></StatisticsWidget7>
-          <StatisticsWidget7
-            title="報價單"
-            :description="2"
-            widget-classes="equal-3"
-          ></StatisticsWidget7>
-          <StatisticsWidget7
-            title="需求單"
-            :description="2"
-            widget-classes="equal-3"
-          ></StatisticsWidget7>
-          <StatisticsWidget7
-            title="採購單"
-            :description="2"
-            widget-classes="equal-3"
-          ></StatisticsWidget7>
-          <StatisticsWidget7
-            title="總驗收單"
-            :description="2"
-            widget-classes="equal-3"
+            :title="docitem.Title"
+            :description="docitem.Num"
           ></StatisticsWidget7>
         </div>
       </div>
@@ -65,24 +42,11 @@
         </div>
         <div class="position-relative card-body d-inline-flex flex-wrap gap-6">
           <StatisticsWidget7
-            title="未開始專案"
-            :description="3"
+            v-for="(caseitem, index) in caseList"
+            :key="index"
             widget-classes="equal-2"
-          ></StatisticsWidget7>
-          <StatisticsWidget7
-            title="執行中專案"
-            :description="4"
-            widget-classes="equal-2"
-          ></StatisticsWidget7>
-          <StatisticsWidget7
-            title="執行中專案"
-            :description="2"
-            widget-classes="equal-2"
-          ></StatisticsWidget7>
-          <StatisticsWidget7
-            title="已結案專案"
-            :description="2"
-            widget-classes="equal-2"
+            :title="caseitem.Title"
+            :description="caseitem.Num"
           ></StatisticsWidget7>
         </div>
       </div>
@@ -112,14 +76,21 @@
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent } from "vue";
+import { ref, onMounted } from "vue";
+
 import CalendarApp2 from "@/components/calendar/CalendarApp2.vue";
 import ListsWidget3 from "@/components/widgets/lists/Widget3.vue";
-
 import StatisticsWidget7 from "@/components/widgets/statsistics/Widget7.vue";
 import ListsWidget2 from "@/components/widgets/lists/Widget2.vue";
-
 import dashboardDatatable from "@/components/customers/datatable/dashboard-datatable.vue";
+
+import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
+
+interface StatisticItem {
+  Title: string;
+  Num: number;
+}
 
 export default defineComponent({
   name: "main-dashboard",
@@ -131,10 +102,63 @@ export default defineComponent({
     dashboardDatatable,
   },
   setup() {
-    const store = useAuthStore();
-    console.log(store.user.token);
+    const authStore = useAuthStore();
+    const docList = ref<StatisticItem[]>([]);
+    const caseList = ref<StatisticItem[]>([]);
+    docList.value = [];
+    caseList.value = [];
+
+    async function fetchAndHandleData(apiPath: string, formData: FormData) {
+      try {
+        const response = await ApiService.post(apiPath, formData);
+        if (response.data.success) {
+          return response.data.success;
+        } else {
+          console.error(`获取数据失败，状态码：${response.status}`);
+        }
+      } catch (error) {
+        console.error("API 请求错误：", error);
+      }
+      return null;
+    }
+
+    onMounted(async () => {
+      try {
+        const formData = new FormData();
+        formData.append("orgId", authStore.user.orgId);
+        formData.append("account", authStore.user.account);
+        formData.append("token", authStore.user.token);
+
+        // 文件清單api
+        const getDocumentList = await fetchAndHandleData(
+          "/projectBefore/getDocumentList",
+          formData
+        );
+
+        // 案件狀態api
+        const getCaseList = await fetchAndHandleData(
+          "/projectBefore/getAllProjectList",
+          formData
+        );
+
+        if (getDocumentList) {
+          docList.value = getDocumentList;
+        }
+
+        const statisticsData = getCaseList.Statistics;
+
+        if (getCaseList) {
+          caseList.value = statisticsData;
+          console.log(statisticsData);
+        }
+      } catch (error) {
+        console.error("API 請求錯誤：", error);
+      }
+    });
     return {
       getAssetPath,
+      docList,
+      caseList,
     };
   },
 });

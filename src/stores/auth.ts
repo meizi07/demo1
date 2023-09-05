@@ -25,7 +25,6 @@ export const useAuthStore = defineStore("auth", () => {
     //delete modifiedAuthUser.OrgID; // 删除 "OrgID" 键
 
     user.value = modifiedAuthUser;
-    console.log(user.value);
     errors.value = {};
     JwtService.saveToken(user.value.token);
   }
@@ -47,7 +46,6 @@ export const useAuthStore = defineStore("auth", () => {
         // 成功時的回應
         if (data.success) {
           setAuth(data.success.OrgInfo);
-          console.log(data.success.OrgInfo);
         } else {
           setError({ code: data.ErrorCode, message: data.ErrorMsg });
         }
@@ -95,7 +93,6 @@ export const useAuthStore = defineStore("auth", () => {
       //     purgeAuth();
       //   });
       console.log("verifyAuth");
-      console.log(user.value);
     } else {
       purgeAuth();
     }
