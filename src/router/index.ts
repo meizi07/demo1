@@ -137,6 +137,47 @@ const routes: Array<RouteRecordRaw> = [
               pageTitle: "案件管理",
             },
           },
+          {
+            path: "case-details/:projectId",
+            name: "bj-case-details",
+            component: () =>
+              import("@/views/before-project/case-management/CaseDetails.vue"),
+            meta: {
+              pageTitle: "案件資訊",
+            },
+            children: [
+              {
+                path: "", // 空路径表示默认子路由
+                redirect: "overview", // 默认子路由指向 overview 页面
+              },
+              {
+                path: "overview",
+                name: "info-card",
+                component: () =>
+                  import("@/components/customers/cards/overview/InfoCard.vue"),
+                meta: {
+                  pageTitle: "Overview",
+                },
+              },
+              {
+                path: "settings",
+                name: "account-settings",
+                component: () => import("@/views/crafted/account/Settings.vue"),
+                meta: {
+                  pageTitle: "Settings",
+                },
+              },
+            ],
+          },
+          {
+            path: "case-details/:projectId",
+            name: "bj-case-details",
+            component: () =>
+              import("@/views/before-project/case-management/CaseDetails.vue"),
+            meta: {
+              pageTitle: "案件資訊",
+            },
+          },
           // {
           //   path: "demand-list",
           //   name: "bj-demand-list",

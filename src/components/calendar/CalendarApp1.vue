@@ -8,7 +8,7 @@
       <div class="card-toolbar">
         <button class="btn btn-flex btn-primary" @click="newEvent()">
           <KTIcon icon-name="plus" icon-class="fs-2" />
-          Add Event
+          新增行程
         </button>
       </div>
     </div>
@@ -20,6 +20,7 @@
       <FullCalendar
         class="demo-app-calendar"
         :options="calendarOptions"
+        ref="calendarRef"
       ></FullCalendar>
       <!--end::Calendar-->
     </div>
@@ -33,13 +34,15 @@
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
 import "@fullcalendar/core/vdom";
-import { defineComponent } from "vue";
+import { defineComponent, ref } from "vue";
+
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import type { CalendarOptions } from "@fullcalendar/core";
+
 import events, { TODAY } from "@/core/data/events";
 import NewEventModal from "@/components/modals/forms/NewEventModal.vue";
 import { Modal } from "bootstrap";
@@ -51,6 +54,8 @@ export default defineComponent({
     NewEventModal,
   },
   setup() {
+    const calendarRef = ref<InstanceType<typeof FullCalendar>>();
+
     const newEvent = () => {
       const modal = new Modal(
         document.getElementById("kt_modal_add_event") as Element
@@ -69,11 +74,12 @@ export default defineComponent({
       navLinks: true, // can click day/week names to navigate views
       selectable: true,
       selectMirror: true,
+      locale: "zh-tw",
 
       views: {
-        dayGridMonth: { buttonText: "month" },
-        timeGridWeek: { buttonText: "week" },
-        timeGridDay: { buttonText: "day" },
+        dayGridMonth: { buttonText: "月" },
+        timeGridWeek: { buttonText: "週" },
+        timeGridDay: { buttonText: "日" },
       },
 
       editable: true,

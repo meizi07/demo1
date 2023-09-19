@@ -1,4 +1,5 @@
 import type LayoutConfigTypes from "@/core/config/LayoutConfigTypes";
+//import { fa } from "element-plus/es/locale";
 
 const config: LayoutConfigTypes = {
   general: {
@@ -47,7 +48,7 @@ const config: LayoutConfigTypes = {
   },
   pageTitle: {
     display: true,
-    breadcrumb: true,
+    breadcrumb: false,
     direction: "column",
   },
   content: {

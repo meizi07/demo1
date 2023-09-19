@@ -13,10 +13,10 @@
               class="nav-link text-active-primary active px-5 m-0"
               data-bs-toggle="tab"
               role="tab"
-              href="#client_tab1"
+              href="#tab1"
             >
               <span class="nav-text text-gray-800 fw-bold fs-6 mb-1"
-                >所有客戶資料</span
+                >所有案件</span
               >
             </a>
           </li>
@@ -27,10 +27,10 @@
               class="nav-link text-active-primary px-5 m-0"
               data-bs-toggle="tab"
               role="tab"
-              href="#client_tab2"
+              href="#tab2"
             >
               <span class="nav-text text-gray-800 fw-bold fs-6 mb-1"
-                >洽談未進案</span
+                >待收款</span
               >
             </a>
           </li>
@@ -40,10 +40,10 @@
               class="nav-link text-active-primary px-5 m-0"
               data-bs-toggle="tab"
               role="tab"
-              href="#client_tab3"
+              href="#tab3"
             >
               <span class="nav-text text-gray-800 fw-bold fs-6 mb-1"
-                >已結案</span
+                >待驗收</span
               >
             </a>
           </li>
@@ -56,11 +56,7 @@
     </div>
     <!--begin::Tab Content-->
     <div id="kt_referred_users_tab_content" class="tab-content">
-      <div
-        id="client_tab1"
-        class="py-0 tab-pane fade active show"
-        role="tabpanel"
-      >
+      <div id="tab1" class="py-0 tab-pane fade active show" role="tabpanel">
         <!--begin::Toolbar-->
         <div
           class="card-toolbar m-0 p-7 d-flex justify-content-between border-gray-200 border-bottom"
@@ -109,59 +105,79 @@
             :data="tableData1"
             :items-per-page-dropdown-enabled="true"
           >
-            <template v-slot:CustomerID="{ row: AllCustomer }">
+            <template v-slot:ProjectID="{ row: All }">
               <router-link
                 :to="{
-                  name: 'bj-client-details',
+                  name: 'bj-case-details',
                   params: {
-                    customerId: AllCustomer.CustomerID,
+                    projectId: All.ProjectID,
                   },
                 }"
+                @click="storeCustomerId(All.ProjectID)"
                 class="text-gray-800 text-hover-primary"
-                @click="storeCustomerId(AllCustomer.CustomerID)"
               >
-                {{ AllCustomer.CustomerID }}
+                {{ All.ProjectID }}
               </router-link>
             </template>
-            <template v-slot:Name="{ row: AllCustomer }">
+            <template v-slot:ProjectName="{ row: All }">
               <span>
-                {{ AllCustomer.Name }}
+                {{ All.ProjectName }}
               </span>
             </template>
-            <template v-slot:Telephone="{ row: AllCustomer }">
+            <template v-slot:Category="{ row: All }">
               <span>
-                {{ AllCustomer.Telephone }}
+                {{ All.Category }}
               </span>
             </template>
-            <template v-slot:Mobile="{ row: AllCustomer }">
+            <template v-slot:Status="{ row: All }">
               <span>
-                {{ AllCustomer.Mobile }}
+                {{ All.Status }}
               </span>
             </template>
-            <template v-slot:ContactAddress="{ row: AllCustomer }">
-              <span>{{ AllCustomer.ContactAddress }}</span>
+            <template v-slot:Stage="{ row: All }">
+              <span>{{ All.Stage }}</span>
             </template>
-            <template v-slot:CustomerSource="{ row: AllCustomer }">
-              {{ AllCustomer.CustomerSource }}
+            <template v-slot:PIC="{ row: All }">
+              {{ All.PIC }}
             </template>
-            <template v-slot:Contactor="{ row: AllCustomer }">
-              {{ AllCustomer.Contactor }}
+            <template v-slot:Progress="{ row: All }">
+              <!-- {{ All.ProjectPercent }} -->
+              <div
+                class="d-flex align-items-center flex-wrap justify-content-center"
+              >
+                <div class="progress h-6px w-100">
+                  <div
+                    :class="`
+                          progress-bar
+                          bg-light-primary
+                        `"
+                    role="progressbar"
+                    :style="`width: ${All.Progress}%`"
+                    :aria-valuenow="All.Progress"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                  ></div>
+                </div>
+                <div class="">
+                  <span class=""> {{ All.Progress }}% </span>
+                </div>
+              </div>
             </template>
-            <template v-slot:FirstContactDate="{ row: AllCustomer }">
-              {{ AllCustomer.FirstContactDate }}
+            <template v-slot:EstStartDate="{ row: All }">
+              {{ All.EstStartDate }}
             </template>
-            <template v-slot:UpdateDate="{ row: AllCustomer }">
-              {{ AllCustomer.UpdateDate }}
+            <template v-slot:EstEndDate="{ row: All }">
+              {{ All.EstEndDate }}
             </template>
-            <template v-slot:ServiceItem="{ row: AllCustomer }">
-              {{ AllCustomer.ServiceItem }}
-            </template>
-            <template v-slot:action="{ row: AllCustomer }">
+            <!-- <template v-slot:="{ row: All }">
+              {{ All }}
+            </template> -->
+            <template v-slot:action="{ row: All }">
               <router-link
                 :to="{
-                  name: 'bj-client-details',
+                  name: 'bj-case-details',
                   params: {
-                    customerId: AllCustomer.CustomerID,
+                    projectId: All.ProjectID,
                   },
                 }"
                 class="btn btn-icon btn-active-color-primary btn-sm me-1"
@@ -172,7 +188,7 @@
           </Datatable>
         </div>
       </div>
-      <div id="client_tab2" class="py-0 tab-pane fade" role="tabpanel">
+      <div id="tab2" class="py-0 tab-pane fade" role="tabpanel">
         <!--begin::Toolbar-->
         <div
           class="card-toolbar m-0 p-7 d-flex justify-content-between d-flex justify-content-between border-gray-200 border-bottom"
@@ -216,7 +232,7 @@
         <!--end::Toolbar-->
         <div class="card-body pt-0">
           <!-- @on-sort="sort" -->
-          <Datatable
+          <!-- <Datatable
             :header="tableHeader"
             :data="tableData2"
             :items-per-page-dropdown-enabled="true"
@@ -273,10 +289,10 @@
                 <KTIcon icon-name="pencil" icon-class="fs-3" />
               </router-link>
             </template>
-          </Datatable>
+          </Datatable> -->
         </div>
       </div>
-      <div id="client_tab3" class="py-0 tab-pane fade" role="tabpanel">
+      <div id="tab3" class="py-0 tab-pane fade" role="tabpanel">
         <!--begin::Toolbar-->
         <div
           class="card-toolbar m-0 p-7 d-flex justify-content-between d-flex justify-content-between border-gray-200 border-bottom"
@@ -320,7 +336,7 @@
         <!--end::Toolbar-->
         <div class="card-body pt-0">
           <!-- @on-sort="sort" -->
-          <Datatable
+          <!-- <Datatable
             :header="tableHeader"
             :data="tableData3"
             :items-per-page-dropdown-enabled="true"
@@ -377,7 +393,7 @@
                 <KTIcon icon-name="pencil" icon-class="fs-3" />
               </router-link>
             </template>
-          </Datatable>
+          </Datatable> -->
         </div>
       </div>
     </div>
@@ -392,14 +408,14 @@ import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import type { PropType } from "vue";
 
 export default defineComponent({
-  name: "ClientList",
+  name: "ProjectList",
   props: {
     cardClasses: String,
     clientData: {
       type: Object as PropType<{
         success: {
           Statistics: any[];
-          AllCustomer: any[];
+          All: any[];
           FollowUp: any[];
           CloseCase: any[];
         };
@@ -412,57 +428,58 @@ export default defineComponent({
   },
   setup(props) {
     const { currentId, setCurrentId } = useIdStore();
+
     const tableHeader = ref([
       {
-        columnName: "客戶編號",
-        columnLabel: "CustomerID",
+        columnName: "案件編號",
+        columnLabel: "ProjectID",
         sortEnabled: true,
       },
       {
-        columnName: "客戶姓名",
-        columnLabel: "Name",
+        columnName: "案件名稱",
+        columnLabel: "ProjectName",
         sortEnabled: true,
       },
       {
-        columnName: "聯絡電話(市話)",
-        columnLabel: "Telephone",
+        columnName: "案件類型",
+        columnLabel: "Category",
         sortEnabled: true,
       },
       {
-        columnName: "聯絡電話(手機)",
-        columnLabel: "Mobile",
+        columnName: "案件狀態",
+        columnLabel: "Status",
         sortEnabled: true,
       },
       {
-        columnName: "聯絡地址",
-        columnLabel: "ContactAddress",
+        columnName: "執行階段",
+        columnLabel: "Stage",
         sortEnabled: true,
       },
       {
-        columnName: "客戶來源",
-        columnLabel: "CustomerSource",
+        columnName: "階段負責人",
+        columnLabel: "PIC",
         sortEnabled: true,
       },
       {
-        columnName: "接洽窗口",
-        columnLabel: "Contactor",
+        columnName: "案件進度",
+        columnLabel: "Progress",
         sortEnabled: true,
       },
       {
-        columnName: "首次接洽日期",
-        columnLabel: "FirstContactDate",
+        columnName: "開始日期",
+        columnLabel: "EstStartDate",
         sortEnabled: true,
       },
       {
-        columnName: "資料更新日期",
-        columnLabel: "UpdateDate",
+        columnName: "結束日期",
+        columnLabel: "EstEndDate",
         sortEnabled: true,
       },
-      {
-        columnName: "更新人員",
-        columnLabel: "ServiceItem",
-        sortEnabled: true,
-      },
+      // {
+      //   columnName: "剩餘天數",
+      //   columnLabel: "",
+      //   sortEnabled: true,
+      // },
       {
         columnName: "",
         columnLabel: "action",
@@ -476,8 +493,8 @@ export default defineComponent({
     // 使用 watch 监听 clientData 的变化
     watchEffect(() => {
       if (props.clientData && props.clientData.success) {
-        if (props.clientData.success.AllCustomer) {
-          tableData1.value = props.clientData.success.AllCustomer;
+        if (props.clientData.success.All) {
+          tableData1.value = props.clientData.success.All;
         }
         if (props.clientData.success.FollowUp) {
           tableData2.value = props.clientData.success.FollowUp;
@@ -487,7 +504,6 @@ export default defineComponent({
         }
       }
     });
-
     function storeCustomerId(customerId: string) {
       setCurrentId(customerId);
     }

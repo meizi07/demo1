@@ -2,21 +2,14 @@
   <div class="card mb-5 mb-xl-10">
     <div class="card-body d-inline-flex flex-wrap gap-6">
       <StatisticsWidget7
+        v-for="(statistic, index) in statistics"
+        :key="index"
         widget-classes="mw-150px"
-        title="待簽約"
-        description="3"
-      ></StatisticsWidget7>
-      <StatisticsWidget7
-        widget-classes="mw-150px"
-        title="待收款"
-        description="4"
-      ></StatisticsWidget7>
-      <StatisticsWidget7
-        widget-classes="mw-150px"
-        title="設計待驗收"
-        description="2"
+        :title="statistic.Title"
+        :description="statistic.Num"
       ></StatisticsWidget7>
     </div>
+    Ｆ
   </div>
   <InvoicesCopyVue></InvoicesCopyVue>
 </template>

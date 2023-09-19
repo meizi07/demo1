@@ -17,7 +17,7 @@
           ref="formRef"
         >
           <div class="modal-header">
-            <h2 class="fw-bold">Add a New Event</h2>
+            <h2 class="fw-bold">新增行程</h2>
             <div
               class="btn btn-icon btn-sm btn-active-icon-primary"
               id="kt_modal_add_event_close"
@@ -32,7 +32,7 @@
             <!--begin::Input group-->
             <div class="fv-row mb-9 fv-plugins-icon-container">
               <!--begin::Label-->
-              <label class="fs-6 fw-semobold required mb-2">Event Name</label>
+              <label class="fs-6 fw-semobold required mb-2">行程名稱</label>
               <!--end::Label-->
               <!--begin::Input-->
               <el-form-item prop="eventName">
@@ -49,7 +49,7 @@
             <!--begin::Input group-->
             <div class="fv-row mb-9">
               <!--begin::Label-->
-              <label class="fs-6 fw-semobold mb-2">Event Description</label>
+              <label class="fs-6 fw-semobold mb-2">行程描述</label>
               <!--end::Label-->
               <!--begin::Input-->
               <el-input
@@ -64,7 +64,7 @@
             <!--begin::Input group-->
             <div class="fv-row mb-9">
               <!--begin::Label-->
-              <label class="fs-6 fw-semobold mb-2">Event Location</label>
+              <label class="fs-6 fw-semobold mb-2">行程地點</label>
               <!--end::Label-->
               <!--begin::Input-->
               <el-input
@@ -81,7 +81,7 @@
               <!--begin::Checkbox-->
               <label class="form-check form-check-custom form-check-solid">
                 <el-checkbox v-model="targetData.allDay" type="checkbox" />
-                <span class="form-check-label fw-semobold">All Day</span>
+                <span class="form-check-label fw-semobold"> 整天</span>
               </label>
               <!--end::Checkbox-->
             </div>
@@ -93,9 +93,7 @@
                   class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
                 >
                   <!--begin::Label-->
-                  <label class="fs-6 fw-semobold mb-2 required"
-                    >Event Start Date</label
-                  >
+                  <label class="fs-6 fw-semobold mb-2 required">開始日期</label>
                   <!--end::Label-->
                   <!--begin::Input-->
                   <el-date-picker
@@ -119,9 +117,7 @@
                   class="fv-row mb-9 fv-plugins-icon-container fv-plugins-bootstrap5-row-valid"
                 >
                   <!--begin::Label-->
-                  <label class="fs-6 fw-semobold mb-2 required"
-                    >Event End Date</label
-                  >
+                  <label class="fs-6 fw-semobold mb-2 required">結束日期</label>
                   <!--end::Label-->
                   <!--begin::Input-->
                   <el-date-picker
@@ -149,7 +145,7 @@
               id="kt_modal_add_event_cancel"
               class="btn btn-light me-3"
             >
-              Cancel
+              取消
             </button>
             <!--end::Button-->
             <!--begin::Button-->
@@ -158,12 +154,9 @@
               class="btn btn-lg btn-primary"
               type="submit"
             >
-              <span v-if="!loading" class="indicator-label">
-                Submit
-                <KTIcon icon-name="arrow-right" icon-class="fs-3 ms-2 me-0" />
-              </span>
+              <span v-if="!loading" class="indicator-label"> 送出 </span>
               <span v-if="loading" class="indicator-progress">
-                Please wait...
+                請稍等...
                 <span
                   class="spinner-border spinner-border-sm align-middle ms-2"
                 ></span>

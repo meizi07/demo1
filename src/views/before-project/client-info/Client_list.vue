@@ -67,7 +67,7 @@ export default defineComponent({
           statistics.value = response.data.success.Statistics;
           console.log(responseData);
         } else {
-          console.error("获取客户数据失败，状态码：", response.status);
+          console.error("獲取客戶數據失敗，狀態碼：", response.status);
         }
       } catch (error) {
         console.error("API 請求錯誤：", error);

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <!-- 在此处加载客户的详细信息 -->
     <InfoCard :tableData="tableData1"></InfoCard>
     <InfoCard :tableData="tableData2"></InfoCard>
   </div>
@@ -10,9 +9,8 @@
 import { ref, onMounted } from "vue";
 import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
-import { useUUIDStore } from "@/stores/useUUID";
+import { useIdStore } from "@/stores/useId";
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
-import type { Ref } from "vue";
 
 export default {
   components: { InfoCard },
@@ -20,7 +18,7 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const responseData = ref<null | Object>(null);
-    const { currentUUID } = useUUIDStore();
+    const { currentId } = useIdStore();
 
     const tableData1 = ref([
       { label: "接洽窗口", value: "" },
@@ -45,7 +43,12 @@ export default {
         formData.append("orgId", authStore.user.orgId);
         formData.append("account", authStore.user.account);
         formData.append("token", authStore.user.token);
-        formData.append("UUID", currentUUID);
+        if (currentId) {
+          formData.append("customerId", currentId);
+        } else {
+          // 处理 currentId 为 null 的情况，可以选择跳过或者采取其他适当的操作
+        }
+        //formData.append("customerId", currentId);
 
         const response = await ApiService.post(
           "/projectBefore/getCustInfoByUUID",
@@ -80,7 +83,7 @@ export default {
       console.log(responseData);
     });
     return {
-      currentUUID,
+      currentId,
       tableData1,
       tableData2,
     };
