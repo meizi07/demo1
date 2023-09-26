@@ -107,12 +107,7 @@
           >
             <template v-slot:ProjectID="{ row: All }">
               <router-link
-                :to="{
-                  name: 'bj-case-details',
-                  params: {
-                    projectId: All.ProjectID,
-                  },
-                }"
+                :to="`/befort-project/case-management/case-details/${All.ProjectID}/p-info`"
                 @click="storeCustomerId(All.ProjectID)"
                 class="text-gray-800 text-hover-primary"
               >
@@ -169,9 +164,9 @@
             <template v-slot:EstEndDate="{ row: All }">
               {{ All.EstEndDate }}
             </template>
-            <!-- <template v-slot:="{ row: All }">
-              {{ All }}
-            </template> -->
+            <template v-slot:RemainDays="{ row: All }">
+              {{ All.RemainDays }}
+            </template>
             <template v-slot:action="{ row: All }">
               <router-link
                 :to="{
@@ -475,11 +470,11 @@ export default defineComponent({
         columnLabel: "EstEndDate",
         sortEnabled: true,
       },
-      // {
-      //   columnName: "剩餘天數",
-      //   columnLabel: "",
-      //   sortEnabled: true,
-      // },
+      {
+        columnName: "剩餘天數",
+        columnLabel: "RemainDays",
+        sortEnabled: true,
+      },
       {
         columnName: "",
         columnLabel: "action",

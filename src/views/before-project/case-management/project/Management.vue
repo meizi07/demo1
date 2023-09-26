@@ -1,4 +1,12 @@
 <template>
+  <div class="toolbtn d-flex align-items-center gap-2 gap-lg-3">
+    <router-link
+      :to="`/befort-project/case-management/add-project`"
+      class="btn btn-sm fw-bold btn-primary"
+    >
+      新增案件
+    </router-link>
+  </div>
   <div class="card mb-5 mb-xl-10">
     <div class="card-body d-inline-flex flex-wrap gap-6">
       <StatisticsWidget7

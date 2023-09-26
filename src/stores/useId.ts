@@ -6,6 +6,7 @@ export const useIdStore = defineStore("id", () => {
 
   function setCurrentId(id: string) {
     currentId.value = id;
+    console.log(currentId);
   }
 
   return {

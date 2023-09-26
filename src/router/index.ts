@@ -132,7 +132,9 @@ const routes: Array<RouteRecordRaw> = [
             path: "management",
             name: "bj-case-management",
             component: () =>
-              import("@/views/before-project/case-management/Management.vue"),
+              import(
+                "@/views/before-project/case-management/project/Management.vue"
+              ),
             meta: {
               pageTitle: "案件管理",
             },
@@ -141,41 +143,52 @@ const routes: Array<RouteRecordRaw> = [
             path: "case-details/:projectId",
             name: "bj-case-details",
             component: () =>
-              import("@/views/before-project/case-management/CaseDetails.vue"),
+              import(
+                "@/views/before-project/case-management/project/CaseDetails.vue"
+              ),
             meta: {
               pageTitle: "案件資訊",
             },
             children: [
               {
-                path: "", // 空路径表示默认子路由
-                redirect: "overview", // 默认子路由指向 overview 页面
-              },
-              {
-                path: "overview",
-                name: "info-card",
-                component: () =>
-                  import("@/components/customers/cards/overview/InfoCard.vue"),
+                path: "p-info",
+                components: {
+                  default: () =>
+                    import(
+                      "@/views/before-project/case-management/project/ProjectInfo.vue"
+                    ),
+                },
+                alias:
+                  "/befort-project/case-management/case-details/:projectId/p-info",
                 meta: {
-                  pageTitle: "Overview",
+                  pageTitle: "案件資訊",
                 },
               },
               {
-                path: "settings",
-                name: "account-settings",
-                component: () => import("@/views/crafted/account/Settings.vue"),
+                path: "c-info",
+                components: {
+                  default: () =>
+                    import(
+                      "@/views/before-project/case-management/project/ClientInfo.vue"
+                    ),
+                },
+                alias:
+                  "/befort-project/case-management/case-details/:projectId/c-info",
                 meta: {
-                  pageTitle: "Settings",
+                  pageTitle: "案件資訊",
                 },
               },
             ],
           },
           {
-            path: "case-details/:projectId",
-            name: "bj-case-details",
+            path: "add-project",
+            name: "bj-case-add",
             component: () =>
-              import("@/views/before-project/case-management/CaseDetails.vue"),
+              import(
+                "@/views/before-project/case-management/project/AddCase.vue"
+              ),
             meta: {
-              pageTitle: "案件資訊",
+              pageTitle: "新增案件資訊",
             },
           },
           // {

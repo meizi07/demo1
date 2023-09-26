@@ -5,7 +5,7 @@
 ******************************/
 
 input[readonly]:not(.flatpickr-input) {
-  background-color: var(--bs-app-sidebar-light-menu-link-bg-color-active);
+  background-color: var(--bs-app-sidebar-light-bg-color);
   cursor: not-allowed;
 }
 
