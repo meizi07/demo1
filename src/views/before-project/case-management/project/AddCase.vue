@@ -9,8 +9,8 @@
   >
     <div class="toolbtn d-flex align-items-center gap-2 gap-lg-3">
       <button
+        :data-kt-indicator="loading ? 'on' : null"
         type="submit"
-        id="project_edit_submit"
         class="btn btn-sm fw-bold btn-primary"
       >
         <span v-if="!loading" class="indicator-label"> 儲存 </span>
@@ -131,27 +131,29 @@
                   <tr>
                     <td class="text-muted">
                       <label
-                        class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        class="required d-flex align-items-center fs-6 fw-semobold mb-4"
                         >案件類型</label
                       >
                     </td>
                     <td class="fw-bold">
-                      <el-form-item class="w-100" prop="targetTitle">
+                      <el-form-item class="w-100" prop="category">
                         <el-select
+                          v-model="targetData.category"
                           placeholder="請選擇案件類型"
-                          name="assign"
+                          name="category"
                           as="select"
                           size="large"
                         >
-                          <el-option value="0">Select user...</el-option>
-                          <el-option label="Karina Clark" value="1"
-                            >Karina Clark</el-option
-                          >
+                          <el-option label="設計" value="0">設計</el-option>
+                          <el-option label="工程" value="1">工程</el-option>
                         </el-select>
                       </el-form-item>
                     </td>
                   </tr>
-                  <tr class="pj_link_engineering">
+                  <tr
+                    class="pj_link_engineering"
+                    v-if="targetData.category === '1'"
+                  >
                     <td class="text-muted">
                       <label
                         class="d-flex align-items-center fs-6 fw-semobold mb-4"
@@ -160,17 +162,21 @@
                     </td>
                     <td class="fw-bold">
                       <div class="d-flex align-items-center w-100">
-                        <el-form-item class="w-100" prop="targetTitle">
+                        <el-form-item class="w-100" prop="connectProjectID">
                           <el-select
+                            v-model="targetData.connectProjectID"
                             placeholder="請選擇設計案件編號"
-                            name="assign"
+                            name="connectProjectID"
                             as="select"
                             size="large"
+                            @click="fetchDesignCaseOptions"
                           >
-                            <el-option value="0">Select user...</el-option>
-                            <el-option label="Karina Clark" value="1"
-                              >Karina Clark</el-option
-                            >
+                            <el-option
+                              v-for="option in formattedDesignCaseOptions"
+                              :key="option.value"
+                              :label="option.label"
+                              :value="option.value"
+                            ></el-option>
                           </el-select>
                         </el-form-item>
                       </div>
@@ -201,84 +207,107 @@
                       >
                     </td>
                     <td class="fw-bold">
-                      <el-form-item prop="targetTitle">
-                        <el-input
-                          v-model="targetData.targetTitle"
-                          placeholder="案件名稱"
-                          name="targetTitle"
-                        ></el-input>
+                      <div class="d-flex align-items-center w-100">
+                        <el-form-item class="w-100" prop="projectName">
+                          <el-input
+                            v-model="targetData.projectName"
+                            placeholder="案件名稱"
+                            name="projectName"
+                            size="large"
+                          ></el-input>
+                        </el-form-item>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">
+                      <label
+                        class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >物件地址</label
+                      >
+                    </td>
+                    <td class="fw-bold">
+                      <div class="d-flex align-items-center w-100">
+                        <el-form-item class="w-100" prop="objectAddress">
+                          <el-input
+                            v-model="targetData.objectAddress"
+                            placeholder="物件地址"
+                            name="objectAddress"
+                            size="large"
+                          ></el-input>
+                        </el-form-item>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">
+                      <label
+                        class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >預計開始日</label
+                      >
+                    </td>
+                    <td class="fw-bold">
+                      <div
+                        class="position-relative d-flex align-items-center date_right_icon w-100"
+                      >
+                        <el-form-item class="w-100" prop="dueDate">
+                          <el-date-picker
+                            v-model="targetData.estStartDate"
+                            type="date"
+                            placeholder="預計開始日"
+                            size="large"
+                          />
+                        </el-form-item>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">
+                      <label
+                        class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >預計結束日</label
+                      >
+                    </td>
+                    <td class="fw-bold">
+                      <div
+                        class="position-relative d-flex align-items-center date_right_icon w-100"
+                      >
+                        <el-form-item class="w-100" prop="dueDate">
+                          <el-date-picker
+                            v-model="targetData.estEndDate"
+                            type="date"
+                            placeholder="預計結束日"
+                            size="large"
+                          />
+                        </el-form-item>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted">
+                      <label
+                        class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >案件負責人</label
+                      >
+                    </td>
+                    <td class="fw-bold">
+                      <el-form-item class="w-100" prop="pic">
+                        <el-select
+                          v-model="targetData.pic"
+                          placeholder="請選擇案件負責人"
+                          name="pic"
+                          as="select"
+                          size="large"
+                          @click="fetchPIC"
+                        >
+                          <el-option
+                            v-for="option in PICOptions"
+                            :key="option.value"
+                            :label="option.label"
+                            :value="option.value"
+                          ></el-option>
+                        </el-select>
                       </el-form-item>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="text-muted">物件地址</td>
-                    <td class="fw-bold">
-                      <input
-                        type="text"
-                        name="pj_addr"
-                        class="form-control"
-                        placeholder="物件地址"
-                        value=""
-                      />
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="text-muted">預計開始日</td>
-                    <td class="fw-bold">
-                      <div
-                        class="position-relative d-flex align-items-center date_right_icon w-100"
-                      >
-                        <input
-                          class="form-control single_datepicker"
-                          name="pj_start"
-                          placeholder="預計開始日"
-                          value=""
-                        />
-                        <i
-                          class="ki-duotone ki-calendar-8 position-absolute mx-4 mb-1 fs-2"
-                          ><span class="path1"></span><span class="path2"></span
-                          ><span class="path3"></span><span class="path4"></span
-                          ><span class="path5"></span><span class="path6"></span
-                        ></i>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="text-muted">預計結束日</td>
-                    <td class="fw-bold">
-                      <div
-                        class="position-relative d-flex align-items-center date_right_icon w-100"
-                      >
-                        <input
-                          class="form-control single_datepicker"
-                          name="pj_end"
-                          placeholder="預計結束日"
-                          value=""
-                        />
-                        <i
-                          class="ki-duotone ki-calendar-8 position-absolute mx-4 mb-1 fs-2"
-                          ><span class="path1"></span><span class="path2"></span
-                          ><span class="path3"></span><span class="path4"></span
-                          ><span class="path5"></span><span class="path6"></span
-                        ></i>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td class="text-muted">案件負責人</td>
-                    <td class="fw-bold">
-                      <select
-                        class="form-select"
-                        name="pj_principal"
-                        data-control="select2"
-                        data-hide-search="true"
-                        data-placeholder="請選擇案件負責人"
-                      >
-                        <option></option>
-                        <option value="0">林佳儀</option>
-                        <option value="1">負責人2</option>
-                        <option value="2">負責人3</option>
-                      </select>
                     </td>
                   </tr>
                 </tbody>
@@ -297,7 +326,7 @@
               type="button"
               class="btn btn-sm fw-bold bg-light btn-color-gray-700 btn-active-color-primary"
               data-bs-toggle="modal"
-              data-bs-target="#modal_project_type"
+              data-bs-target="#kt_modal_view_users"
             >
               選擇客戶
             </button>
@@ -348,67 +377,84 @@
       </div>
     </div>
   </el-form>
+  <SelectClientModalVue></SelectClientModalVue>
 </template>
 
 <script lang="ts">
 import { getAssetPath } from "@/core/helpers/assets";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed, watch } from "vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 
 import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
 
+import SelectClientModalVue from "@/components/modals/general/SelectClientModal.vue";
+
 interface NewAddressData {
-  targetTitle: string;
-  assign: string;
-  dueDate: string;
-  targetDetails: string;
-  tags: Array<string>;
+  projectName: string;
+  category: string;
+  connectProjectID: string;
+  objectAddress: string;
+  estStartDate: string;
+  estEndDate: string;
+  pic: string;
 }
 
 export default {
   name: "bj-case-add",
-  components: {},
+  components: { SelectClientModalVue },
   setup() {
     const authStore = useAuthStore();
     const formRef = ref<null | HTMLFormElement>(null);
     const loading = ref<boolean>(false);
 
     const targetData = ref<NewAddressData>({
-      targetTitle: "",
-      assign: "",
-      dueDate: "",
-      targetDetails: "",
-      tags: ["important", "urgent"],
+      projectName: "",
+      category: "",
+      connectProjectID: "",
+      objectAddress: "",
+      estStartDate: "",
+      estEndDate: "",
+      pic: "",
     });
 
     const rules = ref({
-      targetTitle: [
+      projectName: [
         {
           required: true,
-          message: "Please input Activity name",
+          message: "請輸入案件名稱",
           trigger: "blur",
         },
       ],
-      assign: [
+      category: [
         {
           required: true,
-          message: "Please select Activity zone",
+          message: "請選擇案件類型",
           trigger: "change",
         },
       ],
-      dueDate: [
+      connectProjectID: [
         {
           required: true,
-          message: "Please select Activity zone",
+          message: "請選擇連結設計編號",
           trigger: "change",
         },
       ],
-      tags: [
+      objectAddress: [
         {
           required: true,
-          message: "Please select Activity zone",
-          trigger: "change",
+          message: "請輸入物件地址",
+          trigger: "blur",
+        },
+      ],
+      estStartDate: [
+        {
+          required: false,
+        },
+      ],
+      estEndDate: [
+        {
+          required: false,
         },
       ],
     });
@@ -452,6 +498,88 @@ export default {
       });
     };
 
+    const designCaseOptions = ref<
+      Array<{
+        ProjectName: string;
+        ProjectID: string;
+        ObjectAddress: string;
+        EstStartDate: string;
+        EstEndDate: string;
+      }>
+    >([]);
+
+    const picOptions = ref<
+      Array<{
+        CustomerId: string;
+        Name: string;
+      }>
+    >([]);
+
+    // 定義方法以從 API 獲取設計案件編號的選項
+    const fetchDesignCaseOptions = async () => {
+      try {
+        const formData = new FormData();
+        formData.append("orgId", authStore.user.orgId);
+        formData.append("account", authStore.user.account);
+        formData.append("token", authStore.user.token);
+        formData.append("category", "0");
+        const response = await ApiService.post(
+          "/projectBefore/getProjectListByCategory",
+          formData
+        );
+        designCaseOptions.value = response.data.success;
+      } catch (error) {
+        console.error("API 請求錯誤：", error);
+      }
+    };
+
+    const formattedDesignCaseOptions = computed(() => {
+      return designCaseOptions.value.map((option) => ({
+        label: `${option.ProjectName} (${option.ProjectID})`,
+        value: option.ProjectID,
+      }));
+    });
+
+    // 監聽選擇設計案件編號的方法
+    const handleDesignCaseSelect = () => {
+      const selectedCaseID = targetData.value.connectProjectID;
+      const selectedCase = designCaseOptions.value.find(
+        (option) => option.ProjectID === selectedCaseID
+      );
+
+      if (selectedCase) {
+        // 填入案件相關資訊到 targetData.value
+        targetData.value.projectName = selectedCase.ProjectName;
+        targetData.value.objectAddress = selectedCase.ObjectAddress;
+        targetData.value.estStartDate = selectedCase.EstStartDate;
+        targetData.value.estEndDate = selectedCase.EstEndDate;
+      }
+    };
+
+    const fetchPIC = async () => {
+      try {
+        const formData = new FormData();
+        formData.append("orgId", authStore.user.orgId);
+        formData.append("account", authStore.user.account);
+        formData.append("token", authStore.user.token);
+        formData.append("category", "1");
+        const response = await ApiService.post(
+          "/account/getDropdownList",
+          formData
+        );
+        picOptions.value = response.data.success;
+      } catch (error) {
+        console.error("API 請求錯誤：", error);
+      }
+    };
+
+    const PICOptions = computed(() => {
+      return picOptions.value.map((option) => ({
+        label: `${option.Name}`,
+        value: option.CustomerId,
+      }));
+    });
+
     // async function fetchData() {
     //   try {
     //     const formData = new FormData();
@@ -476,6 +604,12 @@ export default {
 
     onMounted(() => {
       // fetchData();
+      watch(
+        () => targetData.value.connectProjectID,
+        () => {
+          handleDesignCaseSelect();
+        }
+      );
     });
 
     return {
@@ -483,10 +617,14 @@ export default {
       // responseData,
       // removeImage,
       submit,
+      fetchDesignCaseOptions,
+      fetchPIC,
       targetData,
       loading,
       formRef,
       rules,
+      formattedDesignCaseOptions,
+      PICOptions,
     };
   },
 };
