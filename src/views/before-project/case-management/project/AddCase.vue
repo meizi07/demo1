@@ -256,6 +256,8 @@
                             type="date"
                             placeholder="預計開始日"
                             size="large"
+                            :value-format="'yyyy-mm-dd'"
+                            :display-format="'yyyy-mm-dd'"
                           />
                         </el-form-item>
                       </div>
@@ -278,6 +280,8 @@
                             type="date"
                             placeholder="預計結束日"
                             size="large"
+                            :value-format="'yyyy-mm-dd'"
+                            :display-format="'yyyy-mm-dd'"
                           />
                         </el-form-item>
                       </div>
@@ -326,7 +330,7 @@
               type="button"
               class="btn btn-sm fw-bold bg-light btn-color-gray-700 btn-active-color-primary"
               data-bs-toggle="modal"
-              data-bs-target="#kt_modal_view_users"
+              data-bs-target="#modal_select_users"
             >
               選擇客戶
             </button>
@@ -339,35 +343,43 @@
                 <tbody class="fw-semibold text-gray-800">
                   <tr>
                     <td class="text-muted">客戶編號</td>
-                    <td class="fw-bold">-</td>
+                    <td class="fw-bold">
+                      {{ customerData.CustomerID || "-" }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="text-muted">客戶來源</td>
-                    <td class="fw-bold">-</td>
+                    <td class="fw-bold">
+                      {{ customerData.CustomerSource || "-" }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="text-muted">業主姓名</td>
-                    <td class="fw-bold">-</td>
+                    <td class="fw-bold">{{ customerData.Name || "-" }}</td>
                   </tr>
                   <tr>
                     <td class="text-muted">服務項目</td>
-                    <td class="fw-bold">-</td>
+                    <td class="fw-bold">
+                      {{ customerData.ServiceItem || "-" }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="text-muted">連絡電話</td>
-                    <td class="fw-bold">-</td>
+                    <td class="fw-bold">{{ customerData.Telephone || "-" }}</td>
                   </tr>
                   <tr>
                     <td class="text-muted">連絡手機</td>
-                    <td class="fw-bold">-</td>
+                    <td class="fw-bold">{{ customerData.Mobile || "-" }}</td>
                   </tr>
                   <tr>
                     <td class="text-muted">聯絡地址</td>
-                    <td class="fw-bold">-</td>
+                    <td class="fw-bold">
+                      {{ customerData.ContactAddress || "-" }}
+                    </td>
                   </tr>
                   <tr>
                     <td class="text-muted">聯絡信箱</td>
-                    <td class="fw-bold">-</td>
+                    <td class="fw-bold">{{ customerData.Email || "-" }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -377,7 +389,9 @@
       </div>
     </div>
   </el-form>
-  <SelectClientModalVue></SelectClientModalVue>
+  <SelectClientModalVue
+    @client-selected="handleClientSelected"
+  ></SelectClientModalVue>
 </template>
 
 <script lang="ts">
@@ -389,6 +403,7 @@ import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
 
 import SelectClientModalVue from "@/components/modals/general/SelectClientModal.vue";
+import type { Customer } from "@/components/modals/general/SelectClientModal.vue";
 
 interface NewAddressData {
   projectName: string;
@@ -398,6 +413,7 @@ interface NewAddressData {
   estStartDate: string;
   estEndDate: string;
   pic: string;
+  customerID: string;
 }
 
 export default {
@@ -407,6 +423,34 @@ export default {
     const authStore = useAuthStore();
     const formRef = ref<null | HTMLFormElement>(null);
     const loading = ref<boolean>(false);
+    const selectedClient = ref<Customer | null>(null);
+    const customerData = ref({
+      CustomerID: "",
+      Name: "",
+      ServiceItem: "",
+      Telephone: "",
+      Mobile: "",
+      Email: "",
+      ContactAddress: "",
+      CustomerSource: "",
+    });
+
+    // 實現方法來處理從子組件傳遞的客戶數據
+    const handleClientSelected = (client: Customer) => {
+      selectedClient.value = client;
+
+      customerData.value.CustomerID = client.CustomerID;
+      customerData.value.CustomerSource = client.CustomerSource;
+      customerData.value.Name = client.Name;
+      customerData.value.ServiceItem = client.ServiceItem;
+      customerData.value.Telephone = client.Telephone;
+      customerData.value.Mobile = client.Mobile;
+      customerData.value.ContactAddress = client.ContactAddress;
+      customerData.value.Email = client.Email;
+
+      targetData.value.customerID = customerData.value.CustomerID;
+      //customerData.value.CustomerID = targetData.value.customerID;
+    };
 
     const targetData = ref<NewAddressData>({
       projectName: "",
@@ -416,6 +460,7 @@ export default {
       estStartDate: "",
       estEndDate: "",
       pic: "",
+      customerID: "",
     });
 
     const rules = ref({
@@ -468,26 +513,55 @@ export default {
         if (valid) {
           loading.value = true;
 
-          setTimeout(() => {
-            loading.value = false;
+          const formData = new FormData();
+          formData.append("orgId", authStore.user.orgId);
+          formData.append("account", authStore.user.account);
+          formData.append("token", authStore.user.token);
 
-            Swal.fire({
-              text: "Form has been successfully submitted!",
-              icon: "success",
-              buttonsStyling: false,
-              confirmButtonText: "Ok, got it!",
-              heightAuto: false,
-              customClass: {
-                confirmButton: "btn btn-primary",
-              },
-            }).then(() => {});
-          }, 2000);
+          for (const key in targetData.value) {
+            if (Object.prototype.hasOwnProperty.call(targetData.value, key)) {
+              formData.append(key, targetData.value[key]);
+            }
+          }
+
+          ApiService.post("/projectBefore/addProject", formData)
+            .then((response) => {
+              loading.value = false;
+              if (response.data.success) {
+                Swal.fire({
+                  text: "送出成功",
+                  icon: "success",
+                  buttonsStyling: false,
+                  confirmButtonText: "繼續",
+                  heightAuto: false,
+                  customClass: {
+                    confirmButton: "btn btn-primary",
+                  },
+                }).then(() => {});
+              } else {
+                console.log(response.data);
+                Swal.fire({
+                  text: "送出失败，请检查数据是否正确",
+                  icon: "error",
+                  buttonsStyling: false,
+                  confirmButtonText: "繼續",
+                  heightAuto: false,
+                  customClass: {
+                    confirmButton: "btn btn-primary",
+                  },
+                });
+              }
+            })
+            .catch((error) => {
+              loading.value = false;
+              console.error("API 请求错误：", error);
+            });
         } else {
           Swal.fire({
-            text: "Sorry, looks like there are some errors detected, please try again.",
+            text: "請檢查是否有未填欄位",
             icon: "error",
             buttonsStyling: false,
-            confirmButtonText: "Ok, got it!",
+            confirmButtonText: "繼續",
             heightAuto: false,
             customClass: {
               confirmButton: "btn btn-primary",
@@ -551,8 +625,10 @@ export default {
         // 填入案件相關資訊到 targetData.value
         targetData.value.projectName = selectedCase.ProjectName;
         targetData.value.objectAddress = selectedCase.ObjectAddress;
-        targetData.value.estStartDate = selectedCase.EstStartDate;
-        targetData.value.estEndDate = selectedCase.EstEndDate;
+        const estStartDateParts = selectedCase.EstStartDate.split(" ");
+        const estEndDateParts = selectedCase.EstEndDate.split(" ");
+        targetData.value.estStartDate = estStartDateParts[0];
+        targetData.value.estEndDate = estEndDateParts[0];
       }
     };
 
@@ -580,30 +656,11 @@ export default {
       }));
     });
 
-    // async function fetchData() {
-    //   try {
-    //     const formData = new FormData();
-    //     formData.append("orgId", authStore.user.orgId);
-    //     formData.append("account", authStore.user.account);
-    //     formData.append("token", authStore.user.token);
-    //     const response = await ApiService.post(
-    //       "/projectBefore/getProjectInfo",
-    //       formData
-    //     );
-    //     const bacicInfo = response.data.success.ProjectInfo;
-    //     // 使用 responseData.ProjectInfo 更新数据
-    //     responseData.ProjectInfo = bacicInfo;
-    //   } catch (error) {
-    //     console.error("API 請求錯誤：", error);
-    //   }
-    // }
-
     // const removeImage = () => {
     //   profileDetails.value.avatar = "/media/avatars/blank.png";
     // };
 
     onMounted(() => {
-      // fetchData();
       watch(
         () => targetData.value.connectProjectID,
         () => {
@@ -614,8 +671,6 @@ export default {
 
     return {
       getAssetPath,
-      // responseData,
-      // removeImage,
       submit,
       fetchDesignCaseOptions,
       fetchPIC,
@@ -625,6 +680,9 @@ export default {
       rules,
       formattedDesignCaseOptions,
       PICOptions,
+      selectedClient,
+      handleClientSelected,
+      customerData,
     };
   },
 };

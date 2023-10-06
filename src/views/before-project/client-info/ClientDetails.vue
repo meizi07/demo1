@@ -91,7 +91,24 @@ import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 
-interface Housing {
+export interface SuccessData {
+  UUID: string;
+  CustomerID: string;
+  Name: string;
+  ServiceItem: string;
+  Telephone: string;
+  Mobile: string;
+  Email: string;
+  ContactAddress: string;
+  CustomerSource: string;
+  FirstContactDate: string;
+  Contactor: string;
+  UpdateDate: string;
+  Updater: string;
+  Housing: Housing[]; // 如果有 Housing 数组，请确保定义它的类型
+}
+
+export interface Housing {
   Category: string;
   Age: number;
   NumberOfPeople: number;
@@ -146,7 +163,8 @@ export default {
 
         responseData.value = response.data;
 
-        const successData = response.data.success[0]; // 获取成功数据中的第一个对象
+        const successData = response.data.success as SuccessData; // 获取成功数据中的第一个对象
+        console.log(successData);
 
         // 更新 tableData1
         tableData1.value[0].value = successData.Contactor;

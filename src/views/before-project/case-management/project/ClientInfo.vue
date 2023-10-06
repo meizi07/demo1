@@ -13,6 +13,9 @@ import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 
+import type { SuccessData } from "@/views/before-project/client-info/ClientDetails.vue";
+import type { Housing } from "@/views/before-project/client-info/ClientDetails.vue";
+
 export default defineComponent({
   name: "bj-case-c_info",
   components: {
@@ -53,7 +56,7 @@ export default defineComponent({
         );
         responseData.value = response.data;
 
-        const clientInfo = response.data.success[0];
+        const clientInfo = response.data.success as SuccessData;
 
         console.log(clientInfo);
 

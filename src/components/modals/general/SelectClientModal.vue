@@ -1,9 +1,10 @@
 <template>
   <div
     class="modal fade"
-    id="kt_modal_view_users"
+    id="modal_select_users"
     tabindex="-1"
     aria-hidden="true"
+    ref="showModal"
   >
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
@@ -73,23 +74,38 @@ import { getAssetPath } from "@/core/helpers/assets";
 import { defineComponent, ref, onMounted } from "vue";
 import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
+import { hideModal } from "@/core/helpers/dom";
 
-interface Customer {
+export interface Customer {
   id: string;
   Name: string;
   ContactAddress: string;
   CustomerID: string;
+  CustomerSource: string;
+  ServiceItem: string;
+  Telephone: string;
+  Mobile: string;
+  Email: string;
+
   // 添加其他属性的类型声明
 }
 
 export default defineComponent({
   name: "select-client-modal",
   components: {},
-  setup() {
+  setup(props, { emit }) {
     const clients = ref<Customer[]>([]);
-    const selectedClient = ref(null); // 存儲選擇的客戶資料
+    const selectedClient = ref(null);
+    const showModal = ref<null | HTMLElement>(null);
 
     const authStore = useAuthStore();
+
+    const selectClient = (client) => {
+      selectedClient.value = client;
+      // console.log(selectedClient);
+      hideModal(showModal.value);
+      emit("client-selected", client);
+    };
 
     const fetchClients = async () => {
       try {
@@ -109,9 +125,12 @@ export default defineComponent({
             Name: string;
             ContactAddress: string;
             CustomerID: string;
-            // 添加其他属性的类型声明
+            CustomerSource: string;
+            ServiceItem: string;
+            Telephone: string;
+            Mobile: string;
+            Email: string;
           }>;
-          console.log(clients);
         } else {
           console.error("獲取客戶數據失敗，狀態碼：", response.status);
         }
@@ -127,6 +146,9 @@ export default defineComponent({
     return {
       getAssetPath,
       clients,
+      selectClient,
+      selectedClient,
+      showModal,
     };
   },
 });
