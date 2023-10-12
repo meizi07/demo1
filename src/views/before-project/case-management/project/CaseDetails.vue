@@ -197,8 +197,6 @@ export default {
         const bacicInfo = response.data.success.ProjectInfo;
         // 使用 responseData.ProjectInfo 更新数据
         responseData.ProjectInfo = bacicInfo;
-        console.log(responseData.ProjectInfo);
-        console.log(currentIdRef.value);
       } catch (error) {
         console.error("API 請求錯誤：", error);
       }

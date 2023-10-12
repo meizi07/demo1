@@ -191,6 +191,17 @@ const routes: Array<RouteRecordRaw> = [
               pageTitle: "新增案件資訊",
             },
           },
+          {
+            path: "edit-project/:projectId",
+            name: "bj-case-edit",
+            component: () =>
+              import(
+                "@/views/before-project/case-management/project/EditCase.vue"
+              ),
+            meta: {
+              pageTitle: "編輯案件資訊",
+            },
+          },
           // {
           //   path: "demand-list",
           //   name: "bj-demand-list",

@@ -170,11 +170,12 @@
             <template v-slot:action="{ row: All }">
               <router-link
                 :to="{
-                  name: 'bj-case-details',
+                  name: 'bj-case-edit',
                   params: {
                     projectId: All.ProjectID,
                   },
                 }"
+                @click="storeCustomerId(All.ProjectID)"
                 class="btn btn-icon btn-active-color-primary btn-sm me-1"
               >
                 <KTIcon icon-name="pencil" icon-class="fs-3" />
