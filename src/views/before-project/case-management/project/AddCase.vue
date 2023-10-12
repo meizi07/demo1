@@ -256,10 +256,11 @@
                             type="date"
                             placeholder="預計開始日"
                             size="large"
-                            :value-format="'yyyy-mm-dd'"
-                            :display-format="'yyyy-mm-dd'"
+                            :display-format="'yyyy-MM-dd'"
+                            :value-format="'YYYY-MM-DD'"
                           />
                         </el-form-item>
+                        <!-- :value-format="'yyyy-MM-dd'" -->
                       </div>
                     </td>
                   </tr>
@@ -280,8 +281,8 @@
                             type="date"
                             placeholder="預計結束日"
                             size="large"
-                            :value-format="'yyyy-mm-dd'"
-                            :display-format="'yyyy-mm-dd'"
+                            :display-format="'yyyy-MM-dd'"
+                            :value-format="'YYYY-MM-DD'"
                           />
                         </el-form-item>
                       </div>
@@ -528,6 +529,8 @@ export default {
             .then((response) => {
               loading.value = false;
               if (response.data.success) {
+                console.log(response);
+                console.log(targetData.value);
                 Swal.fire({
                   text: "送出成功",
                   icon: "success",
