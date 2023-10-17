@@ -141,6 +141,19 @@
                       </el-form-item>
                     </td>
                   </tr>
+                  <tr>
+                    <td class="text-muted">
+                      <label
+                        class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >案件編號</label
+                      >
+                    </td>
+                    <td class="fw-bold">
+                      <el-form-item class="w-100" prop="projectID">
+                        {{ targetData.projectID }}
+                      </el-form-item>
+                    </td>
+                  </tr>
                   <tr
                     class="pj_link_engineering"
                     v-if="targetData.category === '工程'"
@@ -161,6 +174,7 @@
                             as="select"
                             size="large"
                             @click="fetchDesignCaseOptions"
+                            :disabled="!isConnectProjectEditable"
                           >
                             <el-option
                               v-for="option in formattedDesignCaseOptions"
@@ -170,6 +184,17 @@
                             ></el-option>
                           </el-select>
                         </el-form-item>
+                        <el-button
+                          class="btn btn-sm fw-bold btn-primary d-flex align-items-center mx-3 mb-5"
+                          style="
+                            word-break: keep-all;
+                            margin-right: 0 !important;
+                          "
+                          type=""
+                          @click="confirmReconnect"
+                        >
+                          重新連結
+                        </el-button>
                       </div>
                     </td>
                   </tr>
@@ -328,6 +353,7 @@ import { useIdStore } from "@/stores/useId";
 interface NewAddressData {
   projectName: string;
   category: string;
+  projectID: string;
   connectProjectID: string;
   objectAddress: string;
   estStartDate: string;
@@ -344,12 +370,14 @@ export default {
     const loading = ref<boolean>(false);
     const currentIdRef = ref<string | null>(null);
     const { currentId, setCurrentId } = useIdStore();
+    const isConnectProjectEditable = ref(false);
 
     currentIdRef.value = currentId;
 
     const targetData = ref<NewAddressData>({
       projectName: "",
       category: "",
+      projectID: "",
       connectProjectID: "",
       objectAddress: "",
       estStartDate: "",
@@ -435,6 +463,7 @@ export default {
           targetData.value.projectName =
             existingCaseData.ProjectInfo.ProjectName;
           targetData.value.category = existingCaseData.ProjectInfo.Category;
+          targetData.value.projectID = existingCaseData.ProjectInfo.ProjectID;
           targetData.value.connectProjectID =
             existingCaseData.ProjectCategory.ProjectDesignID;
           targetData.value.objectAddress =
@@ -449,6 +478,27 @@ export default {
         console.error("API 請求錯誤：", error);
       }
     }
+
+    const confirmReconnect = () => {
+      Swal.fire({
+        title: "確定要重新連結嗎？",
+        text: "這將允許您重新選擇設計案件編號。",
+        icon: "question",
+        showCancelButton: true,
+        buttonsStyling: false,
+        confirmButtonText: "確認",
+        cancelButtonText: "取消",
+        customClass: {
+          confirmButton: "btn btn-primary",
+          cancelButton:
+            "btn bg-body btn-color-gray-700 btn-active-color-primary border",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          isConnectProjectEditable.value = true;
+        }
+      });
+    };
 
     const submit = () => {
       if (!formRef.value) {
@@ -465,17 +515,20 @@ export default {
           formData.append("token", authStore.user.token);
 
           for (const key in targetData.value) {
-            if (Object.prototype.hasOwnProperty.call(targetData.value, key)) {
+            if (
+              key !== "category" &&
+              Object.prototype.hasOwnProperty.call(targetData.value, key)
+            ) {
               formData.append(key, targetData.value[key]);
             }
           }
 
-          ApiService.post("/projectBefore/addProject", formData)
+          ApiService.post("/projectBefore/updateProject", formData)
             .then((response) => {
               loading.value = false;
               if (response.data.success) {
                 console.log(response);
-                console.log(targetData.value);
+
                 Swal.fire({
                   text: "送出成功",
                   icon: "success",
@@ -606,6 +659,8 @@ export default {
       submit,
       fetchDesignCaseOptions,
       fetchPIC,
+      confirmReconnect,
+      isConnectProjectEditable,
       targetData,
       loading,
       formRef,
