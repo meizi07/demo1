@@ -7,7 +7,7 @@
     ref="formRef"
     class="form"
   >
-    <div class="toolbtn d-flex align-items-center gap-2 gap-lg-3">
+    <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
       <button
         :data-kt-indicator="loading ? 'on' : null"
         type="submit"

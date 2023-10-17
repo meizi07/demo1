@@ -1,4 +1,14 @@
 <template>
+  <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
+    <button
+      class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
+      data-kt-drawer-toggle="true"
+      data-kt-drawer-target="#kt_drawer_chat"
+      @click="openDrawer()"
+    >
+      異動紀錄
+    </button>
+  </div>
   <div class="card mb-5 mb-xl-10">
     <div class="card-body pt-9 pb-0">
       <div class="d-flex flex-wrap flex-sm-nowrap mb-3">
@@ -135,6 +145,7 @@
       </div>
     </div>
   </div>
+  <DrawerChangeRecords :data="caseRecords" />
   <router-view></router-view>
 </template>
 
@@ -144,6 +155,8 @@ import { ref, onMounted, watch, reactive } from "vue";
 import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
+import { DrawerComponent } from "@/assets/ts/components/_DrawerComponent";
+import DrawerChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue";
 
 // interface ProjectInfo {
 //   ProjectID: string;
@@ -156,7 +169,7 @@ import { useIdStore } from "@/stores/useId";
 // }
 
 export default {
-  components: {},
+  components: { DrawerChangeRecords },
   name: "bj-case-details",
   setup() {
     const authStore = useAuthStore();
@@ -181,6 +194,13 @@ export default {
     // 初始化 currentIdRef 的值
     currentIdRef.value = currentId;
 
+    // 初始化 異動紀錄
+    const caseRecords = ref([]);
+
+    const openDrawer = () => {
+      DrawerComponent?.getInstance("drawer_changeRecords")?.toggle();
+    };
+
     async function fetchData() {
       try {
         const formData = new FormData();
@@ -201,6 +221,27 @@ export default {
         console.error("API 請求錯誤：", error);
       }
     }
+
+    async function fetchRecordsData() {
+      try {
+        const formData = new FormData();
+        formData.append("orgId", authStore.user.orgId);
+        formData.append("account", authStore.user.account);
+        formData.append("token", authStore.user.token);
+        if (currentIdRef.value) {
+          formData.append("projectID", currentIdRef.value);
+        }
+        const response = await ApiService.post(
+          "/projectBefore/getProjectRecordList",
+          formData
+        );
+        caseRecords.value = response.data.success; // 將 API 數據賦值給 ref
+        console.log(caseRecords);
+      } catch (error) {
+        console.error("API 請求錯誤：", error);
+      }
+    }
+
     watch(currentIdRef, (newId, oldId) => {
       fetchData();
     });
@@ -211,13 +252,16 @@ export default {
 
     onMounted(() => {
       fetchData();
+      fetchRecordsData();
     });
 
     return {
+      openDrawer,
       getAssetPath,
       currentId,
       responseData,
       setStoreId,
+      caseRecords,
     };
   },
 };

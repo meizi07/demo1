@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbtn d-flex align-items-center gap-2 gap-lg-3">
+  <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
     <router-link
       :to="`/befort-project/case-management/add-project`"
       class="btn btn-sm fw-bold btn-primary"
