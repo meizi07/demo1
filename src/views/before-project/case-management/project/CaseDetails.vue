@@ -145,7 +145,7 @@
       </div>
     </div>
   </div>
-  <DrawerChangeRecords :data="caseRecords" />
+  <ChangeRecords :data="caseRecords" />
   <router-view></router-view>
 </template>
 
@@ -156,7 +156,7 @@ import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
 import { DrawerComponent } from "@/assets/ts/components/_DrawerComponent";
-import DrawerChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue";
+import ChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue";
 
 // interface ProjectInfo {
 //   ProjectID: string;
@@ -169,7 +169,7 @@ import DrawerChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue"
 // }
 
 export default {
-  components: { DrawerChangeRecords },
+  components: { ChangeRecords },
   name: "bj-case-details",
   setup() {
     const authStore = useAuthStore();
@@ -236,7 +236,6 @@ export default {
           formData
         );
         caseRecords.value = response.data.success; // 將 API 數據賦值給 ref
-        console.log(caseRecords);
       } catch (error) {
         console.error("API 請求錯誤：", error);
       }

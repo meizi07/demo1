@@ -313,6 +313,7 @@
                           ></el-option>
                         </el-select>
                       </el-form-item>
+                      {{ targetData.pic }}
                     </td>
                   </tr>
                 </tbody>
