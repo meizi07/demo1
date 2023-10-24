@@ -13,8 +13,8 @@ import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 
-import type { SuccessData } from "@/views/before-project/client-info/ClientDetails.vue";
-import type { Housing } from "@/views/before-project/client-info/ClientDetails.vue";
+import type { SuccessData } from "@/views/before-project/client-info/client/ClientDetails.vue";
+import type { Housing } from "@/views/before-project/client-info/client/ClientDetails.vue";
 
 export default defineComponent({
   name: "bj-case-c_info",

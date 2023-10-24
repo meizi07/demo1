@@ -87,18 +87,31 @@ const routes: Array<RouteRecordRaw> = [
             path: "client-list",
             name: "bj-client-list",
             component: () =>
-              import("@/views/before-project/client-info/Client_list.vue"),
+              import(
+                "@/views/before-project/client-info/client/Client_list.vue"
+              ),
             meta: {
               pageTitle: "客戶資料",
             },
           },
           {
-            path: "client-details/:customerId", // 动态参数 ":customerId"
+            path: "client-details/:customerId",
             name: "bj-client-details",
             component: () =>
-              import("@/views/before-project/client-info/ClientDetails.vue"), // 创建客户资料详情组件
+              import(
+                "@/views/before-project/client-info/client/ClientDetails.vue"
+              ),
             meta: {
               pageTitle: "客户資料",
+            },
+          },
+          {
+            path: "add-client",
+            name: "bj-client-add",
+            component: () =>
+              import("@/views/before-project/client-info/client/AddClient.vue"),
+            meta: {
+              pageTitle: "新增客戶資料",
             },
           },
           {
