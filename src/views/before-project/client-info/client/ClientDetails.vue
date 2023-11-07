@@ -104,7 +104,7 @@ import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 import { DrawerComponent } from "@/assets/ts/components/_DrawerComponent";
 import ChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue";
 
-export interface SuccessData {
+export interface ClientDetailsSuccessData {
   UUID: string;
   CustomerID: string;
   Name: string;
@@ -228,7 +228,7 @@ export default {
 
         responseData.value = response.data;
 
-        const successData = response.data.success as SuccessData; // 获取成功数据中的第一个对象
+        const successData = response.data.success as ClientDetailsSuccessData; // 获取成功数据中的第一个对象
         console.log(successData);
 
         // 更新 tableData1

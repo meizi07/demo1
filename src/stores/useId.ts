@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { Customer } from "@/type/share";
+import type { Customer } from "@/utils/share";
 
 export const useIdStore = defineStore("id", {
   state: () => ({

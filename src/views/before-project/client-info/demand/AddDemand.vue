@@ -118,6 +118,213 @@
         <div class="tab-pane fade show" id="demand_add_pane_2" role="tabpanel">
           <TableCard :tableHeaders="tab2HeaderData" :tableData="apiData2" />
         </div>
+        <div class="tab-pane fade show" id="demand_add_pane_3" role="tabpanel">
+          <div class="card">
+            <div class="card-body d-flex flex-column p-9">
+              <div class="table-responsive">
+                <table
+                  class="table align-middle table-row-bordered mb-0 fs-6 gy-5 table_half_col"
+                >
+                  <tbody class="fw-semibold text-gray-800">
+                    <tr>
+                      <td class="text-muted">
+                        <label
+                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >
+                          房屋資料</label
+                        >
+                      </td>
+                      <td class="fw-bold">
+                        <div class="d-flex align-items-center w-100">
+                          <el-form-item class="w-100" prop="CustomerSource">
+                            <el-select
+                              v-model="targetData.CustomerSource"
+                              placeholder="請選擇房屋資料"
+                              name="CustomerSource"
+                              as="select"
+                              size="large"
+                            >
+                              <!-- @click="fetchDropdown" -->
+                              <el-option label="新購新成屋" value="新購新成屋"
+                                >新購新成屋</el-option
+                              >
+                              <el-option label="新購預售屋" value="新購預售屋"
+                                >新購預售屋</el-option
+                              >
+                              <el-option label="新購中古屋" value="新購中古屋"
+                                >新購中古屋</el-option
+                              >
+                            </el-select>
+                          </el-form-item>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">
+                        <label
+                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                          >屋齡(年)</label
+                        >
+                      </td>
+                      <td class="fw-bold">
+                        <div class="d-flex align-items-center w-100">
+                          <el-form-item class="w-100" prop="CustomerName">
+                            <el-input
+                              v-model="targetData.CustomerName"
+                              placeholder=""
+                              name="CustomerName"
+                              size="large"
+                            ></el-input>
+                          </el-form-item>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">
+                        <label
+                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >
+                          大樓/透天</label
+                        >
+                      </td>
+                      <td class="fw-bold">
+                        <div class="d-flex align-items-center w-100">
+                          <el-form-item class="w-100" prop="CustomerSource">
+                            <el-select
+                              v-model="targetData.CustomerSource"
+                              placeholder="大樓/透天"
+                              name="CustomerSource"
+                              as="select"
+                              size="large"
+                            >
+                              <!-- @click="fetchDropdown" -->
+                              <el-option label="大樓" value="大樓"
+                                >大樓</el-option
+                              >
+                              <el-option label="透天" value="透天"
+                                >透天</el-option
+                              >
+                            </el-select>
+                          </el-form-item>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">
+                        <label
+                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >
+                          是否有電梯</label
+                        >
+                      </td>
+                      <td class="fw-bold">
+                        <div class="d-flex align-items-center w-100">
+                          <el-form-item class="w-100" prop="CustomerSource">
+                            <el-select
+                              v-model="targetData.CustomerSource"
+                              placeholder="請選擇是否有電梯"
+                              name="CustomerSource"
+                              as="select"
+                              size="large"
+                            >
+                              <!-- @click="fetchDropdown" -->
+                              <el-option label="是" value="是">是</el-option>
+                              <el-option label="否" value="否">否</el-option>
+                            </el-select>
+                          </el-form-item>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">
+                        <label
+                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >
+                          電梯大小</label
+                        >
+                      </td>
+                      <td class="fw-bold">
+                        <div class="d-flex align-items-center w-100">
+                          <el-form-item class="w-100" prop="ContactMobile">
+                            <el-input
+                              v-model="targetData.ContactMobile"
+                              placeholder=""
+                              name="ContactMobile"
+                              size="large"
+                            ></el-input>
+                          </el-form-item>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">
+                        <label
+                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >
+                          室內總坪數(坪)</label
+                        >
+                      </td>
+                      <td class="fw-bold">
+                        <div class="d-flex align-items-center w-100">
+                          <el-form-item class="w-100" prop="ContactAddress">
+                            <el-input
+                              v-model="targetData.ContactAddress"
+                              placeholder=""
+                              name="ContactAddress"
+                              size="large"
+                            ></el-input>
+                          </el-form-item>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">
+                        <label
+                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >
+                          格局</label
+                        >
+                      </td>
+                      <td class="fw-bold">
+                        <div class="d-flex align-items-center w-100">
+                          <el-form-item class="w-100" prop="ContactEmail">
+                            <el-input
+                              v-model="targetData.ContactEmail"
+                              placeholder=""
+                              name="ContactEmail"
+                              size="large"
+                            ></el-input>
+                          </el-form-item>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="text-muted">
+                        <label
+                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
+                        >
+                          物件地址</label
+                        >
+                      </td>
+                      <td class="fw-bold">
+                        <div class="d-flex align-items-center w-100">
+                          <el-form-item class="w-100" prop="ContactEmail">
+                            <el-input
+                              v-model="targetData.ContactEmail"
+                              placeholder=""
+                              name="ContactEmail"
+                              size="large"
+                            ></el-input>
+                          </el-form-item>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="tab-pane fade show" id="demand_add_pane_4" role="tabpanel">
           <div class="card mb-5 mb-xl-10">
             <div class="card-body d-flex flex-column p-9">
@@ -197,6 +404,383 @@
             </div>
           </div>
         </div>
+        <div class="tab-pane fade show" id="demand_add_pane_5" role="tabpanel">
+          <div class="card mb-5 mb-xl-10">
+            <div class="card-body d-flex flex-column p-9">
+              <div class="mb-0 fs-6 gy-5">
+                <div id="kt_ecommerce_add_product_options">
+                  <div class="form-group">
+                    <div class="d-flex flex-column gap-8">
+                      <div
+                        class="form-group d-flex align-items-center gap-5 client_add_repeater_item"
+                        v-for="(item, index) in tab5formItems"
+                        :key="index"
+                      >
+                        <div
+                          class="position-relative"
+                          :class="field.class"
+                          v-for="field in styleFields"
+                          :key="field.name"
+                        >
+                          <label class="form-label">{{ field.label }}</label>
+                          <div>
+                            <template v-if="field.type === 'select'">
+                              <el-form-item>
+                                <el-select
+                                  v-model="item[field.name]"
+                                  :placeholder="'請選擇' + field.label"
+                                  :name="field.name"
+                                  as="select"
+                                  size="large"
+                                >
+                                  <el-option
+                                    v-for="option in field.options"
+                                    :key="option.value"
+                                    :label="option.label"
+                                    :value="option.value"
+                                  ></el-option>
+                                </el-select>
+                              </el-form-item>
+                            </template>
+                            <template v-else-if="field.type === 'input'">
+                              <el-form-item>
+                                <el-input
+                                  v-model="item[field.name]"
+                                  :placeholder="field.label"
+                                  :name="field.name"
+                                  size="large"
+                                ></el-input>
+                              </el-form-item>
+                            </template>
+                            <template v-else-if="field.type === 'item-number'">
+                              <el-form-item>
+                                <span>{{ index + 1 }}</span>
+                              </el-form-item>
+                            </template>
+                          </div>
+                        </div>
+                        <div>
+                          <label class="d-block form-label">刪除</label>
+                          <el-form-item>
+                            <button
+                              type="button"
+                              @click="removeItem(index)"
+                              class="btn btn-sm btn-icon text-muted text-hover-danger"
+                            >
+                              <i class="ki-duotone ki-cross fs-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                              </i>
+                            </button>
+                          </el-form-item>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mt-8">
+                    <button
+                      type="button"
+                      @click="styleAddItem()"
+                      class="btn btn-sm btn-light-primary"
+                    >
+                      <i class="ki-duotone ki-plus fs-2"></i>新增項目
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade show" id="demand_add_pane_6" role="tabpanel">
+          <div class="card mb-5 mb-xl-10">
+            <div class="card-body d-flex flex-column p-9">
+              <div class="mb-0 fs-6 gy-5">
+                <div id="kt_ecommerce_add_product_options">
+                  <div class="form-group">
+                    <div class="d-flex flex-column gap-8">
+                      <div
+                        class="form-group d-flex align-items-center gap-5 client_add_repeater_item"
+                        v-for="(item, index) in tab6formItems"
+                        :key="index"
+                      >
+                        <div
+                          class="position-relative"
+                          :class="field.class"
+                          v-for="field in securityFields"
+                          :key="field.name"
+                        >
+                          <label class="form-label">{{ field.label }}</label>
+                          <div>
+                            <template v-if="field.type === 'select'">
+                              <el-form-item>
+                                <el-select
+                                  v-model="item[field.name]"
+                                  :placeholder="'請選擇' + field.label"
+                                  :name="field.name"
+                                  as="select"
+                                  size="large"
+                                >
+                                  <el-option
+                                    v-for="option in field.options"
+                                    :key="option.value"
+                                    :label="option.label"
+                                    :value="option.value"
+                                  ></el-option>
+                                </el-select>
+                              </el-form-item>
+                            </template>
+                            <template v-else-if="field.type === 'input'">
+                              <el-form-item>
+                                <el-input
+                                  v-model="item[field.name]"
+                                  :placeholder="field.label"
+                                  :name="field.name"
+                                  size="large"
+                                ></el-input>
+                              </el-form-item>
+                            </template>
+                            <template v-else-if="field.type === 'item-number'">
+                              <el-form-item>
+                                <span>{{ index + 1 }}</span>
+                              </el-form-item>
+                            </template>
+                          </div>
+                        </div>
+                        <div>
+                          <label class="d-block form-label">刪除</label>
+                          <el-form-item>
+                            <button
+                              type="button"
+                              @click="removeItem(index)"
+                              class="btn btn-sm btn-icon text-muted text-hover-danger"
+                            >
+                              <i class="ki-duotone ki-cross fs-1">
+                                <span class="path1"></span>
+                                <span class="path2"></span>
+                              </i>
+                            </button>
+                          </el-form-item>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mt-8">
+                    <button
+                      type="button"
+                      @click="securityAddItem()"
+                      class="btn btn-sm btn-light-primary"
+                    >
+                      <i class="ki-duotone ki-plus fs-2"></i>新增項目
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade show" id="demand_add_pane_7" role="tabpanel">
+          <div class="card mb-5 mb-xl-10">
+            <div class="card-body d-flex flex-column p-9">
+              <div class="d-flex justify-content-start mb-10">
+                <div class="mw-500px">
+                  <div class="d-flex flex-stack">
+                    <div class="fw-semibold pe-10 text-gray-800 fs-6 mb-4">
+                      屋主裝修工程預算
+                    </div>
+                    <div class="text-end fw-bold fs-6 text-gray-800">
+                      <el-form-item>
+                        <el-input
+                          type="number"
+                          v-model="budget"
+                          name="屋主裝修工程預算"
+                          placeholder=""
+                          size="large"
+                        ></el-input>
+                      </el-form-item>
+                    </div>
+                    <div class="ms-3 fw-semibold text-gray-800 fs-6 mb-4">
+                      元
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table g-5 gs-0 mb-0 fw-bold text-gray-800">
+                  <thead>
+                    <tr class="border-bottom fs-7 fw-bold text-gray-800">
+                      <th>類別</th>
+                      <th>室內坪數</th>
+                      <th>每坪單價</th>
+                      <th>預估參考值</th>
+                      <th>補充說明</th>
+                      <th>刪除</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="border-bottom border-bottom-bordered"
+                      v-for="(item, index) in tab7formItems"
+                      :key="index"
+                    >
+                      <td class="pe-7">
+                        <el-select
+                          v-model="item.category"
+                          class="mb-2"
+                          placeholder="請選擇費用分析類別"
+                          size="large"
+                        >
+                          <el-option
+                            label="預算建議值分析"
+                            value="0"
+                          ></el-option>
+                          <el-option
+                            label="設計費用分析"
+                            value="設計費用分析"
+                          ></el-option>
+                          <el-option
+                            label="監工費用分析"
+                            value="監工費用分析"
+                          ></el-option>
+                          <el-option label="其他" value="其他"></el-option>
+                        </el-select>
+                      </td>
+                      <td class="ps-0">
+                        <el-input
+                          type="number"
+                          v-model="item.quantity"
+                          size="large"
+                          placeholder=""
+                        ></el-input>
+                      </td>
+                      <td>
+                        <el-input
+                          type="number"
+                          v-model="item.price"
+                          size="large"
+                          placeholder=""
+                        ></el-input>
+                      </td>
+                      <td class="pt-8 text-nowrap">
+                        {{ item.quantity * item.price || 0 }}元
+                      </td>
+                      <td class="pt-5">
+                        <el-input
+                          v-model="item.description"
+                          size="large"
+                          placeholder="補充說明"
+                        ></el-input>
+                      </td>
+                      <td class="pt-5">
+                        <button
+                          type="button"
+                          @click="removeItem(index)"
+                          class="btn btn-sm btn-icon text-muted text-hover-danger"
+                        >
+                          <i class="ki-duotone ki-cross fs-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                          </i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr
+                      class="border-top border-top-dashed align-middle fs-6 fw-bold text-gray-800"
+                    >
+                      <th colspan="6" class="text-primary">
+                        <button
+                          type="button"
+                          @click="totalBudgetAddItem()"
+                          class="btn btn-sm btn-light-primary"
+                        >
+                          <i class="ki-duotone ki-plus fs-3"></i>新增項目
+                        </button>
+                      </th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade show" id="demand_add_pane_8" role="tabpanel">
+          <!-- <div class="card mb-5 mb-xl-10">
+            <div class="card-body d-flex flex-column p-9">
+              <div class="mb-0 fs-6 gy-5">
+                <div id="kt_ecommerce_add_product_options">
+                  <div class="form-group">
+                    <div class="d-flex flex-column gap-8">
+                      <div
+                        v-for="(item, index) in tab8formItems"
+                        :key="index"
+                        data-repeater-item
+                        class="form-group d-flex align-items-center gap-5 demand_add_info_repeater_item"
+                      >
+                        <div class="w-100">
+                          <label class="form-label">檔案類型</label>
+                          <select
+                            class="form-select"
+                            v-model="item.fileType"
+                            @change="
+                              updateInputType(index, $event.target.value)
+                            "
+                          >
+                            <option value="參考資料">參考資料</option>
+                            <option value="參考網址">參考網址</option>
+                          </select>
+                        </div>
+                        <div class="w-100">
+                          <label class="form-label">檔案名稱</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            v-model="item.fileName"
+                            placeholder="檔案名稱"
+                          />
+                        </div>
+                        <div class="w-100">
+                          <label class="form-label">附件</label>
+                          <input
+                            v-if="item.fileType === '參考資料'"
+                            type="file"
+                            class="form-control w-100"
+                            v-model="item.attachment"
+                          />
+                          <input
+                            v-else
+                            type="text"
+                            class="form-control"
+                            v-model="item.referenceUrl"
+                            placeholder="參考網址"
+                          />
+                        </div>
+
+                        <div>
+                          <button
+                            type="button"
+                            @click="removeItem(index)"
+                            class="btn btn-sm btn-icon text-muted text-hover-danger"
+                          >
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mt-8">
+                    <button
+                      type="button"
+                      @click="refAddItem()"
+                      class="btn btn-sm btn-light-primary"
+                    >
+                      <i class="ki-duotone ki-plus fs-2"></i>新增項目
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+        </div>
       </div>
     </div>
   </el-form>
@@ -215,7 +799,17 @@ import { useIdStore } from "@/stores/useId";
 
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 import TableCard from "@/components/customers/cards/overview/TableCard.vue";
-import type { Customer } from "@/type/share";
+import type {
+  Customer,
+  Housing,
+  ClientDetailsSuccessData,
+} from "@/utils/share";
+import {
+  getSequence,
+  getGenderLabel,
+  getAgeLabel,
+  getSpecialDemandLabel,
+} from "@/utils/function";
 
 interface AddClientData {
   projectID: string;
@@ -235,8 +829,14 @@ export default {
   setup() {
     const authStore = useAuthStore();
     const useId = useIdStore();
+    const responseData = ref<null | Object>(null);
+    const housingData = ref<Housing[] | null>(null);
     const formRef = ref<null | HTMLFormElement>(null);
     const formItems = ref<any[]>([]);
+    const tab5formItems = ref<any[]>([]);
+    const tab6formItems = ref<any[]>([]);
+    const tab7formItems = ref<any[]>([]);
+    const tab8formItems = ref<any[]>([]);
     const loading = ref<boolean>(false);
 
     const clientData = ref<Customer | null>(null);
@@ -254,6 +854,7 @@ export default {
       ContactEmail: "",
     });
 
+    // 建立頁籤
     const tabs = ref([
       { label: "客戶資料" },
       { label: "居住成員" },
@@ -270,6 +871,56 @@ export default {
       activeTab.value = tabIndex;
     }
 
+    // 取得客戶資料
+    async function fetchData() {
+      try {
+        const formData = new FormData();
+        formData.append("orgId", authStore.user.orgId);
+        formData.append("account", authStore.user.account);
+        formData.append("token", authStore.user.token);
+        if (clientData.value?.CustomerID) {
+          formData.append("customerID", clientData.value?.CustomerID);
+        }
+
+        const response = await ApiService.post(
+          "/projectBefore/getCustInfoByID",
+          formData
+        );
+
+        responseData.value = response.data;
+
+        const successData = response.data.success as ClientDetailsSuccessData;
+        console.log(successData);
+
+        // 更新 tableData2
+        if (clientData.value) {
+          tab1tableData2.value[0].value = clientData.value?.CustomerID;
+          tab1tableData2.value[1].value = clientData.value?.CustomerSource;
+          tab1tableData2.value[2].value = clientData.value?.Name;
+          tab1tableData2.value[3].value = clientData.value?.ServiceItem;
+          tab1tableData2.value[4].value = clientData.value?.Telephone;
+          tab1tableData2.value[5].value = clientData.value?.Mobile;
+          tab1tableData2.value[6].value = clientData.value?.ContactAddress;
+          tab1tableData2.value[7].value = clientData.value?.Email;
+        }
+
+        // 獲取 Housing 數據
+        const housingDataArray = successData.Housing as Housing[];
+        const processedHousingData = housingDataArray.map((housing) => ({
+          ...housing,
+          Sequence: getSequence(housing.Sequence),
+          Sex: getGenderLabel(housing.Sex),
+          Age: getAgeLabel(housing.Age),
+          SpecialDemand: getSpecialDemandLabel(housing.SpecialDemand),
+        }));
+
+        housingData.value = processedHousingData;
+        apiData2.value = housingData.value;
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
     const tab1tableData2 = ref([
       { label: "客戶編號", value: "" },
       { label: "客戶來源", value: "" },
@@ -283,58 +934,125 @@ export default {
 
     const tab2HeaderData = ref([
       { label: "編號", field: "Sequence" },
-      { label: "性別", field: "Material" },
-      { label: "年齡", field: "Purpose" },
-      { label: "特殊需求", field: "Remark" },
+      { label: "性別", field: "Sex" },
+      { label: "年齡", field: "Age" },
+      { label: "特殊需求", field: "SpecialDemand" },
       { label: "備註", field: "Remark" },
     ]);
-    const apiData2 = ref([]);
+    const apiData2 = ref<Housing[]>([]);
 
-    const fields = [
+    // 風格材質欄位
+    const styleFields = [
       {
-        name: "性別",
-        label: "性別",
+        name: "編號",
+        label: "編號",
+        type: "item-number",
+        class: "w-25",
+      },
+      {
+        name: "材質",
+        label: "材質",
         type: "select",
+        class: "w-100",
         options: [
-          { value: "0", label: "男" },
-          { value: "1", label: "女" },
-          { value: "2", label: "多元性別" },
+          { value: "天然石材", label: "天然石材" },
+          { value: "磁磚", label: "磁磚" },
+          { value: "木地板", label: "木地板" },
+          { value: "硅藻土", label: "硅藻土" },
+          { value: "金屬", label: "金屬" },
+          { value: "玻璃", label: "玻璃" },
+          { value: "木製&實木", label: "木製&實木" },
+          { value: "皮革", label: "皮革" },
+          { value: "特殊漆", label: "特殊漆" },
+          { value: "清水模、洗磨石子等", label: "清水模、洗磨石子等" },
+          { value: "其他", label: "其他" },
         ],
       },
       {
-        name: "年齡",
-        label: "年齡",
-        type: "select",
-        options: [
-          { value: "0", label: "0-10" },
-          { value: "1", label: "11-20" },
-          { value: "2", label: "21-30" },
-          { value: "3", label: "31-40" },
-          { value: "4", label: "41-50" },
-          { value: "5", label: "51-60" },
-          { value: "6", label: "61-70" },
-          { value: "7", label: "71-80" },
-          { value: "8", label: "81-90" },
-          { value: "9", label: "91-100" },
-          { value: "10", label: "100以上" },
-        ],
+        name: "用途",
+        label: "用途",
+        type: "input",
+        class: "w-100",
       },
       {
-        name: "特殊需求",
-        label: "特殊需求",
-        type: "select",
-        options: [
-          { value: "0", label: "行動不便" },
-          { value: "1", label: "寵物" },
-          { value: "2", label: "無障礙" },
-          { value: "3", label: "其他" },
-        ],
+        name: "補充說明",
+        label: "補充說明",
+        type: "input",
+        class: "w-100",
       },
-      { name: "備註", label: "備註", type: "input" },
     ];
 
+    const styleAddItem = () => {
+      tab5formItems.value.push({
+        編號: "",
+        材質: "",
+        用途: "",
+        補充說明: "",
+      });
+    };
+
+    // 安全形式欄位
+    const securityFields = [
+      {
+        name: "編號",
+        label: "編號",
+        type: "item-number",
+        class: "w-25",
+      },
+      {
+        name: "項目",
+        label: "項目",
+        type: "select",
+        class: "w-100",
+        options: [
+          { value: "防墜鋁窗", label: "防墜鋁窗" },
+          { value: "隱形安全鋼索", label: "隱形安全鋼索" },
+          { value: "止滑", label: "止滑" },
+          { value: "其他", label: "其他" },
+        ],
+      },
+      {
+        name: "用途",
+        label: "用途",
+        type: "input",
+        class: "w-100",
+      },
+      {
+        name: "補充說明",
+        label: "補充說明",
+        type: "input",
+        class: "w-100",
+      },
+    ];
+    const securityAddItem = () => {
+      tab6formItems.value.push({
+        編號: "",
+        材質: "",
+        用途: "",
+        補充說明: "",
+      });
+    };
+
+    const budget = ref("");
+    const totalBudgetAddItem = () => {
+      tab7formItems.value.push({
+        fileType: "參考資料",
+        fileName: "",
+        attachment: "",
+        referenceUrl: "",
+      });
+    };
+
+    const refAddItem = () => {
+      tab8formItems.value.push({
+        性別: "",
+        年齡: "",
+        特殊需求: "",
+        備註: "",
+      });
+    };
+
     const addItem = () => {
-      // 添加新的表单项
       formItems.value.push({
         性別: "",
         年齡: "",
@@ -483,17 +1201,7 @@ export default {
     };
 
     onMounted(() => {
-      // 更新 tab1tableData2
-      if (clientData.value) {
-        tab1tableData2.value[0].value = clientData.value?.CustomerID;
-        tab1tableData2.value[1].value = clientData.value?.CustomerSource;
-        tab1tableData2.value[2].value = clientData.value?.Name;
-        tab1tableData2.value[3].value = clientData.value?.ServiceItem;
-        tab1tableData2.value[4].value = clientData.value?.Telephone;
-        tab1tableData2.value[5].value = clientData.value?.Mobile;
-        tab1tableData2.value[6].value = clientData.value?.ContactAddress;
-        tab1tableData2.value[7].value = clientData.value?.Email;
-      }
+      fetchData();
     });
 
     return {
@@ -501,14 +1209,24 @@ export default {
       setActiveTab,
       tabs,
       activeTab,
-      fields,
+      styleFields,
+      securityFields,
+      budget,
       formItems,
+      tab5formItems,
+      tab6formItems,
+      tab7formItems,
+      tab8formItems,
       submit,
       targetData,
       loading,
       formRef,
       rules,
       addItem,
+      styleAddItem,
+      securityAddItem,
+      totalBudgetAddItem,
+      refAddItem,
       removeItem,
       tab1tableData2,
       tab2HeaderData,
