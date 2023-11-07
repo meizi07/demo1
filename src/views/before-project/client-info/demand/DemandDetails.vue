@@ -27,9 +27,9 @@
               :href="'#demand_tab_pane_' + (tabIndex + 1)"
               @click="setActiveTab(tabIndex)"
             >
-              <span class="nav-text text-gray-800 fw-bold fs-6 mb-3"
-                >{{ tab.label }}{{ tabIndex + 1 }}</span
-              >
+              <span class="nav-text text-gray-800 fw-bold fs-6 mb-3">{{
+                tab.label
+              }}</span>
               <span
                 class="bullet-custom position-absolute z-index-2 bottom-0 w-100 h-4px"
                 :class="{
@@ -61,8 +61,7 @@
         <InfoCard :tableData="tab3tableData"></InfoCard>
       </div>
       <div class="tab-pane fade show" id="demand_tab_pane_4" role="tabpanel">
-        <InfoCard :tableData="tab1tableData1"></InfoCard>
-        <InfoCard :tableData="tab1tableData2"></InfoCard>
+        <TableCard :tableHeaders="tab4HeaderData" :tableData="apiData4" />
       </div>
       <div class="tab-pane fade show" id="demand_tab_pane_5" role="tabpanel">
         <TableCard :tableHeaders="tab5HeaderData" :tableData="apiData5" />
@@ -215,8 +214,7 @@ export default {
       { label: "特殊需求", field: "Remark" },
       { label: "備註", field: "Remark" },
     ]);
-    const apiData2 = ref(null);
-
+    const apiData2 = ref([]);
     const tab3tableData = ref([
       { label: "房屋資料", value: "" },
       { label: "屋齡(年)", value: "" },
@@ -228,13 +226,19 @@ export default {
       { label: "物件地址", value: "" },
     ]);
 
+    const tab4HeaderData = ref([
+      { label: "編號", field: "Sequence" },
+      { label: "區域", field: "Material" },
+    ]);
+    const apiData4 = ref([]);
+
     const tab5HeaderData = ref([
       { label: "編號", field: "Sequence" },
       { label: "材質", field: "Material" },
       { label: "用途", field: "Purpose" },
       { label: "補充說明", field: "Remark" },
     ]);
-    const apiData5 = ref(null);
+    const apiData5 = ref([]);
 
     const tab6HeaderData = ref([
       { label: "編號", field: "Sequence" },
@@ -242,7 +246,7 @@ export default {
       { label: "用途", field: "Purpose" },
       { label: "補充說明", field: "Remark" },
     ]);
-    const apiData6 = ref(null);
+    const apiData6 = ref([]);
 
     const tab7HeaderData = ref([
       { label: "類別", field: "Category" },
@@ -251,7 +255,7 @@ export default {
       { label: "預估參考值", field: "EstimatedValue" },
       { label: "補充說明", field: "Remark" },
     ]);
-    const apiData7 = ref(null);
+    const apiData7 = ref([]);
 
     const tab8HeaderData = ref([
       { label: "檔案類型", field: "Category" },
@@ -261,7 +265,7 @@ export default {
       { label: "檔案上傳日期", field: "UploadDate" },
       { label: "檔案上傳者", field: "Uploader" },
     ]);
-    const apiData8 = ref(null);
+    const apiData8 = ref([]);
 
     const tableData = ref([]);
 
@@ -312,6 +316,7 @@ export default {
         tab3tableData.value[6].value = successData.HousingData.Format;
         tab3tableData.value[7].value = successData.HousingData.ObjectAddress;
 
+        apiData4.value = response.data.success.HousingRequirement;
         apiData5.value = response.data.success.Style;
         apiData6.value = response.data.success.Security;
         apiData7.value = response.data.success.BudgetDetail;
@@ -358,6 +363,8 @@ export default {
       tab2HeaderData,
       apiData2,
       tab3tableData,
+      tab4HeaderData,
+      apiData4,
       tab5HeaderData,
       apiData5,
       tab6HeaderData,

@@ -148,6 +148,15 @@ const routes: Array<RouteRecordRaw> = [
             },
           },
           {
+            path: "add-demand",
+            name: "bj-demand-add",
+            component: () =>
+              import("@/views/before-project/client-info/demand/AddDemand.vue"),
+            meta: {
+              pageTitle: "新增需求單",
+            },
+          },
+          {
             path: "housing-list",
             name: "bj-housing-list",
             component: () =>

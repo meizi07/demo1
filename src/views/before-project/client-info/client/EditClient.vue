@@ -128,7 +128,6 @@
                               :value-format="'YYYY-MM-DD'"
                             />
                           </el-form-item>
-                          {{ targetData.FirstContactDate }}
                         </div>
                       </td>
                     </tr>
@@ -571,6 +570,8 @@ export default {
           targetData.value.ContactMobile = existingClientData.Mobile;
           targetData.value.ContactAddress = existingClientData.ContactAddress;
           targetData.value.ContactEmail = existingClientData.Email;
+          targetData.value.FirstContactDate =
+            targetData.value.FirstContactDate.split(" ")[0];
         }
       } catch (error) {
         console.error("API 請求錯誤：", error);

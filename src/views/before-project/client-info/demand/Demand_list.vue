@@ -1,11 +1,13 @@
 <template>
   <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
-    <router-link
-      :to="`/befort-project/client-info/add-client`"
+    <button
+      type="button"
       class="btn btn-sm fw-bold btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#modal_select_users"
     >
       新增需求單
-    </router-link>
+    </button>
   </div>
   <div class="card mb-5 mb-xl-10">
     <div class="card-body d-inline-flex flex-wrap gap-6">
@@ -19,15 +21,25 @@
     </div>
   </div>
   <DemandList :requirementData="responseData"></DemandList>
+  <SelectClientModalVue
+    @client-selected="handleClientSelected"
+  ></SelectClientModalVue>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { ref, onMounted } from "vue";
 import StatisticsWidget7 from "@/components/widgets/statsistics/Widget7.vue";
 import DemandList from "@/components/customers/datatable/DemandList.vue";
+
+import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import ApiService from "@/core/services/ApiService";
-import { ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { useIdStore } from "@/stores/useId";
+
+import SelectClientModalVue from "@/components/modals/general/SelectClientModal.vue";
+import type { Customer } from "@/components/modals/general/SelectClientModal.vue";
 
 interface StatisticItem {
   Title: string;
@@ -39,19 +51,36 @@ export default defineComponent({
   components: {
     StatisticsWidget7,
     DemandList,
+    SelectClientModalVue,
   },
   setup() {
+    const statistics = ref<StatisticItem[]>([]);
+    const selectedCustomer = ref<Customer | null>(null);
+    const authStore = useAuthStore();
+    const useId = useIdStore();
+    // selectedCustomer.value = selectedClient;
+
+    const route = useRoute();
+    const router = useRouter();
+
     const responseData = ref({
       success: {
         Statistics: [],
         AllRequirement: [],
       },
     });
-    const statistics = ref<StatisticItem[]>([]);
-
-    const authStore = useAuthStore();
-
     statistics.value = [];
+
+    // 實現方法來處理從子組件傳遞的客戶數據
+    const handleClientSelected = (client: Customer) => {
+      selectedCustomer.value = client;
+      // const clientDataString = JSON.stringify(selectedCustomer);
+      router.push({
+        name: "bj-demand-add", // 替换成新增需求页面的路由名称
+      });
+      useId.setSelectedClient(selectedCustomer.value);
+    };
+
     onMounted(async () => {
       try {
         const formData = new FormData();
@@ -80,6 +109,7 @@ export default defineComponent({
     return {
       responseData,
       statistics,
+      handleClientSelected,
     };
   },
 });
