@@ -120,6 +120,7 @@ export default defineComponent({
         );
 
         if (response.data.success) {
+          console.log(response.data.success);
           clients.value = response.data.success.AllCustomer as Array<{
             id: string;
             Name: string;

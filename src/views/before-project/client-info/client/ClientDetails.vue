@@ -80,9 +80,9 @@
                   :key="housingIndex"
                 >
                   <td>{{ housingIndex + 1 }}.</td>
-                  <td>{{ housing.Category }}</td>
+                  <td>{{ housing.Sex }}</td>
                   <td>{{ housing.Age }}</td>
-                  <td>{{ housing.NumberOfPeople }}</td>
+                  <td>{{ housing.SpecialDemand }}</td>
                   <td>{{ housing.Remark }}</td>
                 </tr>
               </tbody>
@@ -122,9 +122,9 @@ export interface SuccessData {
 }
 
 export interface Housing {
-  Category: string;
-  Age: number;
-  NumberOfPeople: number;
+  Sex: string;
+  Age: string;
+  SpecialDemand: string;
   Remark: string;
 }
 
@@ -162,6 +162,54 @@ export default {
       { label: "聯絡地址", value: "" },
       { label: "聯絡信箱", value: "" },
     ]);
+
+    // 处理性别值的函数
+    function getGenderLabel(value: string) {
+      const genderOptions = [
+        { value: "0", label: "男" },
+        { value: "1", label: "女" },
+        { value: "2", label: "多元性别" },
+      ];
+      const selectedOption = genderOptions.find(
+        (option) => option.value === value
+      );
+      return selectedOption ? selectedOption.label : value;
+    }
+
+    // 处理年龄值的函数
+    function getAgeLabel(value: string) {
+      const ageOptions = [
+        { value: "0", label: "0-10" },
+        { value: "1", label: "11-20" },
+        { value: "2", label: "21-30" },
+        { value: "3", label: "31-40" },
+        { value: "4", label: "41-50" },
+        { value: "5", label: "51-60" },
+        { value: "6", label: "61-70" },
+        { value: "7", label: "71-80" },
+        { value: "8", label: "81-90" },
+        { value: "9", label: "91-100" },
+        { value: "10", label: "100以上" },
+      ];
+      const selectedOption = ageOptions.find(
+        (option) => option.value === value
+      );
+      return selectedOption ? selectedOption.label : value;
+    }
+
+    // 处理特殊需求值的函数
+    function getSpecialDemandLabel(value: string) {
+      const specialDemandOptions = [
+        { value: "0", label: "行動不便" },
+        { value: "1", label: "寵物" },
+        { value: "2", label: "無障礙" },
+        { value: "3", label: "其他" },
+      ];
+      const selectedOption = specialDemandOptions.find(
+        (option) => option.value === value
+      );
+      return selectedOption ? selectedOption.label : value;
+    }
 
     async function fetchData() {
       try {
@@ -201,7 +249,14 @@ export default {
 
         // 獲取 Housing 數據
         const housingDataArray = successData.Housing as Housing[];
-        housingData.value = housingDataArray;
+        const processedHousingData = housingDataArray.map((housing) => ({
+          ...housing,
+          Sex: getGenderLabel(housing.Sex),
+          Age: getAgeLabel(housing.Age),
+          SpecialDemand: getSpecialDemandLabel(housing.SpecialDemand),
+        }));
+
+        housingData.value = processedHousingData;
       } catch (error) {
         console.error("Error fetching data:", error);
       }
