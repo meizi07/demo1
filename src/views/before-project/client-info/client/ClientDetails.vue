@@ -1,4 +1,14 @@
 <template>
+  <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
+    <button
+      class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
+      data-kt-drawer-toggle="true"
+      data-kt-drawer-target="#kt_drawer_chat"
+      @click="openDrawer()"
+    >
+      異動紀錄
+    </button>
+  </div>
   <div class="d-flex flex-column gap-7 gap-lg-10">
     <div class="d-flex flex-wrap flex-stack gap-5 gap-lg-10">
       <div class="common_tab w-100 pt-3">
@@ -58,9 +68,9 @@
               <thead>
                 <tr class="text-start text-gray-800 fw-bold fs-7 gs-0">
                   <th>編號</th>
-                  <th>分類</th>
+                  <th>性別</th>
                   <th>年齡</th>
-                  <th>人數</th>
+                  <th>特殊需求</th>
                   <th>備註</th>
                 </tr>
               </thead>
@@ -82,6 +92,7 @@
       </div>
     </div>
   </div>
+  <ChangeRecords :data="clientRecords" />
 </template>
 
 <script lang="ts">
@@ -90,6 +101,8 @@ import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
+import { DrawerComponent } from "@/assets/ts/components/_DrawerComponent";
+import ChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue";
 
 export interface SuccessData {
   UUID: string;
@@ -116,7 +129,7 @@ export interface Housing {
 }
 
 export default {
-  components: { InfoCard },
+  components: { InfoCard, ChangeRecords },
   name: "bj-client-details",
   setup() {
     const authStore = useAuthStore();
@@ -126,6 +139,12 @@ export default {
     const { currentId } = useIdStore();
 
     currentIdRef.value = currentId;
+
+    // 初始化 異動紀錄
+    const clientRecords = ref([]);
+    const openDrawer = () => {
+      DrawerComponent?.getInstance("drawer_changeRecords")?.toggle();
+    };
 
     const tableData1 = ref([
       { label: "接洽窗口", value: "" },
@@ -153,8 +172,6 @@ export default {
         if (currentIdRef.value) {
           formData.append("customerID", currentIdRef.value);
         }
-
-        console.log(currentIdRef.value);
 
         const response = await ApiService.post(
           "/projectBefore/getCustInfoByID",
@@ -190,17 +207,39 @@ export default {
       }
     }
 
+    async function fetchRecordsData() {
+      try {
+        const formData = new FormData();
+        formData.append("orgId", authStore.user.orgId);
+        formData.append("account", authStore.user.account);
+        formData.append("token", authStore.user.token);
+        if (currentIdRef.value) {
+          formData.append("customerID", currentIdRef.value);
+        }
+        const response = await ApiService.post(
+          "/projectBefore/getCustomerRecordList",
+          formData
+        );
+        clientRecords.value = response.data.success; // 將 API 數據賦值給 ref
+      } catch (error) {
+        console.error("API 請求錯誤：", error);
+      }
+    }
+
     watch(currentIdRef, () => {
       fetchData();
     });
     onMounted(() => {
       fetchData();
+      fetchRecordsData();
     });
     return {
+      openDrawer,
       currentId,
       tableData1,
       tableData2,
       housingData,
+      clientRecords,
     };
   },
 };

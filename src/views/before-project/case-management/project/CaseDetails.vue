@@ -187,7 +187,6 @@ export default {
       },
     });
 
-    // 使用对象引用包装 currentId
     const currentIdRef = ref<string | null>(null);
     const { currentId, setCurrentId } = useIdStore();
 

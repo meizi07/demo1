@@ -128,6 +128,7 @@
                               :value-format="'YYYY-MM-DD'"
                             />
                           </el-form-item>
+                          {{ targetData.FirstContactDate }}
                         </div>
                       </td>
                     </tr>
@@ -140,7 +141,7 @@
             <div class="card-body d-flex flex-column p-9">
               <div class="table-responsive">
                 <table
-                  class="table align-middle table-row-bordered mb-0 fs-6 gy-5 table_half_col"
+                  class="table align-miDDle table-row-bordered mb-0 fs-6 gy-5 table_half_col"
                 >
                   <tbody class="fw-semibold text-gray-800">
                     <tr>
@@ -269,7 +270,7 @@
                       </td>
                       <td class="fw-bold">
                         <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="ContactAddress">
+                          <el-form-item class="w-100" prop="ContactADDress">
                             <el-input
                               v-model="targetData.ContactAddress"
                               placeholder=""
@@ -398,6 +399,7 @@ import Swal from "sweetalert2/dist/sweetalert2.js";
 
 import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
+import { useRoute } from "vue-router";
 
 interface AddClientData {
   ContactID: string;
@@ -412,13 +414,15 @@ interface AddClientData {
 }
 
 export default {
-  name: "bj-client-add",
+  name: "bj-client-edit",
   components: {},
   setup() {
     const authStore = useAuthStore();
     const formRef = ref<null | HTMLFormElement>(null);
     const formItems = ref<any[]>([]);
     const loading = ref<boolean>(false);
+    const route = useRoute();
+    const id: string | string[] = route.params.customerId;
 
     const targetData = ref<AddClientData>({
       ContactID: "",
@@ -493,17 +497,17 @@ export default {
     const rules = ref({
       ContactID: [
         {
-          required: true,
+          required: false,
         },
       ],
       FirstContactDate: [
         {
-          required: true,
+          required: false,
         },
       ],
       CustomerSource: [
         {
-          required: true,
+          required: false,
         },
       ],
       CustomerName: [
@@ -515,30 +519,63 @@ export default {
       ],
       ServiceItem: [
         {
-          required: true,
+          required: false,
         },
       ],
       ContactTel: [
         {
-          required: true,
+          required: false,
         },
       ],
       ContactMobile: [
         {
-          required: true,
+          required: false,
         },
       ],
       ContactAddress: [
         {
-          required: true,
+          required: false,
         },
       ],
       ContactEmail: [
         {
-          required: true,
+          required: false,
         },
       ],
     });
+
+    // 獲取現有案件數據
+    async function fetchExistingCase() {
+      try {
+        const formData = new FormData();
+        formData.append("orgId", authStore.user.orgId);
+        formData.append("account", authStore.user.account);
+        formData.append("token", authStore.user.token);
+        if (typeof id === "string") {
+          formData.append("customerID", id);
+        }
+        const response = await ApiService.post(
+          "/projectBefore/getCustInfoByID",
+          formData
+        );
+        if (response.data && response.data.success) {
+          const existingClientData = response.data.success;
+
+          targetData.value.ContactID = existingClientData.Contactor;
+          targetData.value.FirstContactDate =
+            existingClientData.FirstContactDate;
+          targetData.value.CustomerSource = existingClientData.CustomerSource;
+          targetData.value.CustomerName = existingClientData.Name;
+          targetData.value.ServiceItem = existingClientData.ServiceItem;
+          targetData.value.ContactTel = existingClientData.Telephone;
+          targetData.value.ContactMobile = existingClientData.Mobile;
+          targetData.value.ContactAddress = existingClientData.ContactAddress;
+          targetData.value.ContactEmail = existingClientData.Email;
+        }
+      } catch (error) {
+        console.error("API 請求錯誤：", error);
+      }
+    }
 
     const submit = () => {
       if (!formRef.value) {
@@ -553,6 +590,9 @@ export default {
           formData.append("orgId", authStore.user.orgId);
           formData.append("account", authStore.user.account);
           formData.append("token", authStore.user.token);
+          if (typeof id === "string") {
+            formData.append("CustomerID", id);
+          }
 
           for (const key in targetData.value) {
             if (Object.prototype.hasOwnProperty.call(targetData.value, key)) {
@@ -569,15 +609,14 @@ export default {
 
           formData.append("Member", JSON.stringify(members));
 
-          for (const [key, value] of formData.entries()) {
-            console.log(`Key: ${key}, Value: ${value}`);
-          }
+          // for (const [key, value] of formData.entries()) {
+          //   console.log(`Key: ${key}, Value: ${value}`);
+          // }
 
-          ApiService.post("/projectBefore/addCustomerInfo", formData)
+          ApiService.post("/projectBefore/updateCustomerInfo", formData)
             .then((response) => {
               loading.value = false;
               if (response.data.success) {
-                console.log(response);
                 Swal.fire({
                   text: "送出成功",
                   icon: "success",
@@ -653,7 +692,9 @@ export default {
       }));
     });
 
-    onMounted(() => {});
+    onMounted(() => {
+      fetchExistingCase();
+    });
 
     return {
       getAssetPath,

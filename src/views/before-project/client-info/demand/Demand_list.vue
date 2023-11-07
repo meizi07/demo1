@@ -4,7 +4,7 @@
       :to="`/befort-project/client-info/add-client`"
       class="btn btn-sm fw-bold btn-primary"
     >
-      新增客戶資料
+      新增需求單
     </router-link>
   </div>
   <div class="card mb-5 mb-xl-10">
@@ -18,13 +18,13 @@
       ></StatisticsWidget7>
     </div>
   </div>
-  <ClientList :clientData="responseData"></ClientList>
+  <DemandList :requirementData="responseData"></DemandList>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import StatisticsWidget7 from "@/components/widgets/statsistics/Widget7.vue";
-import ClientList from "@/components/customers/datatable/ClientList.vue";
+import DemandList from "@/components/customers/datatable/DemandList.vue";
 import ApiService from "@/core/services/ApiService";
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
@@ -33,19 +33,18 @@ interface StatisticItem {
   Title: string;
   Num: number;
 }
+
 export default defineComponent({
-  name: "bj-client-list",
+  name: "bj-demand-list",
   components: {
     StatisticsWidget7,
-    ClientList,
+    DemandList,
   },
   setup() {
     const responseData = ref({
       success: {
         Statistics: [],
-        AllCustomer: [],
-        FollowUp: [],
-        CloseCase: [],
+        AllRequirement: [],
       },
     });
     const statistics = ref<StatisticItem[]>([]);
@@ -60,20 +59,16 @@ export default defineComponent({
         formData.append("account", authStore.user.account);
         formData.append("token", authStore.user.token);
         const response = await ApiService.post(
-          "/projectBefore/getCustomerList.php",
+          "/projectBefore/getRequirementList",
           formData
         );
 
         if (response.data.success) {
           responseData.value.success.Statistics =
             response.data.success.Statistics;
-          responseData.value.success.AllCustomer =
-            response.data.success.AllCustomer;
-          responseData.value.success.FollowUp = response.data.success.FollowUp;
-          responseData.value.success.CloseCase =
-            response.data.success.CloseCase;
+          responseData.value.success.AllRequirement =
+            response.data.success.AllRequirement;
           statistics.value = response.data.success.Statistics;
-          // console.log(responseData);
         } else {
           console.error("獲取客戶數據失敗，狀態碼：", response.status);
         }

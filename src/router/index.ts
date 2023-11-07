@@ -115,10 +115,34 @@ const routes: Array<RouteRecordRaw> = [
             },
           },
           {
+            path: "edit-client/:customerId",
+            name: "bj-client-edit",
+            component: () =>
+              import(
+                "@/views/before-project/client-info/client/EditClient.vue"
+              ),
+            meta: {
+              pageTitle: "編輯客戶資料",
+            },
+          },
+          {
             path: "demand-list",
             name: "bj-demand-list",
             component: () =>
-              import("@/views/before-project/client-info/Demand_list.vue"),
+              import(
+                "@/views/before-project/client-info/demand/Demand_list.vue"
+              ),
+            meta: {
+              pageTitle: "需求單",
+            },
+          },
+          {
+            path: "demand-details/:requirementId",
+            name: "bj-demand-details",
+            component: () =>
+              import(
+                "@/views/before-project/client-info/demand/DemandDetails.vue"
+              ),
             meta: {
               pageTitle: "需求單",
             },

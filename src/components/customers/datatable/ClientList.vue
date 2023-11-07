@@ -159,7 +159,7 @@
             <template v-slot:action="{ row: AllCustomer }">
               <router-link
                 :to="{
-                  name: 'bj-client-details',
+                  name: 'bj-client-edit',
                   params: {
                     customerId: AllCustomer.CustomerID,
                   },
