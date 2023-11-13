@@ -28,6 +28,7 @@ import ClientList from "@/components/customers/datatable/ClientList.vue";
 import ApiService from "@/core/services/ApiService";
 import { ref, onMounted } from "vue";
 import { useAuthStore } from "@/stores/auth";
+import { formatDate } from "@/utils/function";
 
 interface StatisticItem {
   Title: string;
@@ -53,6 +54,15 @@ export default defineComponent({
     const authStore = useAuthStore();
 
     statistics.value = [];
+
+    function formatCustomerDates(customer) {
+      return {
+        ...customer,
+        FirstContactDate: formatDate(customer.FirstContactDate),
+        UpdateDate: formatDate(customer.UpdateDate),
+      };
+    }
+
     onMounted(async () => {
       try {
         const formData = new FormData();
@@ -65,15 +75,18 @@ export default defineComponent({
         );
 
         if (response.data.success) {
+          const formattedAllCustomer =
+            response.data.success.AllCustomer.map(formatCustomerDates);
+          const formattedFollowUp =
+            response.data.success.FollowUp.map(formatCustomerDates);
+          const formattedCloseCase =
+            response.data.success.CloseCase.map(formatCustomerDates);
           responseData.value.success.Statistics =
             response.data.success.Statistics;
-          responseData.value.success.AllCustomer =
-            response.data.success.AllCustomer;
-          responseData.value.success.FollowUp = response.data.success.FollowUp;
-          responseData.value.success.CloseCase =
-            response.data.success.CloseCase;
+          responseData.value.success.AllCustomer = formattedAllCustomer;
+          responseData.value.success.FollowUp = formattedFollowUp;
+          responseData.value.success.CloseCase = formattedCloseCase;
           statistics.value = response.data.success.Statistics;
-          // console.log(responseData);
         } else {
           console.error("獲取客戶數據失敗，狀態碼：", response.status);
         }

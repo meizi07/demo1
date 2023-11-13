@@ -153,8 +153,8 @@
             <template v-slot:UpdateDate="{ row: AllCustomer }">
               {{ AllCustomer.UpdateDate }}
             </template>
-            <template v-slot:ServiceItem="{ row: AllCustomer }">
-              {{ AllCustomer.ServiceItem }}
+            <template v-slot:UpdateDater="{ row: AllCustomer }">
+              {{ AllCustomer.UpdateDater }}
             </template>
             <template v-slot:action="{ row: AllCustomer }">
               <router-link
@@ -262,8 +262,8 @@
             <template v-slot:UpdateDate="{ row: FollowUp }">
               {{ FollowUp.UpdateDate }}
             </template>
-            <template v-slot:ServiceItem="{ row: FollowUp }">
-              {{ FollowUp.ServiceItem }}
+            <template v-slot:UpdateDater="{ row: FollowUp }">
+              {{ FollowUp.UpdateDater }}
             </template>
             <template v-slot:action>
               <router-link
@@ -366,8 +366,8 @@
             <template v-slot:UpdateDate="{ row: CloseCase }">
               {{ CloseCase.UpdateDate }}
             </template>
-            <template v-slot:ServiceItem="{ row: CloseCase }">
-              {{ CloseCase.ServiceItem }}
+            <template v-slot:UpdateDater="{ row: CloseCase }">
+              {{ CloseCase.UpdateDater }}
             </template>
             <template v-slot:action>
               <router-link
@@ -460,7 +460,7 @@ export default defineComponent({
       },
       {
         columnName: "更新人員",
-        columnLabel: "ServiceItem",
+        columnLabel: "UpdateDater",
         sortEnabled: true,
       },
       {

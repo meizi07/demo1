@@ -559,7 +559,6 @@ export default {
         );
         if (response.data && response.data.success) {
           const existingClientData = response.data.success;
-
           targetData.value.ContactID = existingClientData.Contactor;
           targetData.value.FirstContactDate =
             existingClientData.FirstContactDate;
@@ -572,6 +571,17 @@ export default {
           targetData.value.ContactEmail = existingClientData.Email;
           targetData.value.FirstContactDate =
             targetData.value.FirstContactDate.split(" ")[0];
+          if (
+            existingClientData.Housing &&
+            existingClientData.Housing.length > 0
+          ) {
+            formItems.value = existingClientData.Housing.map((housing) => ({
+              性別: housing.Sex,
+              年齡: housing.Age,
+              特殊需求: housing.SpecialDemand,
+              備註: housing.Remark,
+            }));
+          }
         }
       } catch (error) {
         console.error("API 請求錯誤：", error);

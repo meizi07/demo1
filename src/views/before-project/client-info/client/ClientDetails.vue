@@ -103,6 +103,7 @@ import { useIdStore } from "@/stores/useId";
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 import { DrawerComponent } from "@/assets/ts/components/_DrawerComponent";
 import ChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue";
+import { formatDate } from "@/utils/function";
 
 export interface ClientDetailsSuccessData {
   UUID: string;
@@ -163,7 +164,7 @@ export default {
       { label: "聯絡信箱", value: "" },
     ]);
 
-    // 处理性别值的函数
+    // 處理性別值的函數
     function getGenderLabel(value: string) {
       const genderOptions = [
         { value: "0", label: "男" },
@@ -176,7 +177,7 @@ export default {
       return selectedOption ? selectedOption.label : value;
     }
 
-    // 处理年龄值的函数
+    // 處理年齡值的函數
     function getAgeLabel(value: string) {
       const ageOptions = [
         { value: "0", label: "0-10" },
@@ -197,7 +198,7 @@ export default {
       return selectedOption ? selectedOption.label : value;
     }
 
-    // 处理特殊需求值的函数
+    // 處理特殊需求值的函數
     function getSpecialDemandLabel(value: string) {
       const specialDemandOptions = [
         { value: "0", label: "行動不便" },
@@ -209,6 +210,15 @@ export default {
         (option) => option.value === value
       );
       return selectedOption ? selectedOption.label : value;
+    }
+
+    // 格式化日期
+    function formatDates(customer) {
+      return {
+        ...customer,
+        FirstContactDate: formatDate(customer.FirstContactDate),
+        UpdateDate: formatDate(customer.UpdateDate),
+      };
     }
 
     async function fetchData() {
@@ -229,7 +239,10 @@ export default {
         responseData.value = response.data;
 
         const successData = response.data.success as ClientDetailsSuccessData; // 获取成功数据中的第一个对象
+
         console.log(successData);
+        // const formattedAllCustomer = response.data.success.map(formatDates);
+        
 
         // 更新 tableData1
         tableData1.value[0].value = successData.Contactor;

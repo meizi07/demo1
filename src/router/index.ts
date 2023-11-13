@@ -102,7 +102,7 @@ const routes: Array<RouteRecordRaw> = [
                 "@/views/before-project/client-info/client/ClientDetails.vue"
               ),
             meta: {
-              pageTitle: "客户資料",
+              pageTitle: "客戶資料",
             },
           },
           {
@@ -160,7 +160,9 @@ const routes: Array<RouteRecordRaw> = [
             path: "housing-list",
             name: "bj-housing-list",
             component: () =>
-              import("@/views/before-project/client-info/Housing_list.vue"),
+              import(
+                "@/views/before-project/client-info/housing/Housing_list.vue"
+              ),
             meta: {
               pageTitle: "屋況初始紀錄",
             },

@@ -61,3 +61,11 @@ export function getSpecialDemandLabel(specialDemand: string): string {
       return "未知";
   }
 }
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const month = (date.getMonth() + 1).toString().padStart(2, "0");
+  const day = date.getDate().toString().padStart(2, "0");
+  const year = date.getFullYear().toString();
+  return `${year}-${month}-${day}`;
+}

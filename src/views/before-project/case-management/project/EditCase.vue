@@ -459,7 +459,7 @@ export default {
         );
         if (response.data && response.data.success) {
           const existingCaseData = response.data.success;
-
+          console.log(existingCaseData);
           targetData.value.projectName =
             existingCaseData.ProjectInfo.ProjectName;
           targetData.value.category = existingCaseData.ProjectInfo.Category;
@@ -622,7 +622,7 @@ export default {
         formData.append("orgId", authStore.user.orgId);
         formData.append("account", authStore.user.account);
         formData.append("token", authStore.user.token);
-        formData.append("category", "1");
+        formData.append("category", "0");
         const response = await ApiService.post(
           "/account/getDropdownList",
           formData
