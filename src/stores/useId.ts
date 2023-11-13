@@ -3,16 +3,20 @@ import type { Customer } from "@/utils/share";
 
 export const useIdStore = defineStore("id", {
   state: () => ({
-    currentId: null as string | null,
-    selectedClient: null as Customer | null,
+    currentId: localStorage.getItem("currentId") || null,
+    selectedClient: JSON.parse(
+      localStorage.getItem("selectedClient") || "null"
+    ),
   }),
   actions: {
     setCurrentId(id: string) {
       this.currentId = id;
+      localStorage.setItem("currentId", id);
       console.log(this.currentId);
     },
     setSelectedClient(client: Customer) {
       this.selectedClient = client;
+      localStorage.setItem("selectedClient", JSON.stringify(client));
       console.log(this.selectedClient);
     },
   },

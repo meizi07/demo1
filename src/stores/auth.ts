@@ -17,16 +17,10 @@ export const useAuthStore = defineStore("auth", () => {
 
   function setAuth(authUser: User) {
     isAuthenticated.value = true;
-    const modifiedAuthUser = {
-      ...authUser,
-      //orgId: authUser.OrgID, // 将 "OrgID" 的值赋给 "orgId"
-      //account, // 保留 account 字段
-    };
-    //delete modifiedAuthUser.OrgID; // 删除 "OrgID" 键
-
-    user.value = modifiedAuthUser;
+    user.value = { ...authUser, token: authUser.token };
     errors.value = {};
-    JwtService.saveToken(user.value.token);
+    JwtService.saveToken(authUser.token);
+    ApiService.setHeader(); // 确保headers被设置
   }
 
   function setError(error: any) {
@@ -43,16 +37,15 @@ export const useAuthStore = defineStore("auth", () => {
   function login(formData: FormData) {
     return ApiService.post("login/checkLogin.php", formData)
       .then(({ data }) => {
-        // 成功時的回應
         if (data.success) {
-          setAuth(data.success.OrgInfo);
+          setAuth(data.success.OrgInfo); // 假设 data.success.OrgInfo 包含 User 信息和 token
+          ApiService.setHeader(); // 登录成功后更新headers
         } else {
-          setError({ code: data.ErrorCode, message: data.ErrorMsg });
+          setError({ message: "Invalid credentials", details: data });
         }
       })
-      .catch(({ response }) => {
-        // 處理其他錯誤，如網路問題等
-        setError(response.data.errors);
+      .catch((error) => {
+        setError({ message: "Login failed", details: error.response.data });
       });
   }
 
@@ -71,7 +64,7 @@ export const useAuthStore = defineStore("auth", () => {
   // }
 
   function forgotPassword(email: string) {
-    return ApiService.post("forgot_password", email)
+    return ApiService.post("forgot_password", { email: email })
       .then(() => {
         setError({});
       })
@@ -79,6 +72,32 @@ export const useAuthStore = defineStore("auth", () => {
         setError(response.data.errors);
       });
   }
+
+  // function verifyAuth() {
+  //   const token = JwtService.getToken();
+  //   if (token) {
+  //     ApiService.setHeader();
+  //     ApiService.get("verifyToken") // 假设这是您验证token的端点
+  //       .then(({ data }) => {
+  //         if (data.valid) {
+  //           setAuth(data.user); // 更新用戶狀態，確保包含從後端獲取的用戶信息
+  //         } else {
+  //           setError({ message: "Token is invalid." });
+  //           purgeAuth(); // 如果token無效則清除認證狀態
+  //         }
+  //       })
+  //       .catch((error) => {
+  //         // 處理從 API 接收到的錯誤
+  //         setError({
+  //           message: "Cannot verify token.",
+  //           details: error.response ? error.response.data : {},
+  //         });
+  //         purgeAuth();
+  //       });
+  //   } else {
+  //     purgeAuth();
+  //   }
+  // }
 
   function verifyAuth() {
     if (JwtService.getToken()) {
