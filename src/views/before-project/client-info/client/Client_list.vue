@@ -26,7 +26,7 @@ import { defineComponent } from "vue";
 import StatisticsWidget7 from "@/components/widgets/statsistics/Widget7.vue";
 import ClientList from "@/components/customers/datatable/ClientList.vue";
 import ApiService from "@/core/services/ApiService";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, watchEffect } from "vue";
 import { useAuthStore } from "@/stores/auth";
 import { formatDate } from "@/utils/function";
 
@@ -63,7 +63,13 @@ export default defineComponent({
       };
     }
 
-    onMounted(async () => {
+    function printFormData(formData) {
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+    }
+
+    async function fetchData() {
       try {
         const formData = new FormData();
         formData.append("orgId", authStore.user.orgId);
@@ -73,6 +79,8 @@ export default defineComponent({
           "/projectBefore/getCustomerList.php",
           formData
         );
+        printFormData(formData);
+        console.log("User data:", authStore.user);
 
         if (response.data.success) {
           const formattedAllCustomer =
@@ -92,6 +100,12 @@ export default defineComponent({
         }
       } catch (error) {
         console.error("API 請求錯誤：", error);
+      }
+    }
+
+    watchEffect(() => {
+      if (authStore.isUserLoaded) {
+        fetchData();
       }
     });
 

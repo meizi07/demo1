@@ -26,12 +26,25 @@ class ApiService {
   /**
    * @description set the default HTTP request headers
    */
+  // public static setHeader(): void {
+  //   ApiService.vueInstance.axios.defaults.headers.common[
+  //     "Authorization"
+  //   ] = `Token ${JwtService.getToken()}`;
+  //   ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
+  //     "application/json";
+  // }
   public static setHeader(): void {
-    ApiService.vueInstance.axios.defaults.headers.common[
-      "Authorization"
-    ] = `Token ${JwtService.getToken()}`;
-    ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
-      "application/json";
+    const token = JwtService.getToken();
+    if (token) {
+      ApiService.vueInstance.axios.defaults.headers.common[
+        "Authorization"
+      ] = `Bearer ${token}`;
+      ApiService.vueInstance.axios.defaults.headers.common["Accept"] =
+        "application/json";
+    } else {
+      console.error("No token found for setting headers");
+      // 可能需要处理没有 Token 的情况
+    }
   }
 
   /**
