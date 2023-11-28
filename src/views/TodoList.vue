@@ -25,6 +25,7 @@
                   <th>指定案件</th>
                 </tr>
               </thead>
+
               <tbody class="fw-semibold text-gray-800">
                 <tr v-for="(item, itemIndex) in section.items" :key="itemIndex">
                   <td>
@@ -60,50 +61,41 @@
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { onMounted, ref } from "vue";
 
-export default defineComponent({
-  name: "main-todolist",
-  components: {},
-  data() {
-    return {
-      todoSections: [
-        {
-          title: "待處理",
-          items: [
-            {
-              name: "軟裝花瓶要帶，門鎖鑰匙跟TINA拿",
-              description: "NOTE.*業主會到!!!",
-              deadline: "2022-11-01",
-              location: "台北內湖",
-              checked: false,
-            },
-            // 添加更多待处理项...
-          ],
-        },
-        {
-          title: "已完成",
-          items: [
-            {
-              name: "軟裝花瓶要帶，門鎖鑰匙跟TINA拿",
-              description: "NOTE.*業主會到!!!",
-              deadline: "2022-11-01",
-              location: "台北內湖",
-              checked: true, // 已完成的标记为 true
-            },
-            // 添加更多已完成项...
-          ],
-        },
-        // 添加更多部分...
-      ],
-    };
+// const todoSections = ref([]);
+const todoSections = ref([
+  {
+    title: "待處理",
+    items: [
+      {
+        name: "軟裝花瓶要帶，門鎖鑰匙跟TINA拿",
+        description: "NOTE.*業主會到!!!",
+        deadline: "2022-11-01",
+        location: "台北內湖",
+        checked: false,
+      },
+      // 添加更多待处理项...
+    ],
   },
-  methods: {
-    toggleStatus(section, itemIndex) {
-      const item = section.items[itemIndex];
-      item.checked = !item.checked; // 切换状态
-    },
+  {
+    title: "已完成",
+    items: [
+      {
+        name: "軟裝花瓶要帶，門鎖鑰匙跟TINA拿",
+        description: "NOTE.*業主會到!!!",
+        deadline: "2022-11-01",
+        location: "台北內湖",
+        checked: true, // 已完成的标记为 true
+      },
+      // 添加更多已完成项...
+    ],
   },
-});
+]);
+
+function toggleStatus(section, itemIndex) {
+  const item = section.items[itemIndex];
+  item.checked = !item.checked; // 切换状态
+}
 </script>
