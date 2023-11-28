@@ -1,4 +1,15 @@
 <template>
+  <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
+    <button
+      type="button"
+      class="btn btn-sm fw-bold btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#modal_new_todo"
+    >
+      新增待辦事項
+    </button>
+  </div>
+
   <div class="row">
     <div
       class="col-lg-12 mb-15"
@@ -59,10 +70,15 @@
       </div>
     </div>
   </div>
+
+  <Teleport to="body">
+    <NewTodoModalVue />
+  </Teleport>
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
+import NewTodoModalVue from "@/components/modals/todos/NewTodoModal.vue";
 
 // const todoSections = ref([]);
 const todoSections = ref([
