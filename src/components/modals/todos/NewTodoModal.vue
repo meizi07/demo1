@@ -57,11 +57,16 @@
             <el-form-item label="指定案件">
               <el-select
                 v-model="targetData.project"
-                placeholder="請指定案件"
+                filterable
                 name="project"
+                placeholder="請指定案件"
               >
-                <el-option label="Zone one" value="shanghai" />
-                <el-option label="Zone two" value="beijing" />
+                <el-option
+                  v-for="item in projectOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
               </el-select>
             </el-form-item>
           </el-form>
@@ -72,7 +77,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth";
+import ApiService from "@/core/services/ApiService";
 
 interface NewTodoData {
   title: string;
@@ -81,15 +88,55 @@ interface NewTodoData {
   project: string;
 }
 
+interface ProjectOption {
+  label: string;
+  value: string;
+}
+
+const authStore = useAuthStore();
+
 const newTodoModalRef = ref<HTMLElement | null>(null);
 const formRef = ref<HTMLFormElement | null>(null);
+const rules = ref({});
 const targetData = ref<NewTodoData>({
   title: "",
   description: "",
   dueDate: "",
   project: "",
 });
-const rules = ref({});
+const projectOptions = ref<ProjectOption[]>([]);
 
-// TODO:取得所有案件名稱
+async function fetchProjectOptions() {
+  try {
+    const formData = new FormData();
+    formData.append("orgId", authStore.user.orgId);
+    formData.append("account", authStore.user.account);
+    formData.append("token", authStore.user.token);
+
+    const response = await ApiService.post(
+      "/projectBefore/getAllProjectList.php",
+      formData
+    );
+
+    if (response.data.success) {
+      projectOptions.value = response.data.success.All.map((project) => ({
+        label: project.ProjectName,
+        value: project.ProjectName,
+      }));
+    } else {
+      console.error(
+        "獲取客戶數據失敗，狀態： " +
+          response.status +
+          " " +
+          response.statusText
+      );
+    }
+  } catch (error) {
+    console.error("API 請求錯誤：", error);
+  }
+}
+
+onMounted(() => {
+  fetchProjectOptions();
+});
 </script>
