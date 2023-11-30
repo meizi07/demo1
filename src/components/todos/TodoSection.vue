@@ -32,7 +32,7 @@
                   />
                 </div>
               </td>
-              <td>
+              <td width="40%">
                 <a
                   href="javascript:;"
                   type="button"
@@ -42,9 +42,11 @@
                   >{{ item.Item }}</a
                 >
               </td>
-              <td>{{ item.Description }}</td>
-              <td>{{ moment(item.DeadLine).format("YYYY-MM-DD") }}</td>
-              <td>{{ item.ProjectName }}</td>
+              <td width="30%">{{ item.Description }}</td>
+              <td width="14%">
+                {{ moment(item.DeadLine).format("YYYY-MM-DD") }}
+              </td>
+              <td width="14%">{{ item.ProjectName }}</td>
             </tr>
           </tbody>
         </table>
