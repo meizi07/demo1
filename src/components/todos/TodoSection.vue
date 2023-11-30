@@ -43,7 +43,7 @@
                 >
               </td>
               <td>{{ item.Description }}</td>
-              <td>{{ item.DeadLine }}</td>
+              <td>{{ moment(item.DeadLine).format("YYYY-MM-DD") }}</td>
               <td>{{ item.ProjectName }}</td>
             </tr>
           </tbody>
@@ -55,6 +55,7 @@
 
 <script setup lang="ts">
 import { defineProps } from "vue";
+import moment from "moment";
 import type { Todo } from "@/types/todo";
 
 defineProps<{
