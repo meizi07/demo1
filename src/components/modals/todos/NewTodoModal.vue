@@ -8,26 +8,34 @@
   >
     <div class="modal-dialog modal-dialog-centered mw-500px">
       <div class="modal-content rounded">
-        <div class="modal-header pb-0 border-0 justify-content-end">
+        <div class="modal-header pb-0 border-0">
+          <h3 class="modal-title">新增待辦事項</h3>
           <div
-            class="btn btn-sm btn-icon btn-active-color-primary"
+            class="btn btn-icon btn-sm btn-active-light-primary ms-2"
             data-bs-dismiss="modal"
+            aria-label="Close"
           >
-            <KTIcon icon-name="cross" icon-class="fs-1" />
+            <i class="ki-duotone ki-cross fs-1">
+              <span class="path1"></span>
+              <span class="path2"></span>
+            </i>
           </div>
         </div>
 
-        <div class="modal-body scroll-y px-10 px-lg-15 pt-0 pb-15">
-          modal content
+        <div class="separator mt-7 mb-9"></div>
+
+        <div class="modal-body scroll-y p-9 pt-0">
           <el-form
-            id="kt_modal_new_target_form"
             @submit.prevent="submit()"
+            id="modal_new_todo_form"
+            class="form"
+            ref="formRef"
             :model="targetData"
             :rules="rules"
-            ref="formRef"
-            class="form"
+            label-position="top"
+            size="large"
           >
-            <el-form-item label="事項">
+            <el-form-item label="事項" required>
               <el-input
                 v-model="targetData.title"
                 name="title"
@@ -44,7 +52,7 @@
               />
             </el-form-item>
 
-            <el-form-item label="完成期限">
+            <el-form-item label="完成期限" required>
               <el-date-picker
                 v-model="targetData.dueDate"
                 type="date"
@@ -69,6 +77,14 @@
                 />
               </el-select>
             </el-form-item>
+
+            <div class="separator mt-9 mb-6"></div>
+
+            <div class="d-flex justify-content-end">
+              <button type="button" class="btn btn-primary">
+                建立代辦事項
+              </button>
+            </div>
           </el-form>
         </div>
       </div>
