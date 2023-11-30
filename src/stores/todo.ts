@@ -1,23 +1,10 @@
 import { ref, type Ref } from "vue";
 import type { AxiosResponse } from "axios";
+import type { Todo } from "@/types/todo";
+import { TodoStatus } from "@/types/todo";
 import ApiService from "@/core/services/ApiService";
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-
-interface Todo {
-  UUID: string;
-  ProjectName: string;
-  Item: string;
-  Description: string;
-  Deadline: string;
-  Account: string;
-  Status: string;
-}
-
-enum TodoStatus {
-  Unfinished = "0",
-  Finished = "1",
-}
 
 export const useTodoStore = defineStore("todo", () => {
   const authStore = useAuthStore();
