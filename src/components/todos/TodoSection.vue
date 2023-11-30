@@ -38,7 +38,7 @@
                   type="button"
                   class="text-gray-800 text-hover-primary"
                   data-bs-toggle="modal"
-                  data-bs-target="#kt_modal_1"
+                  data-bs-target="#modal_update_todo"
                   >{{ item.Item }}</a
                 >
               </td>
@@ -53,12 +53,17 @@
       </div>
     </div>
   </div>
+
+  <Teleport to="body">
+    <UpdateTodoModalVue />
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from "vue";
 import moment from "moment";
 import type { Todo } from "@/types/todo";
+import UpdateTodoModalVue from "@/components/modals/todos/UpdateTodoModal.vue";
 
 defineProps<{
   title: string;
