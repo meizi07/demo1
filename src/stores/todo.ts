@@ -1,9 +1,9 @@
 import { nextTick, ref, type Ref } from "vue";
 import type { AxiosResponse } from "axios";
 import ApiService from "@/core/services/ApiService";
+import { showModal, hideModal } from "@/core/helpers/dom";
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import { Modal } from "bootstrap";
 import type { Todo } from "@/types/todo";
 import { TodoStatus } from "@/types/todo";
 
@@ -15,6 +15,7 @@ export const useTodoStore = defineStore("todo", () => {
     account: authStore.user.account,
     token: authStore.user.token,
   };
+  const SINGLE_TODO_MODAL_ID = "modal_single_todo";
 
   const unfinishedData = ref<Todo[]>([]);
   const finishedData = ref<Todo[]>([]);
@@ -72,13 +73,21 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
-  function openSingleTodoModal() {
-    const modalElement = document.getElementById(
-      "modal_single_todo"
-    ) as HTMLElement;
-    const modal = new Modal(modalElement);
+  function closeSingleTodoModal() {
+    hideModal(document.getElementById(SINGLE_TODO_MODAL_ID));
 
-    modal.show();
+    inEditMode.value = false;
+    isSingleTodoModalOpen.value = false;
+    currentTodo.value = null;
+  }
+
+  function clickOutsideSingleTodoModal(event: Event) {
+    if (
+      event.target &&
+      (event.target as HTMLElement).id === SINGLE_TODO_MODAL_ID
+    ) {
+      closeSingleTodoModal();
+    }
   }
 
   async function fetchCurrentTodo(uuid: string) {
@@ -93,7 +102,7 @@ export const useTodoStore = defineStore("todo", () => {
         isSingleTodoModalOpen.value = true;
 
         nextTick(() => {
-          openSingleTodoModal();
+          showModal(document.getElementById(SINGLE_TODO_MODAL_ID));
         });
       } else {
         console.error(
@@ -123,7 +132,8 @@ export const useTodoStore = defineStore("todo", () => {
     inEditMode,
     fetchTodoData,
     fetchCurrentTodo,
-    openSingleTodoModal,
+    closeSingleTodoModal,
+    clickOutsideSingleTodoModal,
     editCurrentTodo,
   };
 });

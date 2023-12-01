@@ -27,6 +27,7 @@
         class="btn btn-icon btn-sm btn-active-light-primary ms-2"
         data-bs-dismiss="modal"
         aria-label="Close"
+        @click="todoStore.closeSingleTodoModal"
       >
         <i class="ki-duotone ki-cross fs-1">
           <span class="path1"></span>
@@ -64,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { onMounted, onUnmounted } from "vue";
 import moment from "moment";
 import { storeToRefs } from "pinia";
 import { useTodoStore } from "@/stores/todo";
@@ -74,5 +75,11 @@ const { currentTodo } = storeToRefs(todoStore);
 
 onMounted(() => {
   console.log("preview body mounted");
+
+  window.addEventListener("click", todoStore.clickOutsideSingleTodoModal);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("click", todoStore.clickOutsideSingleTodoModal);
 });
 </script>
