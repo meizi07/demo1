@@ -3,7 +3,7 @@ export interface Todo {
   ProjectName: string;
   Item: string;
   Description: string;
-  Deadline: string;
+  DeadLine: string;
   Account: string;
   Status: string;
 }
