@@ -21,14 +21,12 @@
           </thead>
 
           <tbody class="fw-semibold text-gray-800">
-            <tr v-for="(item, itemIndex) in data" :key="item.UUID">
+            <tr v-for="item in data" :key="item.UUID">
               <td>
                 <div class="form-check">
                   <input
                     class="form-check-input tdl_checkbox"
                     type="checkbox"
-                    :checked="item.checked"
-                    @change="toggleStatus(section, itemIndex)"
                   />
                 </div>
               </td>
@@ -37,10 +35,10 @@
                   href="javascript:;"
                   type="button"
                   class="text-gray-800 text-hover-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modal_update_todo"
-                  >{{ item.Item }}</a
+                  @click="todoStore.fetchCurrentTodo(item.UUID)"
                 >
+                  {{ item.Item }}
+                </a>
               </td>
               <td width="30%">{{ item.Description }}</td>
               <td width="14%">
@@ -55,23 +53,21 @@
   </div>
 
   <Teleport to="body">
-    <UpdateTodoModalVue />
+    <SingleTodoModal v-if="todoStore.isSingleTodoModalOpen" />
   </Teleport>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from "vue";
 import moment from "moment";
+import { useTodoStore } from "@/stores/todo";
+import SingleTodoModal from "@/components/modals/todos/SingleTodoModal.vue";
 import type { Todo } from "@/types/todo";
-import UpdateTodoModalVue from "@/components/modals/todos/UpdateTodoModal.vue";
 
 defineProps<{
   title: string;
   data: Todo[];
 }>();
 
-function toggleStatus(section, itemIndex) {
-  const item = section.items[itemIndex];
-  item.checked = !item.checked; // 切换状态
-}
+const todoStore = useTodoStore();
 </script>

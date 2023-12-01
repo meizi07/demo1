@@ -1,10 +1,11 @@
-import { ref, type Ref } from "vue";
+import { nextTick, ref, type Ref } from "vue";
 import type { AxiosResponse } from "axios";
-import type { Todo } from "@/types/todo";
-import { TodoStatus } from "@/types/todo";
 import ApiService from "@/core/services/ApiService";
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/auth";
+import { Modal } from "bootstrap";
+import type { Todo } from "@/types/todo";
+import { TodoStatus } from "@/types/todo";
 
 export const useTodoStore = defineStore("todo", () => {
   const authStore = useAuthStore();
@@ -18,6 +19,7 @@ export const useTodoStore = defineStore("todo", () => {
   const unfinishedData = ref<Todo[]>([]);
   const finishedData = ref<Todo[]>([]);
   const currentTodo = ref<Todo | null>(null);
+  const isSingleTodoModalOpen = ref(false);
 
   function _createFormData() {
     const formData = new FormData();
@@ -69,7 +71,16 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
-  async function getCurrentTodo(uuid: string) {
+  function openSingleTodoModal() {
+    const modalElement = document.getElementById(
+      "modal_single_todo"
+    ) as HTMLElement;
+    const modal = new Modal(modalElement);
+
+    modal.show();
+  }
+
+  async function fetchCurrentTodo(uuid: string) {
     try {
       const response = await ApiService.post("personal/getToDoData", {
         ...DEFAULT_QUERY_PARAMS,
@@ -77,7 +88,12 @@ export const useTodoStore = defineStore("todo", () => {
       });
 
       if (response.data.success) {
-        currentTodo.value = response.data.success;
+        currentTodo.value = response.data.success[0];
+        isSingleTodoModalOpen.value = true;
+
+        nextTick(() => {
+          openSingleTodoModal();
+        });
       } else {
         console.error(
           "獲取待辦清單 " +
@@ -97,7 +113,9 @@ export const useTodoStore = defineStore("todo", () => {
     finishedData,
     unfinishedData,
     currentTodo,
+    isSingleTodoModalOpen,
     fetchTodoData,
-    getCurrentTodo,
+    fetchCurrentTodo,
+    openSingleTodoModal,
   };
 });
