@@ -70,7 +70,7 @@
                 placeholder="請指定案件"
               >
                 <el-option
-                  v-for="item in projectOptions"
+                  v-for="item in todoStore.projectOptions"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -94,8 +94,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { useAuthStore } from "@/stores/auth";
-import ApiService from "@/core/services/ApiService";
+import { useTodoStore } from "@/stores/todo";
 
 interface NewTodoData {
   title: string;
@@ -104,12 +103,7 @@ interface NewTodoData {
   project: string;
 }
 
-interface ProjectOption {
-  label: string;
-  value: string;
-}
-
-const authStore = useAuthStore();
+const todoStore = useTodoStore();
 
 const newTodoModalRef = ref<HTMLElement | null>(null);
 const formRef = ref<HTMLFormElement | null>(null);
@@ -120,39 +114,10 @@ const targetData = ref<NewTodoData>({
   dueDate: "",
   project: "",
 });
-const projectOptions = ref<ProjectOption[]>([]);
-
-async function fetchProjectOptions() {
-  try {
-    const formData = new FormData();
-    formData.append("orgId", authStore.user.orgId);
-    formData.append("account", authStore.user.account);
-    formData.append("token", authStore.user.token);
-
-    const response = await ApiService.post(
-      "/projectBefore/getAllProjectList.php",
-      formData
-    );
-
-    if (response.data.success) {
-      projectOptions.value = response.data.success.All.map((project) => ({
-        label: project.ProjectName,
-        value: project.ProjectName,
-      }));
-    } else {
-      console.error(
-        "獲取客戶數據失敗，狀態： " +
-          response.status +
-          " " +
-          response.statusText
-      );
-    }
-  } catch (error) {
-    console.error("API 請求錯誤：", error);
-  }
-}
 
 onMounted(() => {
-  fetchProjectOptions();
+  todoStore.fetchProjectOptions();
+
+  console.log("NewTodoModal mounted");
 });
 </script>

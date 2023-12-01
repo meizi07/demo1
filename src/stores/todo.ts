@@ -4,7 +4,7 @@ import ApiService from "@/core/services/ApiService";
 import { showModal, hideModal } from "@/core/helpers/dom";
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import type { Todo } from "@/types/todo";
+import type { Todo, ProjectOption } from "@/types/todo";
 import { TodoStatus } from "@/types/todo";
 
 export const useTodoStore = defineStore("todo", () => {
@@ -17,6 +17,7 @@ export const useTodoStore = defineStore("todo", () => {
   };
   const SINGLE_TODO_MODAL_ID = "modal_single_todo";
 
+  const projectOptions = ref<ProjectOption[]>([]);
   const unfinishedData = ref<Todo[]>([]);
   const finishedData = ref<Todo[]>([]);
   const currentTodo = ref<Todo | null>(null);
@@ -119,12 +120,40 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
+  async function fetchProjectOptions() {
+    try {
+      const formData = _createFormData();
+
+      const response = await ApiService.post(
+        "/projectBefore/getAllProjectList",
+        formData
+      );
+
+      if (response.data.success) {
+        projectOptions.value = response.data.success.All.map((project) => ({
+          label: project.ProjectName,
+          value: project.ProjectName,
+        }));
+      } else {
+        console.error(
+          "獲取案件清單失敗，狀態： " +
+            response.status +
+            " " +
+            response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
+  }
+
   function editCurrentTodo() {
     inEditMode.value = true;
     console.log("edit icon clicked");
   }
 
   return {
+    projectOptions,
     finishedData,
     unfinishedData,
     currentTodo,
@@ -132,6 +161,7 @@ export const useTodoStore = defineStore("todo", () => {
     inEditMode,
     fetchTodoData,
     fetchCurrentTodo,
+    fetchProjectOptions,
     closeSingleTodoModal,
     clickOutsideSingleTodoModal,
     editCurrentTodo,

@@ -12,3 +12,8 @@ export enum TodoStatus {
   Unfinished = "0",
   Finished = "1",
 }
+
+export interface ProjectOption {
+  label: string;
+  value: string;
+}
