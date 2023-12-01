@@ -20,6 +20,7 @@ export const useTodoStore = defineStore("todo", () => {
   const finishedData = ref<Todo[]>([]);
   const currentTodo = ref<Todo | null>(null);
   const isSingleTodoModalOpen = ref(false);
+  const inEditMode = ref(false);
 
   function _createFormData() {
     const formData = new FormData();
@@ -109,13 +110,20 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
+  function editCurrentTodo() {
+    inEditMode.value = true;
+    console.log("edit icon clicked");
+  }
+
   return {
     finishedData,
     unfinishedData,
     currentTodo,
     isSingleTodoModalOpen,
+    inEditMode,
     fetchTodoData,
     fetchCurrentTodo,
     openSingleTodoModal,
+    editCurrentTodo,
   };
 });
