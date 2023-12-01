@@ -5,7 +5,6 @@
     ref="newTodoModalRef"
     tabindex="-1"
     aria-hidden="true"
-    @submit.prevent="submitNewTodo(formRef)"
   >
     <div class="modal-dialog modal-dialog-centered mw-500px">
       <div class="modal-content rounded">
@@ -34,6 +33,7 @@
             :rules="rules"
             label-position="top"
             size="large"
+            @submit.prevent="submitNewTodo(formRef)"
           >
             <el-form-item label="事項" prop="item" required>
               <el-input

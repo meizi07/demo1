@@ -156,8 +156,8 @@ export const useTodoStore = defineStore("todo", () => {
       });
 
       if (response.data && response.data.success === 1) {
-        fetchTodoData();
         hideModal(document.getElementById(NEW_TODO_MODAL_ID));
+        fetchTodoData();
       } else {
         console.error(
           "新增待辦清單失敗，狀態： " +
