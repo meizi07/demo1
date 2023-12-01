@@ -5,6 +5,7 @@
     ref="newTodoModalRef"
     tabindex="-1"
     aria-hidden="true"
+    @submit.prevent="submitNewTodo(formRef)"
   >
     <div class="modal-dialog modal-dialog-centered mw-500px">
       <div class="modal-content rounded">
@@ -26,7 +27,6 @@
 
         <div class="modal-body scroll-y p-9 pt-0">
           <el-form
-            @submit.prevent="todoStore.addNewTodo(targetData)"
             id="modal_new_todo_form"
             class="form"
             ref="formRef"
@@ -35,7 +35,7 @@
             label-position="top"
             size="large"
           >
-            <el-form-item label="事項" required>
+            <el-form-item label="事項" prop="item" required>
               <el-input
                 v-model="targetData.item"
                 name="item"
@@ -43,7 +43,7 @@
               />
             </el-form-item>
 
-            <el-form-item label="說明">
+            <el-form-item label="說明" prop="description">
               <el-input
                 v-model="targetData.description"
                 type="textarea"
@@ -52,7 +52,7 @@
               />
             </el-form-item>
 
-            <el-form-item label="完成期限" required>
+            <el-form-item label="完成期限" prop="deadLine" required>
               <el-date-picker
                 v-model="targetData.deadLine"
                 type="date"
@@ -63,7 +63,7 @@
               />
             </el-form-item>
 
-            <el-form-item label="指定案件">
+            <el-form-item label="指定案件" prop="projectId">
               <el-select
                 v-model="targetData.projectId"
                 filterable
@@ -95,7 +95,6 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import moment from "moment";
 import { useTodoStore } from "@/stores/todo";
 import type { NewTodo } from "@/types/todo";
 
@@ -103,13 +102,41 @@ const todoStore = useTodoStore();
 
 const newTodoModalRef = ref<HTMLElement | null>(null);
 const formRef = ref<HTMLFormElement | null>(null);
-const rules = ref({});
+const rules = ref({
+  item: [
+    {
+      required: true,
+      message: "請輸入事項",
+    },
+  ],
+  deadLine: [
+    {
+      required: true,
+      message: "請選擇完成期限",
+    },
+  ],
+});
 const targetData = ref<NewTodo>({
   item: "",
   description: "",
   deadLine: "",
   projectId: "",
 });
+
+async function submitNewTodo(formEl) {
+  if (!formEl) {
+    return;
+  }
+
+  await formEl.validate((valid) => {
+    if (valid) {
+      console.log("submit!");
+      todoStore.addNewTodo(targetData.value);
+    } else {
+      return false;
+    }
+  });
+}
 
 onMounted(() => {
   todoStore.fetchProjectOptions();
