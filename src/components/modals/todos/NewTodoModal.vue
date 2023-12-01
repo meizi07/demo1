@@ -130,8 +130,8 @@ async function submitNewTodo(formEl) {
 
   await formEl.validate((valid) => {
     if (valid) {
-      console.log("submit!");
       todoStore.addNewTodo(targetData.value);
+      formEl.resetFields();
     } else {
       return false;
     }
@@ -140,7 +140,5 @@ async function submitNewTodo(formEl) {
 
 onMounted(() => {
   todoStore.fetchProjectOptions();
-
-  console.log("NewTodoModal mounted");
 });
 </script>
