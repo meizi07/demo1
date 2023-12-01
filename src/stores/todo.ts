@@ -8,8 +8,16 @@ import { useAuthStore } from "@/stores/auth";
 
 export const useTodoStore = defineStore("todo", () => {
   const authStore = useAuthStore();
+
+  const DEFAULT_QUERY_PARAMS = {
+    orgId: authStore.user.orgId,
+    account: authStore.user.account,
+    token: authStore.user.token,
+  };
+
   const unfinishedData = ref<Todo[]>([]);
   const finishedData = ref<Todo[]>([]);
+  const currentTodo = ref<Todo | null>(null);
 
   function _createFormData() {
     const formData = new FormData();
@@ -61,5 +69,35 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
-  return { finishedData, unfinishedData, fetchTodoData };
+  async function getCurrentTodo(uuid: string) {
+    try {
+      const response = await ApiService.post("personal/getToDoData", {
+        ...DEFAULT_QUERY_PARAMS,
+        uuid,
+      });
+
+      if (response.data.success) {
+        currentTodo.value = response.data.success;
+      } else {
+        console.error(
+          "獲取待辦清單 " +
+            uuid +
+            " 失敗，狀態： " +
+            response.status +
+            " " +
+            response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
+  }
+
+  return {
+    finishedData,
+    unfinishedData,
+    currentTodo,
+    fetchTodoData,
+    getCurrentTodo,
+  };
 });
