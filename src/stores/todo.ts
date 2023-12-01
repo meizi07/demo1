@@ -15,14 +15,13 @@ export const useTodoStore = defineStore("todo", () => {
     account: authStore.user.account,
     token: authStore.user.token,
   };
-  const SINGLE_TODO_MODAL_ID = "modal_single_todo";
-  const NEW_TODO_MODAL_ID = "modal_new_todo";
+  const TODO_MODAL_ID = "modal_todo";
 
   const projectOptions = ref<ProjectOption[]>([]);
   const unfinishedData = ref<Todo[]>([]);
   const finishedData = ref<Todo[]>([]);
   const currentTodo = ref<Todo | null>(null);
-  const isSingleTodoModalOpen = ref(false);
+  const isTodoModalOpen = ref(false);
   const inEditMode = ref(false);
 
   function _createFormData() {
@@ -75,20 +74,17 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
-  function closeSingleTodoModal() {
-    hideModal(document.getElementById(SINGLE_TODO_MODAL_ID));
+  function closeTodoModal() {
+    hideModal(document.getElementById(TODO_MODAL_ID));
 
+    isTodoModalOpen.value = false;
     inEditMode.value = false;
-    isSingleTodoModalOpen.value = false;
     currentTodo.value = null;
   }
 
-  function clickOutsideSingleTodoModal(event: Event) {
-    if (
-      event.target &&
-      (event.target as HTMLElement).id === SINGLE_TODO_MODAL_ID
-    ) {
-      closeSingleTodoModal();
+  function clickOutsideTodoModal(event: Event) {
+    if (event.target && (event.target as HTMLElement).id === TODO_MODAL_ID) {
+      closeTodoModal();
     }
   }
 
@@ -101,10 +97,10 @@ export const useTodoStore = defineStore("todo", () => {
 
       if (response.data && response.data.success) {
         currentTodo.value = response.data.success[0];
-        isSingleTodoModalOpen.value = true;
+        isTodoModalOpen.value = true;
 
         nextTick(() => {
-          showModal(document.getElementById(SINGLE_TODO_MODAL_ID));
+          showModal(document.getElementById(TODO_MODAL_ID));
         });
       } else {
         console.error(
@@ -156,8 +152,10 @@ export const useTodoStore = defineStore("todo", () => {
       });
 
       if (response.data && response.data.success === 1) {
-        hideModal(document.getElementById(NEW_TODO_MODAL_ID));
+        closeTodoModal();
         fetchTodoData();
+
+        isTodoModalOpen.value = false;
       } else {
         console.error(
           "新增待辦清單失敗，狀態： " +
@@ -173,6 +171,8 @@ export const useTodoStore = defineStore("todo", () => {
 
   function editCurrentTodo() {
     inEditMode.value = true;
+    isTodoModalOpen.value = true;
+
     console.log("edit icon clicked");
   }
 
@@ -181,13 +181,13 @@ export const useTodoStore = defineStore("todo", () => {
     finishedData,
     unfinishedData,
     currentTodo,
-    isSingleTodoModalOpen,
+    isTodoModalOpen,
     inEditMode,
     fetchTodoData,
     fetchCurrentTodo,
     fetchProjectOptions,
-    closeSingleTodoModal,
-    clickOutsideSingleTodoModal,
+    closeTodoModal,
+    clickOutsideTodoModal,
     addNewTodo,
     editCurrentTodo,
   };

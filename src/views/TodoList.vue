@@ -4,7 +4,8 @@
       type="button"
       class="btn btn-sm fw-bold btn-primary"
       data-bs-toggle="modal"
-      data-bs-target="#modal_new_todo"
+      data-bs-target="#modal_todo"
+      @click="todoStore.editCurrentTodo"
     >
       新增待辦事項
     </button>
@@ -21,18 +22,27 @@
   </div>
 
   <Teleport to="body">
-    <NewTodoModalVue />
+    <TodoModal />
   </Teleport>
 </template>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useTodoStore } from "@/stores/todo";
 import TodoSection from "@/components/todos/TodoSection.vue";
-import NewTodoModalVue from "@/components/modals/todos/NewTodoModal.vue";
+import TodoModal from "@/components/modals/todos/TodoModal.vue";
 
 const todoStore = useTodoStore();
 const { unfinishedData, finishedData } = storeToRefs(todoStore);
 
 todoStore.fetchTodoData();
+
+onMounted(() => {
+  window.addEventListener("click", todoStore.clickOutsideTodoModal);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("click", todoStore.clickOutsideTodoModal);
+});
 </script>

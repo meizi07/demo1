@@ -51,17 +51,12 @@
       </div>
     </div>
   </div>
-
-  <Teleport to="body">
-    <SingleTodoModal v-if="todoStore.isSingleTodoModalOpen" />
-  </Teleport>
 </template>
 
 <script setup lang="ts">
 import { defineProps } from "vue";
 import moment from "moment";
 import { useTodoStore } from "@/stores/todo";
-import SingleTodoModal from "@/components/modals/todos/SingleTodoModal.vue";
 import type { Todo } from "@/types/todo";
 
 defineProps<{
