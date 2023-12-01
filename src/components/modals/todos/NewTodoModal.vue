@@ -26,7 +26,7 @@
 
         <div class="modal-body scroll-y p-9 pt-0">
           <el-form
-            @submit.prevent="submit()"
+            @submit.prevent="todoStore.addNewTodo(targetData)"
             id="modal_new_todo_form"
             class="form"
             ref="formRef"
@@ -37,8 +37,8 @@
           >
             <el-form-item label="事項" required>
               <el-input
-                v-model="targetData.title"
-                name="title"
+                v-model="targetData.item"
+                name="item"
                 placeholder="事項"
               />
             </el-form-item>
@@ -54,9 +54,10 @@
 
             <el-form-item label="完成期限" required>
               <el-date-picker
-                v-model="targetData.dueDate"
+                v-model="targetData.deadLine"
                 type="date"
-                name="dueDate"
+                name="deadLine"
+                value-format="YYYY-MM-DD"
                 placeholder="請選擇完成期限"
                 style="width: 100%"
               />
@@ -64,9 +65,9 @@
 
             <el-form-item label="指定案件">
               <el-select
-                v-model="targetData.project"
+                v-model="targetData.projectId"
                 filterable
-                name="project"
+                name="projectId"
                 placeholder="請指定案件"
               >
                 <el-option
@@ -81,7 +82,7 @@
             <div class="separator mt-9 mb-6"></div>
 
             <div class="d-flex justify-content-end">
-              <button type="button" class="btn btn-primary">
+              <button type="submit" class="btn btn-primary">
                 建立代辦事項
               </button>
             </div>
@@ -94,25 +95,20 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
+import moment from "moment";
 import { useTodoStore } from "@/stores/todo";
-
-interface NewTodoData {
-  title: string;
-  description: string;
-  dueDate: string;
-  project: string;
-}
+import type { NewTodo } from "@/types/todo";
 
 const todoStore = useTodoStore();
 
 const newTodoModalRef = ref<HTMLElement | null>(null);
 const formRef = ref<HTMLFormElement | null>(null);
 const rules = ref({});
-const targetData = ref<NewTodoData>({
-  title: "",
+const targetData = ref<NewTodo>({
+  item: "",
   description: "",
-  dueDate: "",
-  project: "",
+  deadLine: "",
+  projectId: "",
 });
 
 onMounted(() => {

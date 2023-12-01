@@ -13,6 +13,13 @@ export enum TodoStatus {
   Finished = "1",
 }
 
+export interface NewTodo {
+  item: string;
+  description: string;
+  deadLine: string;
+  projectId: string;
+}
+
 export interface ProjectOption {
   label: string;
   value: string;

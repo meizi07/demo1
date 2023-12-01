@@ -4,7 +4,7 @@ import ApiService from "@/core/services/ApiService";
 import { showModal, hideModal } from "@/core/helpers/dom";
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import type { Todo, ProjectOption } from "@/types/todo";
+import type { Todo, NewTodo, ProjectOption } from "@/types/todo";
 import { TodoStatus } from "@/types/todo";
 
 export const useTodoStore = defineStore("todo", () => {
@@ -21,6 +21,7 @@ export const useTodoStore = defineStore("todo", () => {
   const unfinishedData = ref<Todo[]>([]);
   const finishedData = ref<Todo[]>([]);
   const currentTodo = ref<Todo | null>(null);
+  const isNewTodoModalOpen = ref(false);
   const isSingleTodoModalOpen = ref(false);
   const inEditMode = ref(false);
 
@@ -46,7 +47,7 @@ export const useTodoStore = defineStore("todo", () => {
     response: AxiosResponse,
     dataContainer: Ref<Todo[]>
   ) {
-    if (response.data.success) {
+    if (response.data && response.data.success) {
       dataContainer.value = response.data.success;
     } else {
       console.error(
@@ -98,7 +99,7 @@ export const useTodoStore = defineStore("todo", () => {
         uuid,
       });
 
-      if (response.data.success) {
+      if (response.data && response.data.success) {
         currentTodo.value = response.data.success[0];
         isSingleTodoModalOpen.value = true;
 
@@ -129,14 +130,39 @@ export const useTodoStore = defineStore("todo", () => {
         formData
       );
 
-      if (response.data.success) {
+      if (response.data && response.data.success) {
         projectOptions.value = response.data.success.All.map((project) => ({
           label: project.ProjectName,
-          value: project.ProjectName,
+          value: project.ProjectID,
         }));
       } else {
         console.error(
           "獲取案件清單失敗，狀態： " +
+            response.status +
+            " " +
+            response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
+  }
+
+  async function addNewTodo(data: NewTodo) {
+    isNewTodoModalOpen.value = true;
+
+    try {
+      const response = await ApiService.post("personal/addToDoData", {
+        ...DEFAULT_QUERY_PARAMS,
+        ...data,
+      });
+
+      if (response.data && response.data.success === 1) {
+        isNewTodoModalOpen.value = false;
+        fetchTodoData();
+      } else {
+        console.error(
+          "新增待辦清單失敗，狀態： " +
             response.status +
             " " +
             response.statusText
@@ -157,6 +183,7 @@ export const useTodoStore = defineStore("todo", () => {
     finishedData,
     unfinishedData,
     currentTodo,
+    isNewTodoModalOpen,
     isSingleTodoModalOpen,
     inEditMode,
     fetchTodoData,
@@ -164,6 +191,7 @@ export const useTodoStore = defineStore("todo", () => {
     fetchProjectOptions,
     closeSingleTodoModal,
     clickOutsideSingleTodoModal,
+    addNewTodo,
     editCurrentTodo,
   };
 });
