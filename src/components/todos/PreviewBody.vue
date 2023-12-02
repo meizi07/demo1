@@ -4,7 +4,7 @@
       <div class="modal-tools">
         <button
           class="btn btn-icon btn-sm btn-active-light-primary ms-2"
-          @click="todoStore.editCurrentTodo"
+          @click="todoStore.editCurrentTodo(false)"
         >
           <i class="ki-duotone ki-pencil fs-1">
             <i class="path1"></i>

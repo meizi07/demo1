@@ -1,7 +1,7 @@
 <template>
   <div class="modal-content rounded">
     <div class="modal-header pb-0 border-0">
-      <h3 class="modal-title">{{ inEditMode ? "修改" : "新增" }}待辦事項</h3>
+      <h3 class="modal-title">{{ isNewTodo ? "新增" : "修改" }}待辦事項</h3>
       <div
         class="btn btn-icon btn-sm btn-active-light-primary ms-2"
         aria-label="Close"
@@ -84,7 +84,7 @@ import { useTodoStore } from "@/stores/todo";
 import type { NewTodo } from "@/types/todo";
 
 const todoStore = useTodoStore();
-const { inEditMode } = storeToRefs(todoStore);
+const { isNewTodo } = storeToRefs(todoStore);
 
 const formRef = ref<HTMLFormElement | null>(null);
 const rules = ref({
@@ -125,6 +125,16 @@ async function submitNewTodo(formEl) {
 
 onMounted(() => {
   todoStore.fetchProjectOptions();
-  console.log("edit body mounted");
+
+  if (todoStore.currentTodo) {
+    targetData.value = {
+      ...targetData.value,
+
+      item: todoStore.currentTodo.Item,
+      description: todoStore.currentTodo.Description,
+      deadLine: todoStore.currentTodo.DeadLine,
+      projectId: todoStore.currentTodo.ProjectName,
+    };
+  }
 });
 </script>

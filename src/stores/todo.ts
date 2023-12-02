@@ -23,6 +23,7 @@ export const useTodoStore = defineStore("todo", () => {
   const currentTodo = ref<Todo | null>(null);
   const isTodoModalOpen = ref(false);
   const inEditMode = ref(false);
+  const isNewTodo = ref(false);
 
   function _createFormData() {
     const formData = new FormData();
@@ -79,6 +80,7 @@ export const useTodoStore = defineStore("todo", () => {
 
     isTodoModalOpen.value = false;
     inEditMode.value = false;
+    isNewTodo.value = false;
     currentTodo.value = null;
   }
 
@@ -169,11 +171,13 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
-  function editCurrentTodo() {
+  function editCurrentTodo(isNew: boolean = true) {
     inEditMode.value = true;
     isTodoModalOpen.value = true;
 
-    console.log("edit icon clicked");
+    if (isNew) {
+      isNewTodo.value = true;
+    }
   }
 
   return {
@@ -183,6 +187,7 @@ export const useTodoStore = defineStore("todo", () => {
     currentTodo,
     isTodoModalOpen,
     inEditMode,
+    isNewTodo,
     fetchTodoData,
     fetchCurrentTodo,
     fetchProjectOptions,
