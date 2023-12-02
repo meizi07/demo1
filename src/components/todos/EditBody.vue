@@ -25,7 +25,7 @@
         :rules="rules"
         label-position="top"
         size="large"
-        @submit.prevent="submitNewTodo(formRef)"
+        @submit.prevent="handleTodoSubmit(formRef)"
       >
         <el-form-item label="事項" prop="item" required>
           <el-input v-model="targetData.item" name="item" placeholder="事項" />
@@ -70,7 +70,9 @@
         <div class="separator mt-9 mb-6"></div>
 
         <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-primary">建立代辦事項</button>
+          <button type="submit" class="btn btn-primary">
+            {{ isNewTodo ? "建立" : "修改" }}代辦事項
+          </button>
         </div>
       </el-form>
     </div>
@@ -108,15 +110,14 @@ const targetData = ref<NewTodo>({
   projectId: "",
 });
 
-async function submitNewTodo(formEl) {
+async function handleTodoSubmit(formEl) {
   if (!formEl) {
     return;
   }
 
   await formEl.validate((valid) => {
     if (valid) {
-      todoStore.addNewTodo(targetData.value);
-      formEl.resetFields();
+      todoStore.submitTodo(formEl, targetData.value);
     } else {
       return false;
     }
@@ -130,6 +131,7 @@ onMounted(() => {
     targetData.value = {
       ...targetData.value,
 
+      uuid: todoStore.currentTodo.UUID,
       item: todoStore.currentTodo.Item,
       description: todoStore.currentTodo.Description,
       deadLine: todoStore.currentTodo.DeadLine,

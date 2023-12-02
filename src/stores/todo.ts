@@ -15,6 +15,8 @@ export const useTodoStore = defineStore("todo", () => {
     account: authStore.user.account,
     token: authStore.user.token,
   };
+  const API_ADD_TODO = "personal/addToDoData";
+  const API_UPDATE_TODO = "personal/updateToDoData";
   const TODO_MODAL_ID = "modal_todo";
 
   const projectOptions = ref<ProjectOption[]>([]);
@@ -146,18 +148,21 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
-  async function addNewTodo(data: NewTodo) {
+  async function submitTodo(formEl, data: NewTodo) {
+    const apiUrl = isNewTodo.value ? API_ADD_TODO : API_UPDATE_TODO;
+
     try {
-      const response = await ApiService.post("personal/addToDoData", {
+      const response = await ApiService.post(apiUrl, {
         ...DEFAULT_QUERY_PARAMS,
         ...data,
       });
 
       if (response.data && response.data.success === 1) {
+        isTodoModalOpen.value = false;
+
         closeTodoModal();
         fetchTodoData();
-
-        isTodoModalOpen.value = false;
+        formEl.resetFields();
       } else {
         console.error(
           "新增待辦清單失敗，狀態： " +
@@ -193,7 +198,7 @@ export const useTodoStore = defineStore("todo", () => {
     fetchProjectOptions,
     closeTodoModal,
     clickOutsideTodoModal,
-    addNewTodo,
+    submitTodo,
     editCurrentTodo,
   };
 });

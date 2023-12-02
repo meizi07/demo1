@@ -14,6 +14,7 @@ export enum TodoStatus {
 }
 
 export interface NewTodo {
+  uuid?: string;
   item: string;
   description: string;
   deadLine: string;
