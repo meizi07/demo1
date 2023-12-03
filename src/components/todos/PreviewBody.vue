@@ -12,7 +12,10 @@
           </i>
         </button>
 
-        <button class="btn btn-icon btn-sm btn-active-light-primary ms-2">
+        <button
+          class="btn btn-icon btn-sm btn-active-light-primary ms-2"
+          @click="handleTodoDelete"
+        >
           <i class="ki-duotone ki-trash fs-1">
             <i class="path1"></i>
             <i class="path2"></i>
@@ -65,9 +68,37 @@
 
 <script setup lang="ts">
 import moment from "moment";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import { storeToRefs } from "pinia";
 import { useTodoStore } from "@/stores/todo";
+import { hideModal } from "@/core/helpers/dom";
 
 const todoStore = useTodoStore();
 const { currentTodo } = storeToRefs(todoStore);
+
+function handleTodoDelete() {
+  hideModal(document.getElementById("modal_todo"));
+
+  Swal.fire({
+    text: "確認刪除此待辦事項？",
+    icon: "warning",
+    buttonsStyling: false,
+    showCancelButton: true,
+    confirmButtonText: "確認",
+    cancelButtonText: "取消",
+    reverseButtons: true,
+    heightAuto: false,
+    customClass: {
+      confirmButton: "btn btn-primary",
+      cancelButton:
+        "btn bg-body btn-color-gray-700 btn-active-color-primary border",
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      todoStore.deleteCurrentTodo(currentTodo.value?.UUID);
+    } else {
+      todoStore.closeTodoModal();
+    }
+  });
+}
 </script>

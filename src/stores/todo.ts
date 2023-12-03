@@ -27,6 +27,21 @@ export const useTodoStore = defineStore("todo", () => {
   const inEditMode = ref(false);
   const isNewTodo = ref(false);
 
+  function closeTodoModal() {
+    hideModal(document.getElementById(TODO_MODAL_ID));
+
+    isTodoModalOpen.value = false;
+    inEditMode.value = false;
+    isNewTodo.value = false;
+    currentTodo.value = null;
+  }
+
+  function clickOutsideTodoModal(event: Event) {
+    if (event.target && (event.target as HTMLElement).id === TODO_MODAL_ID) {
+      closeTodoModal();
+    }
+  }
+
   function _createFormData() {
     const formData = new FormData();
 
@@ -74,21 +89,6 @@ export const useTodoStore = defineStore("todo", () => {
       _processTodoData(finishedResponse, finishedData);
     } catch (error) {
       console.error("API 請求錯誤：", error);
-    }
-  }
-
-  function closeTodoModal() {
-    hideModal(document.getElementById(TODO_MODAL_ID));
-
-    isTodoModalOpen.value = false;
-    inEditMode.value = false;
-    isNewTodo.value = false;
-    currentTodo.value = null;
-  }
-
-  function clickOutsideTodoModal(event: Event) {
-    if (event.target && (event.target as HTMLElement).id === TODO_MODAL_ID) {
-      closeTodoModal();
     }
   }
 
@@ -158,11 +158,11 @@ export const useTodoStore = defineStore("todo", () => {
       });
 
       if (response.data && response.data.success === 1) {
-        isTodoModalOpen.value = false;
-
         closeTodoModal();
         fetchTodoData();
         formEl.resetFields();
+
+        isTodoModalOpen.value = false;
       } else {
         console.error(
           "新增待辦清單失敗，狀態： " +
@@ -185,6 +185,31 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
+  async function deleteCurrentTodo(uuid: string = "") {
+    try {
+      const response = await ApiService.post("personal/deleteToDoData", {
+        ...DEFAULT_QUERY_PARAMS,
+        uuid: uuid,
+      });
+
+      if (response.data && response.data.success === 1) {
+        closeTodoModal();
+        fetchTodoData();
+
+        isTodoModalOpen.value = false;
+      } else {
+        console.error(
+          "刪除待辦清單失敗，狀態： " +
+            response.status +
+            " " +
+            response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
+  }
+
   return {
     projectOptions,
     finishedData,
@@ -200,5 +225,6 @@ export const useTodoStore = defineStore("todo", () => {
     clickOutsideTodoModal,
     submitTodo,
     editCurrentTodo,
+    deleteCurrentTodo,
   };
 });
