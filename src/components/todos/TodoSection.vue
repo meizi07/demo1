@@ -27,6 +27,14 @@
                   <input
                     class="form-check-input tdl_checkbox"
                     type="checkbox"
+                    @change="
+                      todoStore.toggleTodoStatus(
+                        item.UUID,
+                        item.Status === TodoStatus.Finished
+                          ? TodoStatus.Unfinished
+                          : TodoStatus.Finished
+                      )
+                    "
                   />
                 </div>
               </td>
@@ -58,6 +66,7 @@ import { defineProps } from "vue";
 import moment from "moment";
 import { useTodoStore } from "@/stores/todo";
 import type { Todo } from "@/types/todo";
+import { TodoStatus } from "@/types/todo";
 
 defineProps<{
   title: string;

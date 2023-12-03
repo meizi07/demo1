@@ -176,15 +176,6 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
-  function editCurrentTodo(isNew: boolean = true) {
-    inEditMode.value = true;
-    isTodoModalOpen.value = true;
-
-    if (isNew) {
-      isNewTodo.value = true;
-    }
-  }
-
   async function deleteCurrentTodo(uuid: string = "") {
     try {
       const response = await ApiService.post("personal/deleteToDoData", {
@@ -210,6 +201,42 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
+  async function toggleTodoStatus(uuid: string = "", status: TodoStatus) {
+    const formData = _createFormData();
+
+    formData.append("uuid", uuid);
+    formData.append("status", status);
+
+    try {
+      const response = await ApiService.post(
+        "personal/updateToDoDataStatus",
+        formData
+      );
+
+      if (response.data && response.data.success === 1) {
+        fetchTodoData();
+      } else {
+        console.error(
+          "切換待辦清單狀態失敗，狀態： " +
+            response.status +
+            " " +
+            response.statusText
+        );
+      }
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
+  }
+
+  function editCurrentTodo(isNew: boolean = true) {
+    inEditMode.value = true;
+    isTodoModalOpen.value = true;
+
+    if (isNew) {
+      isNewTodo.value = true;
+    }
+  }
+
   return {
     projectOptions,
     finishedData,
@@ -224,7 +251,8 @@ export const useTodoStore = defineStore("todo", () => {
     closeTodoModal,
     clickOutsideTodoModal,
     submitTodo,
-    editCurrentTodo,
     deleteCurrentTodo,
+    toggleTodoStatus,
+    editCurrentTodo,
   };
 });
