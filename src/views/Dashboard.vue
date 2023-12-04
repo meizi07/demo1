@@ -12,6 +12,10 @@
       ></ListsWidget3>
     </div>
     <!--end::Col-->
+
+    <div class="col-xxl-6">
+      <TodoWidget />
+    </div>
   </div>
   <!--end::Row-->
 
@@ -79,6 +83,7 @@ import { defineComponent } from "vue";
 import { ref, onMounted } from "vue";
 
 import CalendarApp2 from "@/components/calendar/CalendarApp2.vue";
+import TodoWidget from "@/components/todos/TodoWidget.vue";
 import ListsWidget3 from "@/components/widgets/lists/Widget3.vue";
 import StatisticsWidget7 from "@/components/widgets/statsistics/Widget7.vue";
 import ListsWidget2 from "@/components/widgets/lists/Widget2.vue";
@@ -96,6 +101,7 @@ export default defineComponent({
   name: "main-dashboard",
   components: {
     CalendarApp2,
+    TodoWidget,
     ListsWidget3,
     StatisticsWidget7,
     ListsWidget2,
