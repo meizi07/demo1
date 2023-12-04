@@ -47,7 +47,14 @@
                   href="javascript:;"
                   type="button"
                   class="text-gray-800 text-hover-primary"
-                  @click="todoStore.fetchCurrentTodo(item.UUID)"
+                  @click="
+                    todoStore.getCurrentTodo(
+                      item.UUID,
+                      item.Status === TodoStatus.Finished
+                        ? TodoStatus.Finished
+                        : TodoStatus.Unfinished
+                    )
+                  "
                 >
                   {{ item.Item }}
                 </a>

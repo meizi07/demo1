@@ -27,13 +27,16 @@ export const useTodoStore = defineStore("todo", () => {
   const inEditMode = ref(false);
   const isNewTodo = ref(false);
 
-  function closeTodoModal() {
-    hideModal(document.getElementById(TODO_MODAL_ID));
-
+  function resetStates() {
     isTodoModalOpen.value = false;
     inEditMode.value = false;
     isNewTodo.value = false;
     currentTodo.value = null;
+  }
+
+  function closeTodoModal() {
+    hideModal(document.getElementById(TODO_MODAL_ID));
+    resetStates();
   }
 
   function clickOutsideTodoModal(event: Event) {
@@ -102,35 +105,6 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
-  async function fetchCurrentTodo(uuid: string) {
-    try {
-      const response = await ApiService.post("personal/getToDoData", {
-        ...DEFAULT_QUERY_PARAMS,
-        uuid,
-      });
-
-      if (response.data && response.data.success) {
-        currentTodo.value = response.data.success[0];
-        isTodoModalOpen.value = true;
-
-        nextTick(() => {
-          showModal(document.getElementById(TODO_MODAL_ID));
-        });
-      } else {
-        console.error(
-          "獲取待辦清單 " +
-            uuid +
-            " 失敗，狀態： " +
-            response.status +
-            " " +
-            response.statusText
-        );
-      }
-    } catch (error) {
-      console.error("API 請求錯誤：", error);
-    }
-  }
-
   async function fetchProjectOptions() {
     try {
       const formData = _createFormData();
@@ -159,6 +133,8 @@ export const useTodoStore = defineStore("todo", () => {
   }
 
   async function submitTodo(formEl, data: NewTodo) {
+    hideModal(document.getElementById(TODO_MODAL_ID));
+
     const apiUrl = isNewTodo.value ? API_ADD_TODO : API_UPDATE_TODO;
 
     try {
@@ -168,11 +144,9 @@ export const useTodoStore = defineStore("todo", () => {
       });
 
       if (response.data && response.data.success === 1) {
-        closeTodoModal();
         fetchTodoData();
+        resetStates();
         formEl.resetFields();
-
-        isTodoModalOpen.value = false;
       } else {
         console.error(
           "新增待辦清單失敗，狀態： " +
@@ -187,6 +161,8 @@ export const useTodoStore = defineStore("todo", () => {
   }
 
   async function deleteCurrentTodo(uuid: string = "") {
+    hideModal(document.getElementById(TODO_MODAL_ID));
+
     try {
       const response = await ApiService.post("personal/deleteToDoData", {
         ...DEFAULT_QUERY_PARAMS,
@@ -194,10 +170,8 @@ export const useTodoStore = defineStore("todo", () => {
       });
 
       if (response.data && response.data.success === 1) {
-        closeTodoModal();
         fetchTodoData();
-
-        isTodoModalOpen.value = false;
+        resetStates();
       } else {
         console.error(
           "刪除待辦清單失敗，狀態： " +
@@ -238,6 +212,16 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
+  function getCurrentTodo(uuid: string, status: TodoStatus) {
+    const data = status === TodoStatus.Finished ? finishedData : unfinishedData;
+
+    currentTodo.value = data.value.find((todo) => todo.UUID === uuid) || null;
+
+    showModal(document.getElementById(TODO_MODAL_ID));
+
+    isTodoModalOpen.value = true;
+  }
+
   function editCurrentTodo(isNew: boolean = true) {
     inEditMode.value = true;
     isTodoModalOpen.value = true;
@@ -257,7 +241,7 @@ export const useTodoStore = defineStore("todo", () => {
     isNewTodo,
     fetchTodoData,
     fetchUnfinishedTodoData,
-    fetchCurrentTodo,
+    getCurrentTodo,
     fetchProjectOptions,
     closeTodoModal,
     clickOutsideTodoModal,

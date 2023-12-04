@@ -8,7 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useTodoStore } from "@/stores/todo";
 import PreviewBody from "@/components/todos/PreviewBody.vue";
@@ -16,8 +15,4 @@ import EditBody from "@/components/todos/EditBody.vue";
 
 const todoStore = useTodoStore();
 const { inEditMode } = storeToRefs(todoStore);
-
-onMounted(() => {
-  console.log("SingleTodoModal mounted");
-});
 </script>

@@ -88,6 +88,8 @@ import type { NewTodo } from "@/types/todo";
 const todoStore = useTodoStore();
 const { isNewTodo } = storeToRefs(todoStore);
 
+todoStore.fetchProjectOptions();
+
 const formRef = ref<HTMLFormElement | null>(null);
 const rules = ref({
   item: [
@@ -125,8 +127,6 @@ async function handleTodoSubmit(formEl) {
 }
 
 onMounted(() => {
-  todoStore.fetchProjectOptions();
-
   if (todoStore.currentTodo) {
     targetData.value = {
       ...targetData.value,
