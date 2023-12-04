@@ -21,6 +21,10 @@
           </thead>
 
           <tbody class="fw-semibold text-gray-800">
+            <tr v-if="data.length === 0">
+              <td colspan="5" class="text-center">無資料</td>
+            </tr>
+
             <tr v-for="item in data" :key="item.UUID">
               <td>
                 <div class="form-check">

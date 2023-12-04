@@ -14,6 +14,13 @@
     <div
       class="card-body d-flex flex-column px-7 mb-9 scroll-y mh-400px h-lg-100"
     >
+      <div
+        v-if="unfinishedData.length === 0"
+        class="d-flex justify-content-center align-items-center w-100 h-100"
+      >
+        恭喜！您已完成所有待辦事項
+      </div>
+
       <template v-for="(item, index) in unfinishedData" :key="item.UUID">
         <div
           :class="{ 'mb-7': unfinishedData.length - 1 !== index }"
