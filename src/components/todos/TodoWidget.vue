@@ -1,5 +1,5 @@
 <template>
-  <div class="card card-flush h-lg-100">
+  <div class="card card-flush card-xl-stretch h-lg-100 mb-5 mb-xl-8">
     <div class="card-header border-0 pt-5">
       <h2 class="card-title align-items-start flex-column">
         <span class="fw-bold text-dark">待辦事項</span>
@@ -11,10 +11,12 @@
       </div>
     </div>
 
-    <div class="card-body pt-2 scroll-y mh-400px h-lg-100">
-      <template v-for="(item, index) in list" :key="index">
+    <div
+      class="card-body d-flex flex-column px-7 mb-9 scroll-y mh-400px h-lg-100"
+    >
+      <template v-for="(item, index) in unfinishedData" :key="item.UUID">
         <div
-          :class="{ 'mb-7': list.length - 1 !== index }"
+          :class="{ 'mb-7': unfinishedData.length - 1 !== index }"
           class="d-flex align-items-center"
         >
           <span class="bullet bullet-vertical h-40px bg-secondary"></span>
@@ -25,14 +27,16 @@
 
           <div class="flex-grow-1">
             <p class="fs-6 fw-bold text-gray-900 text-hover-primary mb-0">
-              {{ item.title }}
+              {{ item.Item }}
             </p>
-            <span class="text-gray-400 d-block">{{ item.text }}</span>
+            <span class="text-gray-400 d-block">{{ item.Description }}</span>
           </div>
 
-          <div class="ms-auto text-end">
-            北投案場
-            <span class="text-muted d-block">2022-12-22</span>
+          <div class="ms-auto text-end min-w-100px">
+            {{ item.ProjectName }}
+            <span class="text-muted d-block">{{
+              moment(item.DeadLine).format("YYYY-MM-DD")
+            }}</span>
           </div>
         </div>
       </template>
@@ -40,4 +44,13 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import moment from "moment";
+import { storeToRefs } from "pinia";
+import { useTodoStore } from "@/stores/todo";
+
+const todoStore = useTodoStore();
+const { unfinishedData } = storeToRefs(todoStore);
+
+todoStore.fetchUnfinishedTodoData();
+</script>

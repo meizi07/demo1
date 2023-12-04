@@ -92,6 +92,16 @@ export const useTodoStore = defineStore("todo", () => {
     }
   }
 
+  async function fetchUnfinishedTodoData() {
+    try {
+      const response = await _generateApiService(TodoStatus.Unfinished);
+
+      _processTodoData(response, unfinishedData);
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
+  }
+
   async function fetchCurrentTodo(uuid: string) {
     try {
       const response = await ApiService.post("personal/getToDoData", {
@@ -246,6 +256,7 @@ export const useTodoStore = defineStore("todo", () => {
     inEditMode,
     isNewTodo,
     fetchTodoData,
+    fetchUnfinishedTodoData,
     fetchCurrentTodo,
     fetchProjectOptions,
     closeTodoModal,
