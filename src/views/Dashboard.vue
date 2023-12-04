@@ -4,20 +4,11 @@
     <div class="col-xxl-6">
       <CalendarApp2></CalendarApp2>
     </div>
-    <!--begin::Col-->
-    <div class="col-xxl-6">
-      <!-- <Widget5 className="h-md-100" /> -->
-      <ListsWidget3
-        widget-classes="card-xl-stretch mb-5 mb-xl-8"
-      ></ListsWidget3>
-    </div>
-    <!--end::Col-->
 
     <div class="col-xxl-6">
       <TodoWidget />
     </div>
   </div>
-  <!--end::Row-->
 
   <div class="row gx-5 gx-xl-10">
     <!--begin::Col-->

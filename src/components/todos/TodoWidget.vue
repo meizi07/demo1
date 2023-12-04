@@ -22,7 +22,13 @@
           <span class="bullet bullet-vertical h-40px bg-secondary"></span>
 
           <div class="form-check form-check-custom form-check-solid ms-6 me-4">
-            <input class="form-check-input" type="checkbox" value="" />
+            <input
+              class="form-check-input"
+              type="checkbox"
+              @change="
+                todoStore.toggleTodoStatus(item.UUID, TodoStatus.Finished)
+              "
+            />
           </div>
 
           <div class="flex-grow-1">
@@ -48,6 +54,7 @@
 import moment from "moment";
 import { storeToRefs } from "pinia";
 import { useTodoStore } from "@/stores/todo";
+import { TodoStatus } from "@/types/todo";
 
 const todoStore = useTodoStore();
 const { unfinishedData } = storeToRefs(todoStore);
