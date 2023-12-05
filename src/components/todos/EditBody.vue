@@ -83,7 +83,7 @@
 import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useTodoStore } from "@/stores/todo";
-import type { NewTodo } from "@/types/todo";
+import type { NewTodo } from "@/types/Todo";
 
 const todoStore = useTodoStore();
 const { isNewTodo } = storeToRefs(todoStore);

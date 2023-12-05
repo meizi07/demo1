@@ -1,11 +1,11 @@
-import { nextTick, ref, type Ref } from "vue";
+import { ref, type Ref } from "vue";
 import type { AxiosResponse } from "axios";
 import ApiService from "@/core/services/ApiService";
 import { showModal, hideModal } from "@/core/helpers/dom";
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/auth";
-import type { Todo, NewTodo, ProjectOption } from "@/types/todo";
-import { TodoStatus } from "@/types/todo";
+import type { Todo, NewTodo, ProjectOption } from "@/types/Todo";
+import { TodoStatus } from "@/types/Todo";
 
 export const useTodoStore = defineStore("todo", () => {
   const authStore = useAuthStore();
