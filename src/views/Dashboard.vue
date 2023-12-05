@@ -4,16 +4,11 @@
     <div class="col-xxl-6">
       <CalendarApp2></CalendarApp2>
     </div>
-    <!--begin::Col-->
+
     <div class="col-xxl-6">
-      <!-- <Widget5 className="h-md-100" /> -->
-      <ListsWidget3
-        widget-classes="card-xl-stretch mb-5 mb-xl-8"
-      ></ListsWidget3>
+      <TodoWidget />
     </div>
-    <!--end::Col-->
   </div>
-  <!--end::Row-->
 
   <div class="row gx-5 gx-xl-10">
     <!--begin::Col-->
@@ -79,6 +74,7 @@ import { defineComponent } from "vue";
 import { ref, onMounted } from "vue";
 
 import CalendarApp2 from "@/components/calendar/CalendarApp2.vue";
+import TodoWidget from "@/components/todos/TodoWidget.vue";
 import ListsWidget3 from "@/components/widgets/lists/Widget3.vue";
 import StatisticsWidget7 from "@/components/widgets/statsistics/Widget7.vue";
 import ListsWidget2 from "@/components/widgets/lists/Widget2.vue";
@@ -96,6 +92,7 @@ export default defineComponent({
   name: "main-dashboard",
   components: {
     CalendarApp2,
+    TodoWidget,
     ListsWidget3,
     StatisticsWidget7,
     ListsWidget2,
