@@ -39,6 +39,7 @@
                           : TodoStatus.Finished
                       )
                     "
+                    :checked="item.Status === TodoStatus.Finished"
                   />
                 </div>
               </td>

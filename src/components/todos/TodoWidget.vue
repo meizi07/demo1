@@ -26,9 +26,7 @@
           :class="{ 'mb-7': unfinishedData.length - 1 !== index }"
           class="d-flex align-items-center"
         >
-          <span class="bullet bullet-vertical h-40px bg-secondary"></span>
-
-          <div class="form-check form-check-custom form-check-solid ms-6 me-4">
+          <div class="form-check form-check-custom form-check-solid ms-2 me-4">
             <input
               class="form-check-input"
               type="checkbox"
