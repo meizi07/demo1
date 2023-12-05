@@ -23,14 +23,17 @@ export const useTodoStore = defineStore("todo", () => {
   const unfinishedData = ref<Todo[]>([]);
   const finishedData = ref<Todo[]>([]);
   const currentTodo = ref<Todo | null>(null);
-  const isTodoModalOpen = ref(false);
-  const inEditMode = ref(false);
-  const isNewTodo = ref(false);
+
+  const isTodoModalOpen = ref<boolean>(false);
+  const inEditMode = ref<boolean>(false);
+  const isNewTodo = ref<boolean>(false);
+  const isLoading = ref<boolean>(false);
 
   function resetStates() {
     isTodoModalOpen.value = false;
     inEditMode.value = false;
     isNewTodo.value = false;
+    isLoading.value = false;
     currentTodo.value = null;
   }
 
@@ -133,7 +136,7 @@ export const useTodoStore = defineStore("todo", () => {
   }
 
   async function submitTodo(formEl, data: NewTodo) {
-    hideModal(document.getElementById(TODO_MODAL_ID));
+    isLoading.value = true;
 
     const apiUrl = isNewTodo.value ? API_ADD_TODO : API_UPDATE_TODO;
 
@@ -145,7 +148,6 @@ export const useTodoStore = defineStore("todo", () => {
 
       if (response.data && response.data.success === 1) {
         fetchTodoData();
-        resetStates();
         formEl.resetFields();
       } else {
         console.error(
@@ -157,6 +159,8 @@ export const useTodoStore = defineStore("todo", () => {
       }
     } catch (error) {
       console.error("API 請求錯誤：", error);
+    } finally {
+      closeTodoModal();
     }
   }
 
@@ -239,6 +243,7 @@ export const useTodoStore = defineStore("todo", () => {
     isTodoModalOpen,
     inEditMode,
     isNewTodo,
+    isLoading,
     fetchTodoData,
     fetchUnfinishedTodoData,
     getCurrentTodo,

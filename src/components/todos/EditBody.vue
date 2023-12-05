@@ -70,8 +70,18 @@
         <div class="separator mt-9 mb-6"></div>
 
         <div class="d-flex justify-content-end">
-          <button type="submit" class="btn btn-primary">
-            {{ isNewTodo ? "建立" : "修改" }}代辦事項
+          <button
+            type="submit"
+            class="btn btn-primary"
+            :data-kt-indicator="isLoading ? 'on' : null"
+          >
+            <span> {{ isNewTodo ? "建立" : "修改" }}代辦事項 </span>
+
+            <span v-if="isLoading" class="indicator-progress">
+              <span
+                class="spinner-border spinner-border-sm align-middle ms-2"
+              ></span>
+            </span>
           </button>
         </div>
       </el-form>
@@ -86,7 +96,7 @@ import { useTodoStore } from "@/stores/todo";
 import type { NewTodo } from "@/types/Todo";
 
 const todoStore = useTodoStore();
-const { isNewTodo } = storeToRefs(todoStore);
+const { isNewTodo, isLoading } = storeToRefs(todoStore);
 
 todoStore.fetchProjectOptions();
 
@@ -112,12 +122,12 @@ const targetData = ref<NewTodo>({
   projectId: "",
 });
 
-async function handleTodoSubmit(formEl) {
+function handleTodoSubmit(formEl) {
   if (!formEl) {
     return;
   }
 
-  await formEl.validate((valid) => {
+  formEl.validate((valid) => {
     if (valid) {
       todoStore.submitTodo(formEl, targetData.value);
     } else {
