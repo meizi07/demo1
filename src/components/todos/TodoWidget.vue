@@ -61,7 +61,7 @@
 import moment from "moment";
 import { storeToRefs } from "pinia";
 import { useTodoStore } from "@/stores/todo";
-import { TodoStatus } from "@/types/todo";
+import { TodoStatus } from "@/types/Todo";
 
 const todoStore = useTodoStore();
 const { unfinishedData } = storeToRefs(todoStore);

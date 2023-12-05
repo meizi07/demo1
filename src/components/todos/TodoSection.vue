@@ -76,8 +76,8 @@
 import { defineProps } from "vue";
 import moment from "moment";
 import { useTodoStore } from "@/stores/todo";
-import type { Todo } from "@/types/todo";
-import { TodoStatus } from "@/types/todo";
+import type { Todo } from "@/types/Todo";
+import { TodoStatus } from "@/types/Todo";
 
 defineProps<{
   title: string;
