@@ -35,5 +35,55 @@ export interface ClientDetailsSuccessData {
   Contactor: string;
   UpdateDate: string;
   Updater: string;
-  Housing: Housing[]; // 如果有 Housing 数组，请确保定义它的类型
+  Housing: Housing[];
+}
+
+// 案件資料
+export interface CaseApiResponse {
+  success: ProjectData;
+}
+
+export interface ProjectData {
+  UUID: string;
+  ProjectInfo: ProjectInfo;
+  ProjectCategory: ProjectCategory;
+  ProjectStatus: ProjectStatus;
+  ProjectFeedback: ProjectFeedback;
+  ProjectItem: any[];
+}
+
+export interface ProjectInfo {
+  ImagePath: string;
+  ProjectID: string;
+  Category: string;
+  ProjectName: string;
+  ObjectAddress: string;
+  Status: string;
+  Stage: string;
+  Progress: string;
+  PIC: string;
+  PICTel: string;
+  ProjectCustomerID: string | null;
+}
+
+export interface ProjectCategory {
+  Category: string;
+  ProjectID: string;
+  HaveProjectConnectDesignID: boolean;
+  ProjectDesignID: string;
+}
+
+export interface ProjectStatus {
+  EstStartDate: string;
+  EstEndDate: string;
+  Status: string;
+  Progress: string;
+  Stage: string;
+  PIC: string;
+  ObjectAddress: string;
+}
+
+export interface ProjectFeedback {
+  CustomerSatisfaction: number;
+  Feedback: string;
 }

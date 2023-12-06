@@ -79,8 +79,6 @@ export default defineComponent({
           "/projectBefore/getCustomerList.php",
           formData
         );
-        printFormData(formData);
-        console.log("User data:", authStore.user);
 
         if (response.data.success) {
           const formattedAllCustomer =

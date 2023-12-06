@@ -1,6 +1,6 @@
 export function getSequence(sequence: string): string {
   const sequenceAsNumber = parseInt(sequence, 10);
-  const incrementedSequence = (sequenceAsNumber + 1).toString();
+  const incrementedSequence = sequenceAsNumber.toString();
 
   return incrementedSequence;
 }

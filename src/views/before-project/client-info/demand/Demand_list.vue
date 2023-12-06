@@ -21,9 +21,9 @@
     </div>
   </div>
   <DemandList :requirementData="responseData"></DemandList>
-  <SelectClientModalVue
+  <SelectCaseModalVue
     @client-selected="handleClientSelected"
-  ></SelectClientModalVue>
+  ></SelectCaseModalVue>
 </template>
 
 <script lang="ts">
@@ -38,8 +38,8 @@ import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
 
-import SelectClientModalVue from "@/components/modals/general/SelectClientModal.vue";
-import type { Customer } from "@/components/modals/general/SelectClientModal.vue";
+import SelectCaseModalVue from "@/components/modals/general/SelectCaseModal.vue";
+import type { CaseApiResponse } from "@/utils/share";
 
 interface StatisticItem {
   Title: string;
@@ -51,11 +51,11 @@ export default defineComponent({
   components: {
     StatisticsWidget7,
     DemandList,
-    SelectClientModalVue,
+    SelectCaseModalVue,
   },
   setup() {
     const statistics = ref<StatisticItem[]>([]);
-    const selectedCustomer = ref<Customer | null>(null);
+    const selectedCustomer = ref<CaseApiResponse | null>(null);
     const authStore = useAuthStore();
     const useId = useIdStore();
     // selectedCustomer.value = selectedClient;
@@ -72,13 +72,12 @@ export default defineComponent({
     statistics.value = [];
 
     // 實現方法來處理從子組件傳遞的客戶數據
-    const handleClientSelected = (client: Customer) => {
+    const handleClientSelected = (client: CaseApiResponse) => {
       selectedCustomer.value = client;
-      // const clientDataString = JSON.stringify(selectedCustomer);
       router.push({
-        name: "bj-demand-add", // 替换成新增需求页面的路由名称
+        name: "bj-demand-add",
       });
-      useId.setSelectedClient(selectedCustomer.value);
+      useId.setSelectedCase(selectedCustomer.value);
     };
 
     onMounted(async () => {
@@ -93,6 +92,7 @@ export default defineComponent({
         );
 
         if (response.data.success) {
+          console.log(response.data.success.AllRequirement);
           responseData.value.success.Statistics =
             response.data.success.Statistics;
           responseData.value.success.AllRequirement =

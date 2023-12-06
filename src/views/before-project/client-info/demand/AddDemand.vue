@@ -22,7 +22,7 @@
         </span>
       </button>
       <router-link
-        :to="`/befort-project/client-info/client-list`"
+        :to="`/befort-project/client-info/demand-list`"
         class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
       >
         取消
@@ -82,7 +82,7 @@
                           案件編號</label
                         >
                       </td>
-                      <td class="fw-bold"><!-- {{ - }} -->-</td>
+                      <td class="fw-bold">{{ projectID }}</td>
                     </tr>
                     <tr>
                       <td class="text-muted">
@@ -119,667 +119,40 @@
           <TableCard :tableHeaders="tab2HeaderData" :tableData="apiData2" />
         </div>
         <div class="tab-pane fade show" id="demand_add_pane_3" role="tabpanel">
-          <div class="card">
-            <div class="card-body d-flex flex-column p-9">
-              <div class="table-responsive">
-                <table
-                  class="table align-middle table-row-bordered mb-0 fs-6 gy-5 table_half_col"
-                >
-                  <tbody class="fw-semibold text-gray-800">
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          房屋資料</label
-                        >
-                      </td>
-                      <td class="fw-bold">
-                        <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="CustomerSource">
-                            <el-select
-                              v-model="targetData.CustomerSource"
-                              placeholder="請選擇房屋資料"
-                              name="CustomerSource"
-                              as="select"
-                              size="large"
-                            >
-                              <!-- @click="fetchDropdown" -->
-                              <el-option label="新購新成屋" value="新購新成屋"
-                                >新購新成屋</el-option
-                              >
-                              <el-option label="新購預售屋" value="新購預售屋"
-                                >新購預售屋</el-option
-                              >
-                              <el-option label="新購中古屋" value="新購中古屋"
-                                >新購中古屋</el-option
-                              >
-                            </el-select>
-                          </el-form-item>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                          >屋齡(年)</label
-                        >
-                      </td>
-                      <td class="fw-bold">
-                        <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="CustomerName">
-                            <el-input
-                              v-model="targetData.CustomerName"
-                              placeholder=""
-                              name="CustomerName"
-                              size="large"
-                            ></el-input>
-                          </el-form-item>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          大樓/透天</label
-                        >
-                      </td>
-                      <td class="fw-bold">
-                        <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="CustomerSource">
-                            <el-select
-                              v-model="targetData.CustomerSource"
-                              placeholder="大樓/透天"
-                              name="CustomerSource"
-                              as="select"
-                              size="large"
-                            >
-                              <!-- @click="fetchDropdown" -->
-                              <el-option label="大樓" value="大樓"
-                                >大樓</el-option
-                              >
-                              <el-option label="透天" value="透天"
-                                >透天</el-option
-                              >
-                            </el-select>
-                          </el-form-item>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          是否有電梯</label
-                        >
-                      </td>
-                      <td class="fw-bold">
-                        <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="CustomerSource">
-                            <el-select
-                              v-model="targetData.CustomerSource"
-                              placeholder="請選擇是否有電梯"
-                              name="CustomerSource"
-                              as="select"
-                              size="large"
-                            >
-                              <!-- @click="fetchDropdown" -->
-                              <el-option label="是" value="是">是</el-option>
-                              <el-option label="否" value="否">否</el-option>
-                            </el-select>
-                          </el-form-item>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          電梯大小</label
-                        >
-                      </td>
-                      <td class="fw-bold">
-                        <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="ContactMobile">
-                            <el-input
-                              v-model="targetData.ContactMobile"
-                              placeholder=""
-                              name="ContactMobile"
-                              size="large"
-                            ></el-input>
-                          </el-form-item>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          室內總坪數(坪)</label
-                        >
-                      </td>
-                      <td class="fw-bold">
-                        <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="ContactAddress">
-                            <el-input
-                              v-model="targetData.ContactAddress"
-                              placeholder=""
-                              name="ContactAddress"
-                              size="large"
-                            ></el-input>
-                          </el-form-item>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          格局</label
-                        >
-                      </td>
-                      <td class="fw-bold">
-                        <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="ContactEmail">
-                            <el-input
-                              v-model="targetData.ContactEmail"
-                              placeholder=""
-                              name="ContactEmail"
-                              size="large"
-                            ></el-input>
-                          </el-form-item>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          物件地址</label
-                        >
-                      </td>
-                      <td class="fw-bold">
-                        <div class="d-flex align-items-center w-100">
-                          <el-form-item class="w-100" prop="ContactEmail">
-                            <el-input
-                              v-model="targetData.ContactEmail"
-                              placeholder=""
-                              name="ContactEmail"
-                              size="large"
-                            ></el-input>
-                          </el-form-item>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <Tab3Component
+            :form-data="tab3Data"
+            @update:formData="updateTab3Data"
+          />
         </div>
         <div class="tab-pane fade show" id="demand_add_pane_4" role="tabpanel">
-          <div class="card mb-5 mb-xl-10">
-            <div class="card-body d-flex flex-column p-9">
-              <div class="mb-0 fs-6 gy-5">
-                <div id="kt_ecommerce_add_product_options">
-                  <div class="form-group">
-                    <div class="d-flex flex-column gap-8">
-                      <div
-                        class="form-group d-flex align-items-center gap-5 client_add_repeater_item"
-                        v-for="(item, index) in formItems"
-                        :key="index"
-                      >
-                        <div
-                          class="w-100 position-relative"
-                          v-for="field in fields"
-                          :key="field.name"
-                        >
-                          <label class="form-label">{{ field.label }}</label>
-                          <div class="w-100">
-                            <template v-if="field.type === 'select'">
-                              <el-form-item class="w-100">
-                                <el-select
-                                  v-model="item[field.name]"
-                                  :placeholder="'請選擇' + field.label"
-                                  :name="field.name"
-                                  as="select"
-                                  size="large"
-                                >
-                                  <el-option
-                                    v-for="option in field.options"
-                                    :key="option.value"
-                                    :label="option.label"
-                                    :value="option.value"
-                                  ></el-option>
-                                </el-select>
-                              </el-form-item>
-                            </template>
-                            <template v-else-if="field.type === 'input'">
-                              <el-form-item class="w-100">
-                                <el-input
-                                  v-model="item[field.name]"
-                                  :placeholder="field.label"
-                                  :name="field.name"
-                                  size="large"
-                                ></el-input>
-                              </el-form-item>
-                            </template>
-                          </div>
-                        </div>
-                        <div>
-                          <label class="d-block form-label">刪除</label>
-                          <button
-                            type="button"
-                            @click="removeItem(index)"
-                            class="btn btn-sm btn-icon text-muted text-hover-danger"
-                          >
-                            <i class="ki-duotone ki-cross fs-1">
-                              <span class="path1"></span>
-                              <span class="path2"></span>
-                            </i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group mt-8">
-                    <button
-                      type="button"
-                      @click="addItem"
-                      class="btn btn-sm btn-light-primary"
-                    >
-                      <i class="ki-duotone ki-plus fs-2"></i>新增項目
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <!-- <Tab4Component
+            :form-data="tab4Data"
+            @update:formData="updateTab4Data"
+          /> -->
         </div>
         <div class="tab-pane fade show" id="demand_add_pane_5" role="tabpanel">
-          <div class="card mb-5 mb-xl-10">
-            <div class="card-body d-flex flex-column p-9">
-              <div class="mb-0 fs-6 gy-5">
-                <div id="kt_ecommerce_add_product_options">
-                  <div class="form-group">
-                    <div class="d-flex flex-column gap-8">
-                      <div
-                        class="form-group d-flex align-items-center gap-5 client_add_repeater_item"
-                        v-for="(item, index) in tab5formItems"
-                        :key="index"
-                      >
-                        <div
-                          class="position-relative"
-                          :class="field.class"
-                          v-for="field in styleFields"
-                          :key="field.name"
-                        >
-                          <label class="form-label">{{ field.label }}</label>
-                          <div>
-                            <template v-if="field.type === 'select'">
-                              <el-form-item>
-                                <el-select
-                                  v-model="item[field.name]"
-                                  :placeholder="'請選擇' + field.label"
-                                  :name="field.name"
-                                  as="select"
-                                  size="large"
-                                >
-                                  <el-option
-                                    v-for="option in field.options"
-                                    :key="option.value"
-                                    :label="option.label"
-                                    :value="option.value"
-                                  ></el-option>
-                                </el-select>
-                              </el-form-item>
-                            </template>
-                            <template v-else-if="field.type === 'input'">
-                              <el-form-item>
-                                <el-input
-                                  v-model="item[field.name]"
-                                  :placeholder="field.label"
-                                  :name="field.name"
-                                  size="large"
-                                ></el-input>
-                              </el-form-item>
-                            </template>
-                            <template v-else-if="field.type === 'item-number'">
-                              <el-form-item>
-                                <span>{{ index + 1 }}</span>
-                              </el-form-item>
-                            </template>
-                          </div>
-                        </div>
-                        <div>
-                          <label class="d-block form-label">刪除</label>
-                          <el-form-item>
-                            <button
-                              type="button"
-                              @click="removeItem(index)"
-                              class="btn btn-sm btn-icon text-muted text-hover-danger"
-                            >
-                              <i class="ki-duotone ki-cross fs-1">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                              </i>
-                            </button>
-                          </el-form-item>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group mt-8">
-                    <button
-                      type="button"
-                      @click="styleAddItem()"
-                      class="btn btn-sm btn-light-primary"
-                    >
-                      <i class="ki-duotone ki-plus fs-2"></i>新增項目
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Tab5Component
+            :form-data="tab5Data"
+            @update:formData="updateTab5Data"
+          />
         </div>
         <div class="tab-pane fade show" id="demand_add_pane_6" role="tabpanel">
-          <div class="card mb-5 mb-xl-10">
-            <div class="card-body d-flex flex-column p-9">
-              <div class="mb-0 fs-6 gy-5">
-                <div id="kt_ecommerce_add_product_options">
-                  <div class="form-group">
-                    <div class="d-flex flex-column gap-8">
-                      <div
-                        class="form-group d-flex align-items-center gap-5 client_add_repeater_item"
-                        v-for="(item, index) in tab6formItems"
-                        :key="index"
-                      >
-                        <div
-                          class="position-relative"
-                          :class="field.class"
-                          v-for="field in securityFields"
-                          :key="field.name"
-                        >
-                          <label class="form-label">{{ field.label }}</label>
-                          <div>
-                            <template v-if="field.type === 'select'">
-                              <el-form-item>
-                                <el-select
-                                  v-model="item[field.name]"
-                                  :placeholder="'請選擇' + field.label"
-                                  :name="field.name"
-                                  as="select"
-                                  size="large"
-                                >
-                                  <el-option
-                                    v-for="option in field.options"
-                                    :key="option.value"
-                                    :label="option.label"
-                                    :value="option.value"
-                                  ></el-option>
-                                </el-select>
-                              </el-form-item>
-                            </template>
-                            <template v-else-if="field.type === 'input'">
-                              <el-form-item>
-                                <el-input
-                                  v-model="item[field.name]"
-                                  :placeholder="field.label"
-                                  :name="field.name"
-                                  size="large"
-                                ></el-input>
-                              </el-form-item>
-                            </template>
-                            <template v-else-if="field.type === 'item-number'">
-                              <el-form-item>
-                                <span>{{ index + 1 }}</span>
-                              </el-form-item>
-                            </template>
-                          </div>
-                        </div>
-                        <div>
-                          <label class="d-block form-label">刪除</label>
-                          <el-form-item>
-                            <button
-                              type="button"
-                              @click="removeItem(index)"
-                              class="btn btn-sm btn-icon text-muted text-hover-danger"
-                            >
-                              <i class="ki-duotone ki-cross fs-1">
-                                <span class="path1"></span>
-                                <span class="path2"></span>
-                              </i>
-                            </button>
-                          </el-form-item>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group mt-8">
-                    <button
-                      type="button"
-                      @click="securityAddItem()"
-                      class="btn btn-sm btn-light-primary"
-                    >
-                      <i class="ki-duotone ki-plus fs-2"></i>新增項目
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <Tab6Component
+            :form-data="tab6Data"
+            @update:formData="updateTab6Data"
+          />
         </div>
         <div class="tab-pane fade show" id="demand_add_pane_7" role="tabpanel">
-          <div class="card mb-5 mb-xl-10">
-            <div class="card-body d-flex flex-column p-9">
-              <div class="d-flex justify-content-start mb-10">
-                <div class="mw-500px">
-                  <div class="d-flex flex-stack">
-                    <div class="fw-semibold pe-10 text-gray-800 fs-6 mb-4">
-                      屋主裝修工程預算
-                    </div>
-                    <div class="text-end fw-bold fs-6 text-gray-800">
-                      <el-form-item>
-                        <el-input
-                          type="number"
-                          v-model="budget"
-                          name="屋主裝修工程預算"
-                          placeholder=""
-                          size="large"
-                        ></el-input>
-                      </el-form-item>
-                    </div>
-                    <div class="ms-3 fw-semibold text-gray-800 fs-6 mb-4">
-                      元
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="table-responsive">
-                <table class="table g-5 gs-0 mb-0 fw-bold text-gray-800">
-                  <thead>
-                    <tr class="border-bottom fs-7 fw-bold text-gray-800">
-                      <th>類別</th>
-                      <th>室內坪數</th>
-                      <th>每坪單價</th>
-                      <th>預估參考值</th>
-                      <th>補充說明</th>
-                      <th>刪除</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      class="border-bottom border-bottom-bordered"
-                      v-for="(item, index) in tab7formItems"
-                      :key="index"
-                    >
-                      <td class="pe-7">
-                        <el-select
-                          v-model="item.category"
-                          class="mb-2"
-                          placeholder="請選擇費用分析類別"
-                          size="large"
-                        >
-                          <el-option
-                            label="預算建議值分析"
-                            value="0"
-                          ></el-option>
-                          <el-option
-                            label="設計費用分析"
-                            value="設計費用分析"
-                          ></el-option>
-                          <el-option
-                            label="監工費用分析"
-                            value="監工費用分析"
-                          ></el-option>
-                          <el-option label="其他" value="其他"></el-option>
-                        </el-select>
-                      </td>
-                      <td class="ps-0">
-                        <el-input
-                          type="number"
-                          v-model="item.quantity"
-                          size="large"
-                          placeholder=""
-                        ></el-input>
-                      </td>
-                      <td>
-                        <el-input
-                          type="number"
-                          v-model="item.price"
-                          size="large"
-                          placeholder=""
-                        ></el-input>
-                      </td>
-                      <td class="pt-8 text-nowrap">
-                        {{ item.quantity * item.price || 0 }}元
-                      </td>
-                      <td class="pt-5">
-                        <el-input
-                          v-model="item.description"
-                          size="large"
-                          placeholder="補充說明"
-                        ></el-input>
-                      </td>
-                      <td class="pt-5">
-                        <button
-                          type="button"
-                          @click="removeItem(index)"
-                          class="btn btn-sm btn-icon text-muted text-hover-danger"
-                        >
-                          <i class="ki-duotone ki-cross fs-1">
-                            <span class="path1"></span>
-                            <span class="path2"></span>
-                          </i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                  <tfoot>
-                    <tr
-                      class="border-top border-top-dashed align-middle fs-6 fw-bold text-gray-800"
-                    >
-                      <th colspan="6" class="text-primary">
-                        <button
-                          type="button"
-                          @click="totalBudgetAddItem()"
-                          class="btn btn-sm btn-light-primary"
-                        >
-                          <i class="ki-duotone ki-plus fs-3"></i>新增項目
-                        </button>
-                      </th>
-                    </tr>
-                  </tfoot>
-                </table>
-              </div>
-            </div>
-          </div>
+          <Tab7Component
+            :form-data="tab7Data"
+            @update:formData="updateTab7Data"
+          />
         </div>
         <div class="tab-pane fade show" id="demand_add_pane_8" role="tabpanel">
-          <!-- <div class="card mb-5 mb-xl-10">
-            <div class="card-body d-flex flex-column p-9">
-              <div class="mb-0 fs-6 gy-5">
-                <div id="kt_ecommerce_add_product_options">
-                  <div class="form-group">
-                    <div class="d-flex flex-column gap-8">
-                      <div
-                        v-for="(item, index) in tab8formItems"
-                        :key="index"
-                        data-repeater-item
-                        class="form-group d-flex align-items-center gap-5 demand_add_info_repeater_item"
-                      >
-                        <div class="w-100">
-                          <label class="form-label">檔案類型</label>
-                          <select
-                            class="form-select"
-                            v-model="item.fileType"
-                            @change="
-                              updateInputType(index, $event.target.value)
-                            "
-                          >
-                            <option value="參考資料">參考資料</option>
-                            <option value="參考網址">參考網址</option>
-                          </select>
-                        </div>
-                        <div class="w-100">
-                          <label class="form-label">檔案名稱</label>
-                          <input
-                            type="text"
-                            class="form-control"
-                            v-model="item.fileName"
-                            placeholder="檔案名稱"
-                          />
-                        </div>
-                        <div class="w-100">
-                          <label class="form-label">附件</label>
-                          <input
-                            v-if="item.fileType === '參考資料'"
-                            type="file"
-                            class="form-control w-100"
-                            v-model="item.attachment"
-                          />
-                          <input
-                            v-else
-                            type="text"
-                            class="form-control"
-                            v-model="item.referenceUrl"
-                            placeholder="參考網址"
-                          />
-                        </div>
-
-                        <div>
-                          <button
-                            type="button"
-                            @click="removeItem(index)"
-                            class="btn btn-sm btn-icon text-muted text-hover-danger"
-                          >
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group mt-8">
-                    <button
-                      type="button"
-                      @click="refAddItem()"
-                      class="btn btn-sm btn-light-primary"
-                    >
-                      <i class="ki-duotone ki-plus fs-2"></i>新增項目
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div> -->
+          <Tab8Component
+            :form-data="tab8Data"
+            @update:formData="updateTab8Data"
+          />
         </div>
       </div>
     </div>
@@ -791,19 +164,22 @@ import { getAssetPath } from "@/core/helpers/assets";
 import { ref, onMounted, computed, watch } from "vue";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 
-import { useRoute } from "vue-router";
-
+import { useRouter } from "vue-router";
 import ApiService from "@/core/services/ApiService";
 import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
 
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 import TableCard from "@/components/customers/cards/overview/TableCard.vue";
-import type {
-  Customer,
-  Housing,
-  ClientDetailsSuccessData,
-} from "@/utils/share";
+import Tab3Component from "@/views/before-project/client-info/demand/DemandTab/Tab3Component.vue";
+import Tab4Component from "@/views/before-project/client-info/demand/DemandTab/Tab4Component.vue";
+import Tab5Component from "@/views/before-project/client-info/demand/DemandTab/Tab5Component.vue";
+import Tab6Component from "@/views/before-project/client-info/demand/DemandTab/Tab6Component.vue";
+import Tab7Component from "@/views/before-project/client-info/demand/DemandTab/Tab7Component.vue";
+import Tab8Component from "@/views/before-project/client-info/demand/DemandTab/Tab8Component.vue";
+
+import type { ClientDetailsSuccessData, Housing } from "@/utils/share";
+import type { Case } from "@/components/modals/general/SelectCaseModal.vue";
 import {
   getSequence,
   getGenderLabel,
@@ -811,47 +187,38 @@ import {
   getSpecialDemandLabel,
 } from "@/utils/function";
 
-interface AddClientData {
-  projectID: string;
+interface DemandForm {
   contactDate: string;
-  CustomerSource: string;
-  CustomerName: string;
-  ServiceItem: string;
-  ContactTel: string;
-  ContactMobile: string;
-  ContactAddress: string;
-  ContactEmail: string;
 }
 
 export default {
   name: "bj-demand-add",
-  components: { InfoCard, TableCard },
+  components: {
+    InfoCard,
+    TableCard,
+    Tab3Component,
+    // Tab4Component,
+    Tab5Component,
+    Tab6Component,
+    Tab7Component,
+    Tab8Component,
+  },
   setup() {
     const authStore = useAuthStore();
     const useId = useIdStore();
-    const responseData = ref<null | Object>(null);
+    const router = useRouter();
+
     const housingData = ref<Housing[] | null>(null);
     const formRef = ref<null | HTMLFormElement>(null);
     const formItems = ref<any[]>([]);
-    const tab5formItems = ref<any[]>([]);
-    const tab6formItems = ref<any[]>([]);
-    const tab7formItems = ref<any[]>([]);
-    const tab8formItems = ref<any[]>([]);
+    const projectID = ref(null);
     const loading = ref<boolean>(false);
 
-    const clientData = ref<Customer | null>(null);
-    clientData.value = useId.selectedClient;
+    const caseData = ref<Case | null>(null);
+    caseData.value = useId.selectedCase;
 
-    const targetData = ref<AddClientData>({
-      projectID: "",
+    const targetData = ref<DemandForm>({
       contactDate: "",
-      CustomerSource: "",
-      CustomerName: "",
-      ServiceItem: "",
-      ContactTel: "",
-      ContactMobile: "",
-      ContactAddress: "",
-      ContactEmail: "",
     });
 
     // 建立頁籤
@@ -866,61 +233,11 @@ export default {
       { label: "參考資料" },
     ]);
     const activeTab = ref(0);
-
     function setActiveTab(tabIndex: number) {
       activeTab.value = tabIndex;
     }
 
-    // 取得客戶資料
-    async function fetchData() {
-      try {
-        const formData = new FormData();
-        formData.append("orgId", authStore.user.orgId);
-        formData.append("account", authStore.user.account);
-        formData.append("token", authStore.user.token);
-        if (clientData.value?.CustomerID) {
-          formData.append("customerID", clientData.value?.CustomerID);
-        }
-
-        const response = await ApiService.post(
-          "/projectBefore/getCustInfoByID",
-          formData
-        );
-
-        responseData.value = response.data;
-
-        const successData = response.data.success as ClientDetailsSuccessData;
-        console.log(successData);
-
-        // 更新 tableData2
-        if (clientData.value) {
-          tab1tableData2.value[0].value = clientData.value?.CustomerID;
-          tab1tableData2.value[1].value = clientData.value?.CustomerSource;
-          tab1tableData2.value[2].value = clientData.value?.Name;
-          tab1tableData2.value[3].value = clientData.value?.ServiceItem;
-          tab1tableData2.value[4].value = clientData.value?.Telephone;
-          tab1tableData2.value[5].value = clientData.value?.Mobile;
-          tab1tableData2.value[6].value = clientData.value?.ContactAddress;
-          tab1tableData2.value[7].value = clientData.value?.Email;
-        }
-
-        // 獲取 Housing 數據
-        const housingDataArray = successData.Housing as Housing[];
-        const processedHousingData = housingDataArray.map((housing) => ({
-          ...housing,
-          Sequence: getSequence(housing.Sequence),
-          Sex: getGenderLabel(housing.Sex),
-          Age: getAgeLabel(housing.Age),
-          SpecialDemand: getSpecialDemandLabel(housing.SpecialDemand),
-        }));
-
-        housingData.value = processedHousingData;
-        apiData2.value = housingData.value;
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-
+    // 頁籤1 客戶資訊欄位
     const tab1tableData2 = ref([
       { label: "客戶編號", value: "" },
       { label: "客戶來源", value: "" },
@@ -932,6 +249,7 @@ export default {
       { label: "聯絡信箱", value: "" },
     ]);
 
+    // 頁籤2 居住成員欄位
     const tab2HeaderData = ref([
       { label: "編號", field: "Sequence" },
       { label: "性別", field: "Sex" },
@@ -941,137 +259,122 @@ export default {
     ]);
     const apiData2 = ref<Housing[]>([]);
 
-    // 風格材質欄位
-    const styleFields = [
-      {
-        name: "編號",
-        label: "編號",
-        type: "item-number",
-        class: "w-25",
-      },
-      {
-        name: "材質",
-        label: "材質",
-        type: "select",
-        class: "w-100",
-        options: [
-          { value: "天然石材", label: "天然石材" },
-          { value: "磁磚", label: "磁磚" },
-          { value: "木地板", label: "木地板" },
-          { value: "硅藻土", label: "硅藻土" },
-          { value: "金屬", label: "金屬" },
-          { value: "玻璃", label: "玻璃" },
-          { value: "木製&實木", label: "木製&實木" },
-          { value: "皮革", label: "皮革" },
-          { value: "特殊漆", label: "特殊漆" },
-          { value: "清水模、洗磨石子等", label: "清水模、洗磨石子等" },
-          { value: "其他", label: "其他" },
-        ],
-      },
-      {
-        name: "用途",
-        label: "用途",
-        type: "input",
-        class: "w-100",
-      },
-      {
-        name: "補充說明",
-        label: "補充說明",
-        type: "input",
-        class: "w-100",
-      },
-    ];
-
-    const styleAddItem = () => {
-      tab5formItems.value.push({
-        編號: "",
-        材質: "",
-        用途: "",
-        補充說明: "",
-      });
+    // 頁籤3 初始化
+    const tab3Data = ref({});
+    const updateTab3Data = (newData) => {
+      tab3Data.value = newData;
     };
 
-    // 安全形式欄位
-    const securityFields = [
-      {
-        name: "編號",
-        label: "編號",
-        type: "item-number",
-        class: "w-25",
-      },
-      {
-        name: "項目",
-        label: "項目",
-        type: "select",
-        class: "w-100",
-        options: [
-          { value: "防墜鋁窗", label: "防墜鋁窗" },
-          { value: "隱形安全鋼索", label: "隱形安全鋼索" },
-          { value: "止滑", label: "止滑" },
-          { value: "其他", label: "其他" },
-        ],
-      },
-      {
-        name: "用途",
-        label: "用途",
-        type: "input",
-        class: "w-100",
-      },
-      {
-        name: "補充說明",
-        label: "補充說明",
-        type: "input",
-        class: "w-100",
-      },
-    ];
-    const securityAddItem = () => {
-      tab6formItems.value.push({
-        編號: "",
-        材質: "",
-        用途: "",
-        補充說明: "",
-      });
+    // 頁籤5 初始化
+    const tab5Data = ref([]);
+    const updateTab5Data = (newData) => {
+      tab5Data.value = newData;
+      // 這裡可以進行進一步的處理，例如表單驗證
     };
 
-    const budget = ref("");
-    const totalBudgetAddItem = () => {
-      tab7formItems.value.push({
-        fileType: "參考資料",
-        fileName: "",
-        attachment: "",
-        referenceUrl: "",
-      });
+    // 頁籤6 初始化
+    const tab6Data = ref({});
+    const updateTab6Data = (newData) => {
+      tab6Data.value = newData;
     };
 
-    const refAddItem = () => {
-      tab8formItems.value.push({
-        性別: "",
-        年齡: "",
-        特殊需求: "",
-        備註: "",
-      });
+    // 頁籤7 初始化
+    const tab7Data = ref({});
+    const updateTab7Data = (newData) => {
+      tab7Data.value = newData;
     };
 
-    const addItem = () => {
-      formItems.value.push({
-        性別: "",
-        年齡: "",
-        特殊需求: "",
-        備註: "",
-      });
+    // 頁籤8 初始化
+    const tab8Data = ref({});
+    const updateTab8Data = (newData) => {
+      tab8Data.value = newData;
     };
 
-    const removeItem = (index: number) => {
-      // 根据索引删除表单项
-      formItems.value.splice(index, 1);
-    };
+    // 取得案件資料
+    async function fetchData() {
+      try {
+        // 先依據取得的案件編號撈取案件細節的客戶編號
+        const formData = new FormData();
+        formData.append("orgId", authStore.user.orgId);
+        formData.append("account", authStore.user.account);
+        formData.append("token", authStore.user.token);
+        if (caseData.value?.ProjectID) {
+          formData.append("projectID", caseData.value?.ProjectID);
+        }
 
+        const response = await ApiService.post(
+          "/projectBefore/getProjectInfo",
+          formData
+        );
+        // 綁定案件編號
+        projectID.value = response.data.success.ProjectInfo.ProjectID;
+        // 從案件資料中提取客戶編號
+        const customerID = response.data.success.ProjectInfo.ProjectCustomerID;
+        console.log(customerID);
+
+        // 呼叫取得客戶資料函數
+        fetchCustomerData(customerID);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    // 取得客戶資料
+    async function fetchCustomerData(customerID) {
+      try {
+        // 從案件資料中提取客戶編號
+        if (!customerID) {
+          console.error("客戶編號未找到");
+          return;
+        }
+
+        // 構建請求參數
+        const customerFormData = new FormData();
+        customerFormData.append("orgId", authStore.user.orgId);
+        customerFormData.append("account", authStore.user.account);
+        customerFormData.append("token", authStore.user.token);
+        customerFormData.append("customerID", customerID);
+
+        // 發送請求以獲取客戶資料
+        const customerResponse = await ApiService.post(
+          "/projectBefore/getCustInfoByID",
+          customerFormData
+        );
+
+        // 處理客戶資料
+        const customerData = customerResponse.data
+          .success as ClientDetailsSuccessData;
+        console.log(customerData);
+
+        // 將客戶資料保存到適當的變量中
+        tab1tableData2.value[0].value = customerData.CustomerID;
+        tab1tableData2.value[1].value = customerData.CustomerSource;
+        tab1tableData2.value[2].value = customerData.Name;
+        tab1tableData2.value[3].value = customerData.ServiceItem;
+        tab1tableData2.value[4].value = customerData.Telephone;
+        tab1tableData2.value[5].value = customerData.Mobile;
+        tab1tableData2.value[6].value = customerData.ContactAddress;
+        tab1tableData2.value[7].value = customerData.Email;
+
+        // 獲取 Housing 數據
+        const housingDataArray = customerData.Housing as Housing[];
+        const processedHousingData = housingDataArray.map((housing) => ({
+          ...housing,
+          Sequence: getSequence(housing.Sequence),
+          Sex: getGenderLabel(housing.Sex),
+          Age: getAgeLabel(housing.Age),
+          SpecialDemand: getSpecialDemandLabel(housing.SpecialDemand),
+        }));
+
+        housingData.value = processedHousingData;
+        apiData2.value = housingData.value;
+      } catch (error) {
+        console.error("獲取客戶資料時出錯: ", error);
+      }
+    }
+
+    // 表單驗證
     const rules = ref({
-      projectID: [
-        {
-          required: true,
-        },
-      ],
       contactDate: [
         {
           required: true,
@@ -1080,38 +383,6 @@ export default {
         },
       ],
       CustomerSource: [
-        {
-          required: true,
-        },
-      ],
-      CustomerName: [
-        {
-          required: true,
-          message: "請輸入客戶名稱",
-          trigger: "blur",
-        },
-      ],
-      ServiceItem: [
-        {
-          required: true,
-        },
-      ],
-      ContactTel: [
-        {
-          required: true,
-        },
-      ],
-      ContactMobile: [
-        {
-          required: true,
-        },
-      ],
-      ContactAddress: [
-        {
-          required: true,
-        },
-      ],
-      ContactEmail: [
         {
           required: true,
         },
@@ -1127,31 +398,31 @@ export default {
         if (valid) {
           loading.value = true;
 
-          const formData = new FormData();
-          formData.append("orgId", authStore.user.orgId);
-          formData.append("account", authStore.user.account);
-          formData.append("token", authStore.user.token);
+          const requestData = {
+            orgId: authStore.user.orgId,
+            account: authStore.user.account,
+            token: authStore.user.token,
+            projectID: projectID.value,
+            contactDate: targetData.value.contactDate,
+            housingData: tab3Data.value.housingData,
+            housingAge: tab3Data.value.housingAge,
+            buildingCategory: tab3Data.value.buildingCategory,
+            isElevator: tab3Data.value.isElevator,
+            elevator: tab3Data.value.elevator,
+            totalPin: tab3Data.value.totalPin,
+            format: tab3Data.value.format,
 
-          for (const key in targetData.value) {
-            if (Object.prototype.hasOwnProperty.call(targetData.value, key)) {
-              formData.append(key, targetData.value[key]);
-            }
-          }
+            renovationRequest: "",
+            style: tab5Data.value,
+            security: tab6Data.value,
+            totalBudget: tab7Data.value.budget,
+            budget: tab7Data.value,
+            ref: tab8Data.value,
+            // ... 其他字段和標籤
+          };
+          console.log(requestData);
 
-          const members = formItems.value.map((item: any) => ({
-            Sex: item.性別,
-            Age: item.年齡,
-            SpecialDemand: item.特殊需求,
-            Remark: item.備註,
-          }));
-
-          formData.append("Member", JSON.stringify(members));
-
-          for (const [key, value] of formData.entries()) {
-            console.log(`Key: ${key}, Value: ${value}`);
-          }
-
-          ApiService.post("/projectBefore/addCustomerInfo", formData)
+          ApiService.post("/projectBefore/addRequirement", requestData)
             .then((response) => {
               loading.value = false;
               if (response.data.success) {
@@ -1165,7 +436,11 @@ export default {
                   customClass: {
                     confirmButton: "btn btn-primary",
                   },
-                }).then(() => {});
+                }).then(() => {
+                  router.push({
+                    name: "bj-demand-list",
+                  });
+                });
               } else {
                 console.log(response.data);
                 Swal.fire({
@@ -1209,28 +484,28 @@ export default {
       setActiveTab,
       tabs,
       activeTab,
-      styleFields,
-      securityFields,
-      budget,
       formItems,
-      tab5formItems,
-      tab6formItems,
-      tab7formItems,
-      tab8formItems,
+
+      tab1tableData2,
+      tab2HeaderData,
+      apiData2,
+      projectID,
+      tab3Data,
+      updateTab3Data,
+      tab5Data,
+      updateTab5Data,
+      tab6Data,
+      updateTab6Data,
+      tab7Data,
+      updateTab7Data,
+      tab8Data,
+      updateTab8Data,
+
       submit,
       targetData,
       loading,
       formRef,
       rules,
-      addItem,
-      styleAddItem,
-      securityAddItem,
-      totalBudgetAddItem,
-      refAddItem,
-      removeItem,
-      tab1tableData2,
-      tab2HeaderData,
-      apiData2,
     };
   },
 };

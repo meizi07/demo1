@@ -18,7 +18,7 @@ export const useAuthStore = defineStore("auth", () => {
 
   const storedUser = getUserFromLocalStorage();
   if (storedUser) {
-    setAuth(storedUser); // 从 localStorage 恢复用户信息
+    setAuth(storedUser);
     isUserLoaded.value = true;
   }
 
@@ -60,7 +60,6 @@ export const useAuthStore = defineStore("auth", () => {
             }
           );
         } else {
-          console.log(13);
           setError({ message: "Invalid credentials", details: data });
         }
       })
@@ -96,13 +95,17 @@ export const useAuthStore = defineStore("auth", () => {
   function verifyAuth() {
     const token = JwtService.getToken();
     if (token) {
-      console.log(token);
-
       ApiService.setHeader();
       ApiService.post("verify/verify")
         .then(({ data }) => {
-          console.log("Token is valid until:", data);
-          // setAuth(data); // 根据您的应用逻辑设置认证状态
+          if (data.success) {
+            console.log("Token is valid until:", data.success);
+            // setAuth(data);
+          } else if (data.ErrorCode) {
+            console.error("Token verification error:", data.ErrorMsg);
+            // 如果有錯誤碼，則執行登出操作並跳轉到登入頁面
+            purgeAuth();
+          }
         })
         .catch(({ response }) => {
           console.error("Token verification error:", response.data.ErrorMsg);
