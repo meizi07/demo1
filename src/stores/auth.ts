@@ -10,6 +10,12 @@ export interface User {
   token: string;
 }
 
+export interface Credentials {
+  orgId?: boolean;
+  account?: boolean;
+  token?: boolean;
+}
+
 export const useAuthStore = defineStore("auth", () => {
   const errors = ref({});
   const user = ref<User>({} as User);
@@ -119,6 +125,18 @@ export const useAuthStore = defineStore("auth", () => {
     return userData ? JSON.parse(userData) : null;
   }
 
+  function createAuthFormData(options: Credentials) {
+    const formData = new FormData();
+
+    Object.keys(options).forEach((key) => {
+      if (options[key]) {
+        formData.append(key, user.value[key]);
+      }
+    });
+
+    return formData;
+  }
+
   return {
     errors,
     user,
@@ -129,6 +147,7 @@ export const useAuthStore = defineStore("auth", () => {
     forgotPassword,
     verifyAuth,
     getUserFromLocalStorage,
+    createAuthFormData,
     isUserLoaded,
   };
 });
