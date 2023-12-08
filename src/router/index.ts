@@ -161,7 +161,7 @@ const routes: Array<RouteRecordRaw> = [
             name: "bj-housing-list",
             component: () =>
               import(
-                "@/views/before-project/client-info/housing/Housing_list.vue"
+                "@/views/before-project/client-info/housing/HousingIndex.vue"
               ),
             meta: {
               pageTitle: "屋況初始紀錄",

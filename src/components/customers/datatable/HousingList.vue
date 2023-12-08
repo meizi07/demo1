@@ -1,5 +1,5 @@
 <template>
-  <div :class="`card pt-2 ${cardClasses}`">
+  <div class="card pt-2">
     <div class="card-header border-0 flex-column p-10 pb-0">
       <div class="card-title w-100">
         <ul
@@ -8,7 +8,6 @@
         >
           <li class="nav-item" role="presentation">
             <a
-              id="kt_referrals_year_tab"
               class="nav-link text-active-primary active px-5 m-0"
               data-bs-toggle="tab"
               role="tab"
@@ -25,27 +24,23 @@
         </ul>
       </div>
     </div>
-    <div id="kt_referred_users_tab_content" class="tab-content">
+
+    <div id="housing_index_tab_content" class="tab-content">
       <div id="tab1" class="py-0 tab-pane fade active show" role="tabpanel">
-        <!--begin::Toolbar-->
         <div
           class="card-toolbar m-0 p-7 d-flex justify-content-between border-gray-200 border-bottom"
         >
-          <!--begin::Search-->
           <div class="d-flex align-items-center my-1">
             <KTIcon
               icon-name="magnifier"
               icon-class="fs-1 position-absolute ms-6"
             />
-            <!-- v-model="search"
-              @input="searchItems()" -->
             <input
               type="text"
               class="form-control form-control-solid w-250px ps-15"
               placeholder="關鍵字搜尋"
             />
           </div>
-          <!--end::Search-->
           <div class="position-relative d-flex align-items-center">
             <i class="ki-duotone ki-calendar-8 position-absolute ms-4 mb-1 fs-2"
               ><span class="path1"></span><span class="path2"></span
@@ -67,10 +62,8 @@
             </button>
           </div>
         </div>
-        <!--end::Toolbar-->
         <div class="card-body pt-0">
-          <!-- @on-sort="sort" -->
-          <Datatable
+          <!-- <Datatable
             :header="tableHeader"
             :data="tableData1"
             :items-per-page-dropdown-enabled="true"
@@ -122,97 +115,57 @@
                 <KTIcon icon-name="pencil" icon-class="fs-3" />
               </router-link>
             </template>
-          </Datatable>
+          </Datatable> -->
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watchEffect } from "vue";
-import { useIdStore } from "@/stores/useId";
+<script setup lang="ts">
+import { ref } from "vue";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
-import type { PropType } from "vue";
 
-export default defineComponent({
-  name: "HousingList",
-  props: {
-    cardClasses: String,
-    clientData: {
-      type: Object as PropType<{
-        success: {
-          Statistics: any[];
-          AllHousingInit: any[];
-        };
-      }>,
-      required: true,
-    },
+const tableHeader = ref([
+  {
+    columnName: "案件編號",
+    columnLabel: "ProjectID",
+    sortEnabled: true,
   },
-  components: {
-    Datatable,
+  {
+    columnName: "案件名稱",
+    columnLabel: "ProjectName",
+    sortEnabled: true,
   },
-  setup(props) {
-    const { currentId, setCurrentId } = useIdStore();
-
-    const tableHeader = ref([
-      {
-        columnName: "案件編號",
-        columnLabel: "ProjectID",
-        sortEnabled: true,
-      },
-      {
-        columnName: "案件名稱",
-        columnLabel: "ProjectName",
-        sortEnabled: true,
-      },
-      {
-        columnName: "案件類型",
-        columnLabel: "ProjectCategory",
-        sortEnabled: true,
-      },
-      {
-        columnName: "紀錄日期",
-        columnLabel: "RecorderDate",
-        sortEnabled: true,
-      },
-      {
-        columnName: "紀錄者",
-        columnLabel: "Recorder",
-        sortEnabled: true,
-      },
-      {
-        columnName: "簽收日期",
-        columnLabel: "SigningDate",
-        sortEnabled: true,
-      },
-      {
-        columnName: "簽收人",
-        columnLabel: "Recipient",
-        sortEnabled: true,
-      },
-      {
-        columnName: "",
-        columnLabel: "action",
-        sortEnabled: false,
-      },
-    ]);
-    const tableData1 = ref([{}]);
-    const tableData2 = ref([{}]);
-    const tableData3 = ref([{}]);
-
-    // 使用 watch 监听 clientData 的变化
-    watchEffect(() => {
-      if (props.clientData && props.clientData.success) {
-        if (props.clientData.success.AllHousingInit) {
-          tableData1.value = props.clientData.success.AllHousingInit;
-        }
-      }
-    });
-    function storeCustomerId(customerId: string) {
-      setCurrentId(customerId);
-    }
-    return { tableHeader, tableData1, tableData2, tableData3, storeCustomerId };
+  {
+    columnName: "案件類型",
+    columnLabel: "ProjectCategory",
+    sortEnabled: true,
   },
-});
+  {
+    columnName: "紀錄日期",
+    columnLabel: "RecorderDate",
+    sortEnabled: true,
+  },
+  {
+    columnName: "紀錄者",
+    columnLabel: "Recorder",
+    sortEnabled: true,
+  },
+  {
+    columnName: "簽收日期",
+    columnLabel: "SigningDate",
+    sortEnabled: true,
+  },
+  {
+    columnName: "簽收人",
+    columnLabel: "Recipient",
+    sortEnabled: true,
+  },
+  {
+    columnName: "",
+    columnLabel: "action",
+    sortEnabled: false,
+  },
+]);
 </script>
