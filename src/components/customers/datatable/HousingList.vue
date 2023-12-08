@@ -62,60 +62,60 @@
             </button>
           </div>
         </div>
+
         <div class="card-body pt-0">
-          <!-- <Datatable
+          <Datatable
             :header="tableHeader"
-            :data="tableData1"
+            :data="allHousingData"
+            :items-per-page="10"
             :items-per-page-dropdown-enabled="true"
           >
-            <template v-slot:ProjectID="{ row: All }">
-              <router-link
-                :to="`/befort-project/case-management/case-details/${All.ProjectID}/p-info`"
-                @click="storeCustomerId(All.ProjectID)"
-                class="text-gray-800 text-hover-primary"
-              >
-                {{ All.ProjectID }}
+            <template v-slot:ProjectID="{ row: housing }">
+              <router-link :to="`/`" class="text-gray-800 text-hover-primary">
+                {{ housing.ProjectID }}
               </router-link>
             </template>
-            <template v-slot:ProjectName="{ row: All }">
+
+            <template v-slot:ProjectName="{ row: housing }">
               <span>
-                {{ All.ProjectName }}
+                {{ housing.ProjectName }}
               </span>
             </template>
-            <template v-slot:ProjectCategory="{ row: All }">
+
+            <template v-slot:ProjectCategory="{ row: housing }">
               <span>
-                {{ All.ProjectCategory }}
+                {{ housing.ProjectCategory }}
               </span>
             </template>
-            <template v-slot:RecorderDate="{ row: All }">
+
+            <template v-slot:RecorderDate="{ row: housing }">
               <span>
-                {{ All.RecorderDate }}
+                {{
+                  housing.RecorderDate
+                    ? moment(housing.RecorderDate).format("YYYY-MM-DD")
+                    : ""
+                }}
               </span>
             </template>
-            <template v-slot:Recorder="{ row: All }">
-              <span>{{ All.Recorder }}</span>
+
+            <template v-slot:Recorder="{ row: housing }">
+              <span>{{ housing.Recorder }}</span>
             </template>
-            <template v-slot:SigningDate="{ row: All }">
-              {{ All.SigningDate }}
-            </template>
-            <template v-slot:Recipient="{ row: All }">
-              {{ All.Recipient }}
-            </template>
-            <template v-slot:action="{ row: All }">
+
+            <template v-slot:Action="{ row: housing }">
               <router-link
                 :to="{
                   name: 'bj-case-edit',
                   params: {
-                    projectId: All.ProjectID,
+                    projectId: housing.ProjectID,
                   },
                 }"
-                @click="storeCustomerId(All.ProjectID)"
                 class="btn btn-icon btn-active-color-primary btn-sm me-1"
               >
                 <KTIcon icon-name="pencil" icon-class="fs-3" />
               </router-link>
             </template>
-          </Datatable> -->
+          </Datatable>
         </div>
       </div>
     </div>
@@ -124,7 +124,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import moment from "moment";
+import { useHousingStore } from "@/stores/housing";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
+
+const housingStore = useHousingStore();
+const { allHousingData } = storeToRefs(housingStore);
+
+housingStore.fetchAllHousingData();
 
 const tableHeader = ref([
   {
@@ -153,18 +161,8 @@ const tableHeader = ref([
     sortEnabled: true,
   },
   {
-    columnName: "簽收日期",
-    columnLabel: "SigningDate",
-    sortEnabled: true,
-  },
-  {
-    columnName: "簽收人",
-    columnLabel: "Recipient",
-    sortEnabled: true,
-  },
-  {
     columnName: "",
-    columnLabel: "action",
+    columnLabel: "Action",
     sortEnabled: false,
   },
 ]);
