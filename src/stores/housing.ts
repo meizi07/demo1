@@ -9,13 +9,10 @@ export const useHousingStore = defineStore("housing", () => {
 
   const allHousingData = ref<AllHousingData[]>([]);
 
-  async function fetchAllHousingData() {
-    try {
-      const formData = authStore.createAuthFormData({
-        orgId: true,
-        account: true,
-      });
+  async function fetchHousingData(formData: FormData) {
+    allHousingData.value = [];
 
+    try {
       const response = await ApiService.post(
         "projectBefore/getHousingInitList",
         formData
@@ -25,68 +22,46 @@ export const useHousingStore = defineStore("housing", () => {
         allHousingData.value = response.data.success.AllHousingInit;
       } else {
         console.error(
-          "獲取全部屋況初始紀錄失敗，狀態： " +
-            response.status +
-            " " +
-            response.statusText
+          `獲取屋況初始紀錄失敗，狀態： ${response.status} ${response.statusText}`
         );
       }
     } catch (error) {
       console.error("API 請求錯誤：", error);
     }
+
+    console.log("allHousingData", allHousingData.value);
+  }
+
+  async function fetchAllHousingData() {
+    const formData = authStore.createAuthFormData({
+      orgId: true,
+      account: true,
+    });
+
+    await fetchHousingData(formData);
   }
 
   async function searchHousingWithKeyword(keyword: string) {
-    try {
-      const formData = authStore.createAuthFormData({
-        orgId: true,
-        account: true,
-      });
+    const formData = authStore.createAuthFormData({
+      orgId: true,
+      account: true,
+    });
 
-      formData.append("keyword", keyword);
+    formData.append("keyword", keyword);
 
-      const response = await ApiService.post(
-        "projectBefore/getHousingInitList",
-        formData
-      );
-
-      if (response.data && response.data.success) {
-        allHousingData.value = response.data.success.AllHousingInit;
-      } else {
-        console.error(
-          `獲取 ${keyword} 的屋況初始紀錄失敗,狀態: ${response.status} ${response.statusText}`
-        );
-      }
-    } catch (error) {
-      console.error("API 請求錯誤：", error);
-    }
+    await fetchHousingData(formData);
   }
 
   async function searchHousingWithDate(startDate: string, endDate: string) {
-    try {
-      const formData = authStore.createAuthFormData({
-        orgId: true,
-        account: true,
-      });
+    const formData = authStore.createAuthFormData({
+      orgId: true,
+      account: true,
+    });
 
-      formData.append("searchStartDate", startDate);
-      formData.append("searchEndDate", endDate);
+    formData.append("searchStartDate", startDate);
+    formData.append("searchEndDate", endDate);
 
-      const response = await ApiService.post(
-        "projectBefore/getHousingInitList",
-        formData
-      );
-
-      if (response.data && response.data.success) {
-        allHousingData.value = response.data.success.AllHousingInit;
-      } else {
-        console.error(
-          `獲取 ${startDate} - ${endDate} 的屋況初始紀錄失敗,狀態: ${response.status} ${response.statusText}`
-        );
-      }
-    } catch (error) {
-      console.error("API 請求錯誤：", error);
-    }
+    await fetchHousingData(formData);
   }
 
   return {
