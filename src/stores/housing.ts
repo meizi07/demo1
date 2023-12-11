@@ -28,8 +28,6 @@ export const useHousingStore = defineStore("housing", () => {
     } catch (error) {
       console.error("API 請求錯誤：", error);
     }
-
-    console.log("allHousingData", allHousingData.value);
   }
 
   async function fetchAllHousingData() {

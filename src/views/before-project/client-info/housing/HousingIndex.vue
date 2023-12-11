@@ -4,15 +4,20 @@
       type="button"
       class="btn btn-sm fw-bold btn-primary"
       data-bs-toggle="modal"
-      data-bs-target="#"
+      data-bs-target="#modal_create_housing"
     >
       新增屋況紀錄
     </button>
   </div>
 
   <HousingList />
+
+  <Teleport to="body">
+    <CreateHousingModal />
+  </Teleport>
 </template>
 
 <script setup lang="ts">
 import HousingList from "@/components/customers/datatable/HousingList.vue";
+import CreateHousingModal from "@/components/modals/general/CreateHousingModal.vue";
 </script>
