@@ -54,12 +54,34 @@ export const useHousingStore = defineStore("housing", () => {
         allHousingData.value = response.data.success.AllHousingInit;
       } else {
         console.error(
-          "獲取 「" +
-            keyword +
-            "」 的屋況初始紀錄失敗，狀態： " +
-            response.status +
-            " " +
-            response.statusText
+          `獲取 ${keyword} 的屋況初始紀錄失敗,狀態: ${response.status} ${response.statusText}`
+        );
+      }
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
+  }
+
+  async function searchHousingWithDate(startDate: string, endDate: string) {
+    try {
+      const formData = authStore.createAuthFormData({
+        orgId: true,
+        account: true,
+      });
+
+      formData.append("searchStartDate", startDate);
+      formData.append("searchEndDate", endDate);
+
+      const response = await ApiService.post(
+        "projectBefore/getHousingInitList",
+        formData
+      );
+
+      if (response.data && response.data.success) {
+        allHousingData.value = response.data.success.AllHousingInit;
+      } else {
+        console.error(
+          `獲取 ${startDate} - ${endDate} 的屋況初始紀錄失敗,狀態: ${response.status} ${response.statusText}`
         );
       }
     } catch (error) {
@@ -71,5 +93,6 @@ export const useHousingStore = defineStore("housing", () => {
     allHousingData,
     fetchAllHousingData,
     searchHousingWithKeyword,
+    searchHousingWithDate,
   };
 });

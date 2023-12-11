@@ -37,6 +37,7 @@
             />
             <input
               type="text"
+              name="keyword"
               class="form-control form-control-solid w-250px ps-15"
               placeholder="關鍵字搜尋"
               @input="searchWithKeyword($event)"
@@ -49,19 +50,16 @@
               ><span class="path3"></span><span class="path4"></span
               ><span class="path5"></span><span class="path6"></span
             ></i>
-            <input
-              class="form-control form-control-solid rounded rounded-end-0 ps-12 w-250px client_date"
-              placeholder="日期搜尋"
+            <el-date-picker
+              v-model="searchDate"
+              type="daterange"
+              name="searchDate"
+              range-separator="-"
+              start-placeholder="起始日"
+              end-placeholder="結束日"
+              size="large"
+              @change="searchWithDate"
             />
-            <button
-              class="btn btn-icon btn-light"
-              id="kt_ecommerce_sales_flatpickr_clear"
-            >
-              <i class="ki-duotone ki-cross fs-2">
-                <span class="path1"></span>
-                <span class="path2"></span>
-              </i>
-            </button>
           </div>
         </div>
 
@@ -132,6 +130,11 @@ import { useHousingStore } from "@/stores/housing";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import { debounce } from "@/utils/function";
 
+const housingStore = useHousingStore();
+const { allHousingData } = storeToRefs(housingStore);
+
+housingStore.fetchAllHousingData();
+
 const tableHeader = ref([
   {
     columnName: "案件編號",
@@ -164,10 +167,7 @@ const tableHeader = ref([
     sortEnabled: false,
   },
 ]);
-const housingStore = useHousingStore();
-const { allHousingData } = storeToRefs(housingStore);
-
-housingStore.fetchAllHousingData();
+const searchDate = ref([]);
 
 const debouncedSearch = debounce(housingStore.searchHousingWithKeyword, 400);
 
@@ -175,5 +175,12 @@ function searchWithKeyword(e: Event) {
   const keyword = (e.target as HTMLInputElement).value;
 
   debouncedSearch(keyword);
+}
+
+function searchWithDate() {
+  const startDate = moment(searchDate.value?.[0]).format("YYYY-MM-DD");
+  const endDate = moment(searchDate.value?.[1]).format("YYYY-MM-DD");
+
+  housingStore.searchHousingWithDate(startDate, endDate);
 }
 </script>
