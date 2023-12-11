@@ -39,8 +39,10 @@
               type="text"
               class="form-control form-control-solid w-250px ps-15"
               placeholder="關鍵字搜尋"
+              @input="searchWithKeyword($event)"
             />
           </div>
+
           <div class="position-relative d-flex align-items-center">
             <i class="ki-duotone ki-calendar-8 position-absolute ms-4 mb-1 fs-2"
               ><span class="path1"></span><span class="path2"></span
@@ -128,11 +130,7 @@ import { storeToRefs } from "pinia";
 import moment from "moment";
 import { useHousingStore } from "@/stores/housing";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
-
-const housingStore = useHousingStore();
-const { allHousingData } = storeToRefs(housingStore);
-
-housingStore.fetchAllHousingData();
+import { debounce } from "@/utils/function";
 
 const tableHeader = ref([
   {
@@ -166,4 +164,16 @@ const tableHeader = ref([
     sortEnabled: false,
   },
 ]);
+const housingStore = useHousingStore();
+const { allHousingData } = storeToRefs(housingStore);
+
+housingStore.fetchAllHousingData();
+
+const debouncedSearch = debounce(housingStore.searchHousingWithKeyword, 400);
+
+function searchWithKeyword(e: Event) {
+  const keyword = (e.target as HTMLInputElement).value;
+
+  debouncedSearch(keyword);
+}
 </script>
