@@ -29,6 +29,7 @@
               <span class="path2"></span>
             </i>
             <input
+              v-model="searchTerm"
               type="text"
               class="form-control form-control-solid ps-12"
               placeholder="案件編號、案件名稱"
@@ -36,9 +37,9 @@
           </div>
         </div>
 
-        <div class="modal-body mh-400px">
+        <div class="modal-body mh-400px min-h-400px">
           <div
-            v-for="item in projects"
+            v-for="item in filterProjects"
             :key="item.ProjectID"
             class="d-flex align-items-sm-center mb-7"
           >
@@ -82,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import ApiService from "@/core/services/ApiService";
 import { hideModal } from "@/core/helpers/dom";
@@ -95,6 +96,7 @@ const router = useRouter();
 const housingModalRef = ref(null);
 const projects = ref<Project[]>([]);
 const projectId = ref("");
+const searchTerm = ref("");
 
 async function fetchHousingProjects() {
   try {
@@ -132,6 +134,19 @@ function redirectToAddHousingPage() {
     alert("請選擇案件");
   }
 }
+
+const filterProjects = computed(() => {
+  if (!searchTerm.value) {
+    return projects.value;
+  }
+
+  return projects.value.filter((item) => {
+    return (
+      item.ProjectID.toLowerCase().includes(searchTerm.value) ||
+      item.ProjectName.toLowerCase().includes(searchTerm.value)
+    );
+  });
+});
 
 onMounted(() => {
   fetchHousingProjects();
