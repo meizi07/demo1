@@ -36,20 +36,16 @@
               icon-class="fs-1 position-absolute ms-6"
             />
             <input
+              v-model="searchKeyword"
               type="text"
               name="keyword"
               class="form-control form-control-solid w-250px ps-15"
               placeholder="關鍵字搜尋"
-              @input="searchWithKeyword($event)"
+              @input="searchWithKeyword"
             />
           </div>
 
           <div class="position-relative d-flex align-items-center">
-            <i class="ki-duotone ki-calendar-8 position-absolute ms-4 mb-1 fs-2"
-              ><span class="path1"></span><span class="path2"></span
-              ><span class="path3"></span><span class="path4"></span
-              ><span class="path5"></span><span class="path6"></span
-            ></i>
             <el-date-picker
               v-model="searchDate"
               type="daterange"
@@ -123,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import moment from "moment";
 import { useHousingStore } from "@/stores/housing";
@@ -167,20 +163,35 @@ const tableHeader = ref([
     sortEnabled: false,
   },
 ]);
+const searchKeyword = ref("");
 const searchDate = ref([]);
 
 const debouncedSearch = debounce(housingStore.searchHousingWithKeyword, 400);
 
-function searchWithKeyword(e: Event) {
-  const keyword = (e.target as HTMLInputElement).value;
-
-  debouncedSearch(keyword);
+function searchWithKeyword() {
+  searchDate.value = [];
+  debouncedSearch(searchKeyword.value);
 }
 
 function searchWithDate() {
   const startDate = moment(searchDate.value?.[0]).format("YYYY-MM-DD");
   const endDate = moment(searchDate.value?.[1]).format("YYYY-MM-DD");
 
+  searchKeyword.value = "";
   housingStore.searchHousingWithDate(startDate, endDate);
 }
+
+// 解決使用 element plus 日期搜尋後，再點擊清除按鈕無法清除的問題
+function resetDateSearch() {
+  document
+    .querySelector(".el-range__close-icon")
+    ?.addEventListener("click", () => {
+      searchDate.value = [];
+      housingStore.fetchAllHousingData();
+    });
+}
+
+onMounted(() => {
+  resetDateSearch();
+});
 </script>
