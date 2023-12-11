@@ -13,11 +13,11 @@
   <HousingList />
 
   <Teleport to="body">
-    <CreateHousingModal />
+    <AddHousingModal />
   </Teleport>
 </template>
 
 <script setup lang="ts">
 import HousingList from "@/components/customers/datatable/HousingList.vue";
-import CreateHousingModal from "@/components/modals/general/CreateHousingModal.vue";
+import AddHousingModal from "@/components/modals/general/AddHousingModal.vue";
 </script>
