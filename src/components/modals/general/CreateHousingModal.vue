@@ -58,6 +58,7 @@
                 <button
                   type="button"
                   class="btn btn-outline btn-outline-bordered btn-active-light-primary"
+                  @click="projectId = item.ProjectID"
                 >
                   選擇
                 </button>
@@ -67,7 +68,13 @@
         </div>
 
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">建立屋況紀錄</button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            @click="redirectToAddHousingPage"
+          >
+            建立屋況紀錄
+          </button>
         </div>
       </div>
     </div>
@@ -76,14 +83,18 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import ApiService from "@/core/services/ApiService";
+import { hideModal } from "@/core/helpers/dom";
 import { useAuthStore } from "@/stores/auth";
 import type { Project } from "@/types/Project";
 
 const authStore = useAuthStore();
+const router = useRouter();
 
 const housingModalRef = ref(null);
 const projects = ref<Project[]>([]);
+const projectId = ref("");
 
 async function fetchHousingProjects() {
   try {
@@ -104,6 +115,21 @@ async function fetchHousingProjects() {
     }
   } catch (error) {
     console.error("API 請求錯誤：", error);
+  }
+}
+
+function redirectToAddHousingPage() {
+  if (projectId.value) {
+    hideModal(housingModalRef.value);
+
+    router.push({
+      name: "bj-housing-add",
+      query: {
+        projectId: projectId.value,
+      },
+    });
+  } else {
+    alert("請選擇案件");
   }
 }
 
