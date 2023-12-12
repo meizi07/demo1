@@ -101,18 +101,18 @@ export default defineComponent({
 
     const fetchClients = async () => {
       try {
-        const formData = new FormData();
-        formData.append("orgId", authStore.user.orgId);
-        formData.append("account", authStore.user.account);
-        formData.append("token", authStore.user.token);
+        const requestData = {
+          orgId: authStore.user.orgId,
+          account: authStore.user.account,
+        };
 
         const response = await ApiService.post(
-          "/projectBefore/getAllProjectList.php",
-          formData
+          "/projectBefore/getRequirementProjectList",
+          requestData
         );
 
         if (response.data.success) {
-          caselist.value = response.data.success.All as {
+          caselist.value = response.data.success as {
             id: string;
             ProjectName: string;
             ObjectAddress: string;

@@ -80,6 +80,29 @@
                   </button>
                 </div>
               </div>
+              <div v-if="area.selectedArea === '廚房'">
+                <!-- 廚房形式的選項 -->
+                <el-radio-group v-model="area.kitchenStyle">
+                  <el-radio label="封閉式">封閉式</el-radio>
+                  <el-radio label="開放式">開放式</el-radio>
+                </el-radio-group>
+
+                <!-- 下廚頻率的輸入框 -->
+                <el-input
+                  v-model="area.cookingFrequency"
+                  placeholder="下廚頻率"
+                ></el-input>
+
+                <!-- 廚房設備的多選框 -->
+                <div
+                  v-for="(equipment, eqIndex) in area.kitchenEquipments"
+                  :key="eqIndex"
+                >
+                  <el-checkbox v-model="equipment.checked">{{
+                    equipment.label
+                  }}</el-checkbox>
+                </div>
+              </div>
               <button
                 type="button"
                 @click="addItem(area)"
@@ -143,7 +166,7 @@ export default defineComponent({
         { label: "TV", checked: false, isDefault: true },
       ],
       廚房: [
-        { label: "餐桌", checked: false, isDefault: true },
+        { label: "基本三機", checked: false, isDefault: true },
         { label: "TV", checked: false, isDefault: true },
       ],
       客浴: [
@@ -179,9 +202,21 @@ export default defineComponent({
 
     const addArea = () => {
       const newArea = {
-        selectedArea: "玄關", // 將 "玄關" 設為預設選項
+        selectedArea: "", // 預設選項可以是 "玄關" 或其他
         items: [],
+        // 廚房特有的屬性，預設為空或預設值
+        kitchenStyle: "",
+        cookingFrequency: "",
+        kitchenEquipments: [],
       };
+
+      // 如果選擇的是廚房，則添加廚房相關的屬性
+      if (newArea.selectedArea === "廚房") {
+        newArea.kitchenStyle = ""; // 預設廚房形式
+        newArea.cookingFrequency = ""; // 預設下廚頻率
+        newArea.kitchenEquipments = defaultItemsForArea.廚房; // 廚房設備
+      }
+
       localFormData.value.areas.push(newArea);
     };
 

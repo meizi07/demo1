@@ -90,6 +90,12 @@ import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 import TableCard from "@/components/customers/cards/overview/TableCard.vue";
 import { DrawerComponent } from "@/assets/ts/components/_DrawerComponent";
 import ChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue";
+import type { Housing } from "@/utils/share";
+import {
+  getGenderLabel,
+  getAgeLabel,
+  getSpecialDemandLabel,
+} from "@/utils/function";
 
 export interface SuccessData {
   Customer: {
@@ -105,7 +111,7 @@ export interface SuccessData {
     ContactAddress: string;
     Email: string;
   };
-  HousingMember: any[]; // 此处类型未提供
+  HousingMember: any[];
   HousingData: {
     HousingData: string;
     HousingAge: string;
@@ -116,7 +122,7 @@ export interface SuccessData {
     Format: string;
     ObjectAddress: string;
   };
-  HousingRequirement: any[]; // 此处类型未提供
+  HousingRequirement: any[];
   Style: any[];
   Security: {
     UUID: string;
@@ -209,9 +215,9 @@ export default {
 
     const tab2HeaderData = ref([
       { label: "編號", field: "Sequence" },
-      { label: "性別", field: "Material" },
-      { label: "年齡", field: "Purpose" },
-      { label: "特殊需求", field: "Remark" },
+      { label: "性別", field: "Sex" },
+      { label: "年齡", field: "Age" },
+      { label: "特殊需求", field: "SpecialDemand" },
       { label: "備註", field: "Remark" },
     ]);
     const apiData2 = ref([]);
@@ -249,6 +255,7 @@ export default {
     const apiData6 = ref([]);
 
     const tab7HeaderData = ref([
+      { label: "編號", field: "Sequence" },
       { label: "類別", field: "Category" },
       { label: "室內坪數", field: "SquareMeters" },
       { label: "每坪單價", field: "SquareMetersPrice" },
@@ -258,6 +265,7 @@ export default {
     const apiData7 = ref([]);
 
     const tab8HeaderData = ref([
+      { label: "編號", field: "Sequence" },
       { label: "檔案類型", field: "Category" },
       { label: "檔案名稱", field: "FileName" },
       { label: "附件", field: "Attachment" },
@@ -304,7 +312,17 @@ export default {
         tab1tableData2.value[6].value = successData.Customer.ContactAddress;
         tab1tableData2.value[7].value = successData.Customer.Email;
 
-        apiData2.value = response.data.success.HousingMember;
+        // 處理居住成員
+        const housingDataArray = ref<Housing[]>([]);
+        housingDataArray.value = response.data.success.HousingMember;
+        const processedHousingData = housingDataArray.value.map((housing) => ({
+          ...housing,
+          Sex: getGenderLabel(housing.Sex),
+          Age: getAgeLabel(housing.Age),
+          SpecialDemand: getSpecialDemandLabel(housing.SpecialDemand),
+        }));
+        apiData2.value = processedHousingData;
+        //apiData2.value = response.data.success.HousingMember;
 
         // 更新 tab3tableData
         tab3tableData.value[0].value = successData.HousingData.HousingData;

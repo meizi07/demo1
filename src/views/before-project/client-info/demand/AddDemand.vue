@@ -125,10 +125,10 @@
           />
         </div>
         <div class="tab-pane fade show" id="demand_add_pane_4" role="tabpanel">
-          <!-- <Tab4Component
+          <Tab4Component
             :form-data="tab4Data"
             @update:formData="updateTab4Data"
-          /> -->
+          />
         </div>
         <div class="tab-pane fade show" id="demand_add_pane_5" role="tabpanel">
           <Tab5Component
@@ -197,7 +197,7 @@ export default {
     InfoCard,
     TableCard,
     Tab3Component,
-    // Tab4Component,
+    Tab4Component,
     Tab5Component,
     Tab6Component,
     Tab7Component,
