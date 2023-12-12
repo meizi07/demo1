@@ -50,6 +50,7 @@
 
     .bullet-custom {
       display: none;
+      background-color: var(--#{$prefix}primary);
     }
   }
 
