@@ -175,7 +175,7 @@ const routes: Array<RouteRecordRaw> = [
                 "@/views/before-project/client-info/housing/AddHousing.vue"
               ),
             meta: {
-              pageTitle: "屋況初始紀錄",
+              pageTitle: "新增屋況初始紀錄",
             },
           },
         ],

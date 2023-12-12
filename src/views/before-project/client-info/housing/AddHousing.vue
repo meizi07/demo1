@@ -22,7 +22,7 @@
       </button> -->
 
       <button type="submit" class="btn btn-sm fw-bold btn-primary">
-        <span class="indicator-label"> 儲存 </span>
+        <span class="indicator-label">儲存</span>
       </button>
 
       <router-link
@@ -80,28 +80,7 @@
           id="housing_init_record"
           role="tabpanel"
         >
-          <div class="card mb-5 mb-xl-10">
-            <div class="card-body d-flex flex-column p-9">
-              <div class="table-responsive">
-                <table
-                  class="table align-middle table-row-bordered mb-0 fs-6 gy-5 table_half_col"
-                >
-                  <tbody class="fw-semibold text-gray-800">
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          案件編號</label
-                        >
-                      </td>
-                      <td class="fw-bold"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <EditProjectInfo />
         </div>
 
         <div
@@ -139,6 +118,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
 
 const addHousingFormRef = ref<null | HTMLFormElement>(null);
 
