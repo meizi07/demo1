@@ -1,10 +1,10 @@
 <template>
   <el-form
+    ref="addHousingFormRef"
+    :model="targetData"
+    class="form"
     id="add_housing_form"
     @submit.prevent=""
-    :model="targetData"
-    ref="addHousingFormRef"
-    class="form"
   >
     <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
       <!-- <button
@@ -88,28 +88,7 @@
           id="housing_measuring_record"
           role="tabpanel"
         >
-          <div class="card mb-5 mb-xl-10">
-            <div class="card-body d-flex flex-column p-9">
-              <div class="table-responsive">
-                <table
-                  class="table align-middle table-row-bordered mb-0 fs-6 gy-5 table_half_col"
-                >
-                  <tbody class="fw-semibold text-gray-800">
-                    <tr>
-                      <td class="text-muted">
-                        <label
-                          class="d-flex align-items-center fs-6 fw-semobold mb-4"
-                        >
-                          丈量紀錄區塊
-                        </label>
-                      </td>
-                      <td class="fw-bold"></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <EditMeasuringRecord />
         </div>
       </div>
     </div>
@@ -119,6 +98,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
+import EditMeasuringRecord from "@/components/housing/EditMeasuringRecord.vue";
 
 const addHousingFormRef = ref<null | HTMLFormElement>(null);
 

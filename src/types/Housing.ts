@@ -12,6 +12,12 @@ export interface ProjectInfo {
   Recorder: string;
 }
 
+export interface MeasuringData {
+  FileName: string;
+  FilePath: string;
+  Description: string;
+}
+
 // "HousingInfo": {
 //   "ProjectInfo": {
 //       "ProjectID": "ProjectID",
