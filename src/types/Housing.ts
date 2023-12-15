@@ -14,8 +14,16 @@ export interface ProjectInfo {
 
 export interface MeasuringData {
   FileName: string;
-  FilePath: string;
+  FileImage: string;
   Description: string;
+}
+
+export interface EditHousingData {
+  HousingInfo: {
+    ProjectInfo: ProjectInfo;
+    HousingDetail: [];
+  };
+  Measure: MeasuringData[];
 }
 
 // "HousingInfo": {

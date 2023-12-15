@@ -19,13 +19,11 @@
                 </el-form-item>
               </td>
 
-              <td>
+              <td width="30%">
                 <label class="form-label">附加檔案</label>
 
                 <el-upload
                   :ref="(el) => (fileRef[index] = el)"
-                  name="FilePath"
-                  class="upload-demo"
                   action="#"
                   :limit="1"
                   :on-exceed="(files) => handleFileExceed(files, index)"
@@ -33,16 +31,11 @@
                     (file, fileList) => handleFileChange(file, fileList, index)
                   "
                   :auto-upload="false"
+                  name="FileImage"
                   accept="image/*,.pdf"
                 >
                   <template #trigger>
                     <el-button type="primary">選擇檔案</el-button>
-                  </template>
-
-                  <template #tip>
-                    <div class="el-upload__tip text-red">
-                      檔案格式限制：jpg/png/pdf，檔案大小限制：5MB
-                    </div>
                   </template>
                 </el-upload>
               </td>
@@ -98,16 +91,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { genFileId } from "element-plus";
 import type { UploadInstance, UploadRawFile, UploadFile } from "element-plus";
+import { useHousingStore } from "@/stores/housing";
 import type { MeasuringData } from "@/types/Housing";
+
+const housingStore = useHousingStore();
 
 const fileRef = ref<Array<UploadInstance | null>>([]);
 const measuringData = ref<MeasuringData[]>([
   {
     FileName: "",
-    FilePath: "",
+    FileImage: "",
     Description: "",
   },
 ]);
@@ -115,7 +111,7 @@ const measuringData = ref<MeasuringData[]>([
 function addNewMeasuringRow() {
   measuringData.value.push({
     FileName: "",
-    FilePath: "",
+    FileImage: "",
     Description: "",
   });
 }
@@ -144,11 +140,15 @@ function handleFileChange(
   const reader = new FileReader();
 
   reader.onload = (e) => {
-    measuringData.value[index].FilePath = e.target!.result as string;
+    measuringData.value[index].FileImage = e.target!.result as string;
   };
 
   if (file && file.raw) {
     reader.readAsDataURL(file.raw);
   }
 }
+
+watch(measuringData.value, () => {
+  housingStore.syncWithMeasuringData(measuringData.value);
+});
 </script>

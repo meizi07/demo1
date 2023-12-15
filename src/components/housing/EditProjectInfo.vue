@@ -27,7 +27,7 @@
                   type="date"
                   placeholder="選擇紀錄日期"
                   size="large"
-                  :default-value="new Date()"
+                  value-format="YYYY-MM-DD"
                 />
               </td>
             </tr>
@@ -49,7 +49,7 @@
                     v-for="item in recorderOptions"
                     :key="item.UUID"
                     :label="item.Name"
-                    :value="item.Name"
+                    :value="item.AccountID"
                   />
                 </el-select>
               </td>
@@ -62,15 +62,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useRoute } from "vue-router";
 import moment from "moment";
+import { useHousingStore } from "@/stores/housing";
 import { useAuthStore } from "@/stores/auth";
 import ApiService from "@/core/services/ApiService";
 import type { Account } from "@/types/Project";
 import type { ProjectInfo } from "@/types/Housing";
 
 const authStore = useAuthStore();
+const housingStore = useHousingStore();
 const route = useRoute();
 
 const recorderOptions = ref<Account[]>([]);
@@ -116,4 +118,8 @@ async function fetchRecorderOptions() {
 }
 
 fetchRecorderOptions();
+
+watch(projectInfoData.value, () => {
+  housingStore.syncWithProjectInfoData(projectInfoData.value);
+});
 </script>

@@ -4,7 +4,7 @@
     :model="targetData"
     class="form"
     id="add_housing_form"
-    @submit.prevent=""
+    @submit.prevent="housingStore.submitHousingData"
   >
     <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
       <!-- <button
@@ -97,8 +97,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useHousingStore } from "@/stores/housing";
 import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
 import EditMeasuringRecord from "@/components/housing/EditMeasuringRecord.vue";
+
+const housingStore = useHousingStore();
 
 const addHousingFormRef = ref<null | HTMLFormElement>(null);
 

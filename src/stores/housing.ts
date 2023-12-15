@@ -2,12 +2,24 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import { useAuthStore } from "@/stores/auth";
 import ApiService from "@/core/services/ApiService";
-import type { AllHousingData } from "@/types/Housing";
+import type {
+  AllHousingData,
+  EditHousingData,
+  ProjectInfo,
+  MeasuringData,
+} from "@/types/Housing";
 
 export const useHousingStore = defineStore("housing", () => {
   const authStore = useAuthStore();
 
+  const DEFAULT_QUERY_PARAMS = {
+    orgId: authStore.user.orgId,
+    account: authStore.user.account,
+  };
+
   const allHousingData = ref<AllHousingData[]>([]);
+  const projectInfoData = ref<ProjectInfo | null>(null);
+  const measuringData = ref<MeasuringData[]>([]);
 
   async function fetchHousingData(formData: FormData) {
     allHousingData.value = [];
@@ -62,10 +74,59 @@ export const useHousingStore = defineStore("housing", () => {
     await fetchHousingData(formData);
   }
 
+  function syncWithProjectInfoData(data: ProjectInfo) {
+    projectInfoData.value = data;
+  }
+
+  function syncWithMeasuringData(data: MeasuringData[]) {
+    measuringData.value = data;
+  }
+
+  function _packHousingData(): EditHousingData {
+    return {
+      HousingInfo: {
+        ProjectInfo: projectInfoData.value as ProjectInfo,
+        HousingDetail: [],
+      },
+      Measure: measuringData.value,
+    };
+  }
+
+  async function submitHousingData() {
+    const housingData = _packHousingData();
+
+    try {
+      const housingData = _packHousingData();
+
+      const response = await ApiService.post(
+        "projectBefore/addHousingInitData",
+        {
+          ...DEFAULT_QUERY_PARAMS,
+          ...housingData,
+        }
+      );
+
+      if (response.data && response.data.success) {
+        alert("新增屋況初始紀錄成功！");
+      } else {
+        console.error(
+          `新增屋況初始紀錄失敗，狀態： ${response.status} ${response.statusText}`
+        );
+      }
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
+  }
+
   return {
     allHousingData,
+    projectInfoData,
+    measuringData,
     fetchAllHousingData,
     searchHousingWithKeyword,
     searchHousingWithDate,
+    syncWithProjectInfoData,
+    syncWithMeasuringData,
+    submitHousingData,
   };
 });
