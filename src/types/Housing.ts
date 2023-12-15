@@ -12,6 +12,15 @@ export interface ProjectInfo {
   Recorder: string;
 }
 
+export interface HousingDetail {
+  Area: string;
+  Description: string;
+  DetailRecord: {
+    FileImage: string;
+    Description: string;
+  };
+}
+
 export interface MeasuringData {
   FileName: string;
   FileImage: string;
@@ -21,7 +30,7 @@ export interface MeasuringData {
 export interface EditHousingData {
   HousingInfo: {
     ProjectInfo: ProjectInfo;
-    HousingDetail: [];
+    HousingDetail: HousingDetail[];
   };
   Measure: MeasuringData[];
 }

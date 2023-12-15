@@ -14,16 +14,37 @@
             >
               <thead>
                 <tr class="text-start text-gray-800 fw-bold fs-7 gs-0">
-                  <th style="width: 10%">區域</th>
+                  <th style="width: 15%">區域</th>
                   <th style="width: 35%">說明</th>
-                  <th style="width: 50%">照片</th>
+                  <th style="width: 45%">照片</th>
                   <th style="width: 5%"></th>
                 </tr>
               </thead>
+
               <tbody class="fw-semibold text-gray-800">
-                <tr>
-                  <td class="sorting_1">客廳</td>
-                  <td>家中主要的起居空間，通常用於休息、娛樂</td>
+                <tr v-for="(item, index) in areaData" :key="index">
+                  <td>
+                    <el-form-item>
+                      <el-input
+                        v-model="item.Area"
+                        type="text"
+                        name="Area"
+                        placeholder="區域名稱"
+                      />
+                    </el-form-item>
+                  </td>
+
+                  <td>
+                    <el-form-item>
+                      <el-input
+                        v-model="item.Description"
+                        type="text"
+                        name="Description"
+                        placeholder="區域說明"
+                      />
+                    </el-form-item>
+                  </td>
+
                   <td>
                     <div class="card-title">
                       <div class="symbol-group">
@@ -42,10 +63,12 @@
                       </div>
                     </div>
                   </td>
+
                   <td>
                     <button
                       type="button"
                       class="d-block btn btn-sm btn-icon text-muted text-hover-danger"
+                      @click="deleteAreaRow(index)"
                     >
                       <i class="ki-duotone ki-cross fs-1">
                         <span class="path1"></span>
@@ -64,8 +87,7 @@
         <button
           type="button"
           class="btn btn-sm btn-light-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#modal_add_eng"
+          @click="addNewAreaRow"
         >
           <i class="ki-duotone ki-plus fs-2"></i>
           新增區域
@@ -75,4 +97,33 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import type { HousingDetail } from "@/types/Housing";
+
+const areaData = ref<HousingDetail[]>([
+  {
+    Area: "",
+    Description: "",
+    DetailRecord: {
+      FileImage: "",
+      Description: "",
+    },
+  },
+]);
+
+function addNewAreaRow() {
+  areaData.value.push({
+    Area: "",
+    Description: "",
+    DetailRecord: {
+      FileImage: "",
+      Description: "",
+    },
+  });
+}
+
+function deleteAreaRow(index: number) {
+  areaData.value.splice(index, 1);
+}
+</script>
