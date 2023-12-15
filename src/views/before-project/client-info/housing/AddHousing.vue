@@ -77,6 +77,7 @@
           role="tabpanel"
         >
           <EditProjectInfo />
+          <EditArea />
         </div>
 
         <div
@@ -97,6 +98,7 @@ import { storeToRefs } from "pinia";
 import { useHousingStore } from "@/stores/housing";
 import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
 import EditMeasuringRecord from "@/components/housing/EditMeasuringRecord.vue";
+import EditArea from "@/components/housing/EditArea.vue";
 
 const housingStore = useHousingStore();
 const { isLoading } = storeToRefs(housingStore);
