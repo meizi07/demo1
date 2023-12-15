@@ -25,6 +25,7 @@
                 <el-date-picker
                   v-model="projectInfoData.RecordDate"
                   type="date"
+                  name="RecordDate"
                   placeholder="選擇紀錄日期"
                   size="large"
                   value-format="YYYY-MM-DD"
@@ -42,6 +43,7 @@
                 <el-select
                   v-model="projectInfoData.Recorder"
                   class="m-2"
+                  name="Recorder"
                   placeholder="請選擇記錄者"
                   size="large"
                 >
