@@ -46,25 +46,24 @@
                   </td>
 
                   <td>
-                    <input
-                      ref="fileInputRef"
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      @change="handleFileChange(index, $event)"
-                    />
-
                     <div
                       v-for="(img, imgIndex) in item.DetailRecord"
                       :key="imgIndex"
+                      class="d-flex mb-3 align-items-center gap-3"
                     >
-                      <img :src="img.FileImage" style="width: 100px" />
-
-                      <input
-                        type="text"
-                        v-model="img.Description"
-                        placeholder="圖片描述"
+                      <img
+                        :src="img.FileImage"
+                        class="w-125px h-125px object-fit-cover rounded"
                       />
+
+                      <el-form-item class="mb-0">
+                        <el-input
+                          v-model="img.Description"
+                          type="text"
+                          name="Description"
+                          placeholder="圖片描述"
+                        />
+                      </el-form-item>
 
                       <button
                         type="button"
@@ -74,6 +73,21 @@
                         刪除
                       </button>
                     </div>
+
+                    <label
+                      :for="`fileInput${index}`"
+                      class="btn bg-light-secondary d-flex flex-column flex-center w-125px h-125px"
+                    >
+                      <i class="ki-duotone ki-plus text-gray-300 fs-4x"></i>
+                      <input
+                        type="file"
+                        :id="`fileInput${index}`"
+                        class="d-none"
+                        multiple
+                        accept="image/*"
+                        @change="handleFileChange(index, $event)"
+                      />
+                    </label>
                   </td>
 
                   <td>
@@ -117,12 +131,7 @@ const areaData = ref<HousingDetail[]>([
   {
     Area: "",
     Description: "",
-    DetailRecord: [
-      {
-        FileImage: "",
-        Description: "",
-      },
-    ],
+    DetailRecord: [],
   },
 ]);
 
@@ -130,20 +139,13 @@ function addNewAreaRow() {
   areaData.value.push({
     Area: "",
     Description: "",
-    DetailRecord: [
-      {
-        FileImage: "",
-        Description: "",
-      },
-    ],
+    DetailRecord: [],
   });
 }
 
 function deleteAreaRow(index: number) {
   areaData.value.splice(index, 1);
 }
-
-const fileInputRef = ref<HTMLInputElement | null>(null);
 
 function handleFileChange(index: number, event: Event) {
   const files = (event?.target as HTMLInputElement)?.files;
