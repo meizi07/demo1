@@ -20,6 +20,7 @@ export const useHousingStore = defineStore("housing", () => {
   const allHousingData = ref<AllHousingData[]>([]);
   const projectInfoData = ref<ProjectInfo | null>(null);
   const measuringData = ref<MeasuringData[]>([]);
+  const isLoading = ref<boolean>(false);
 
   async function fetchHousingData(formData: FormData) {
     allHousingData.value = [];
@@ -93,7 +94,7 @@ export const useHousingStore = defineStore("housing", () => {
   }
 
   async function submitHousingData() {
-    const housingData = _packHousingData();
+    isLoading.value = true;
 
     try {
       const housingData = _packHousingData();
@@ -115,6 +116,8 @@ export const useHousingStore = defineStore("housing", () => {
       }
     } catch (error) {
       console.error("API 請求錯誤：", error);
+    } finally {
+      isLoading.value = false;
     }
   }
 
@@ -122,6 +125,7 @@ export const useHousingStore = defineStore("housing", () => {
     allHousingData,
     projectInfoData,
     measuringData,
+    isLoading,
     fetchAllHousingData,
     searchHousingWithKeyword,
     searchHousingWithDate,

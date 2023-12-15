@@ -88,7 +88,7 @@ function handleDefaultRecorder() {
   );
 
   if (defaultRecorder) {
-    projectInfoData.value.Recorder = defaultRecorder.Name;
+    projectInfoData.value.Recorder = defaultRecorder.AccountID;
   }
 }
 

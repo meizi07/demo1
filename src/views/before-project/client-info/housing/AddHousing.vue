@@ -7,22 +7,18 @@
     @submit.prevent="housingStore.submitHousingData"
   >
     <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
-      <!-- <button
-        :data-kt-indicator="loading ? 'on' : null"
+      <button
         type="submit"
         class="btn btn-sm fw-bold btn-primary"
+        :data-kt-indicator="isLoading ? 'on' : null"
       >
-        <span v-if="!loading" class="indicator-label"> 儲存 </span>
-        <span v-if="loading" class="indicator-progress">
-          請稍等...
+        <span v-if="isLoading" class="indicator-progress">
+          送出中...
           <span
             class="spinner-border spinner-border-sm align-middle ms-2"
           ></span>
         </span>
-      </button> -->
-
-      <button type="submit" class="btn btn-sm fw-bold btn-primary">
-        <span class="indicator-label">儲存</span>
+        <span v-else class="indicator-label">儲存</span>
       </button>
 
       <router-link
@@ -97,11 +93,13 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { storeToRefs } from "pinia";
 import { useHousingStore } from "@/stores/housing";
 import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
 import EditMeasuringRecord from "@/components/housing/EditMeasuringRecord.vue";
 
 const housingStore = useHousingStore();
+const { isLoading } = storeToRefs(housingStore);
 
 const addHousingFormRef = ref<null | HTMLFormElement>(null);
 
