@@ -46,21 +46,33 @@
                   </td>
 
                   <td>
-                    <div class="card-title">
-                      <div class="symbol-group">
-                        <div class="symbol">
-                          <img alt="Pic" src="assets/media/auth/bg7.jpg" />
-                        </div>
-                        <div class="symbol">
-                          <img alt="Pic" src="assets/media/auth/bg6.jpg" />
-                        </div>
-                        <div class="symbol">
-                          <img alt="Pic" src="assets/media/auth/bg8.jpg" />
-                        </div>
-                        <div class="symbol">
-                          <img alt="Pic" src="assets/media/auth/bg9.jpg" />
-                        </div>
-                      </div>
+                    <input
+                      ref="fileInputRef"
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      @change="handleFileChange(index, $event)"
+                    />
+
+                    <div
+                      v-for="(img, imgIndex) in item.DetailRecord"
+                      :key="imgIndex"
+                    >
+                      <img :src="img.FileImage" style="width: 100px" />
+
+                      <input
+                        type="text"
+                        v-model="img.Description"
+                        placeholder="圖片描述"
+                      />
+
+                      <button
+                        type="button"
+                        class="btn btn-sm"
+                        @click="removeThumbnail(index, imgIndex)"
+                      >
+                        刪除
+                      </button>
                     </div>
                   </td>
 
@@ -105,10 +117,12 @@ const areaData = ref<HousingDetail[]>([
   {
     Area: "",
     Description: "",
-    DetailRecord: {
-      FileImage: "",
-      Description: "",
-    },
+    DetailRecord: [
+      {
+        FileImage: "",
+        Description: "",
+      },
+    ],
   },
 ]);
 
@@ -116,14 +130,44 @@ function addNewAreaRow() {
   areaData.value.push({
     Area: "",
     Description: "",
-    DetailRecord: {
-      FileImage: "",
-      Description: "",
-    },
+    DetailRecord: [
+      {
+        FileImage: "",
+        Description: "",
+      },
+    ],
   });
 }
 
 function deleteAreaRow(index: number) {
   areaData.value.splice(index, 1);
+}
+
+const fileInputRef = ref<HTMLInputElement | null>(null);
+
+function handleFileChange(index: number, event: Event) {
+  const files = (event?.target as HTMLInputElement)?.files;
+
+  if (files && files.length > 0) {
+    const images = areaData.value[index].DetailRecord;
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        images?.push({
+          FileImage: e.target?.result as string,
+          Description: "",
+        });
+      };
+
+      reader.readAsDataURL(file);
+    }
+  }
+}
+
+function removeThumbnail(index: number, imgIndex: number) {
+  areaData.value[index].DetailRecord?.splice(imgIndex, 1);
 }
 </script>

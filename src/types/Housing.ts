@@ -15,10 +15,12 @@ export interface ProjectInfo {
 export interface HousingDetail {
   Area: string;
   Description: string;
-  DetailRecord: {
-    FileImage: string;
-    Description: string;
-  };
+  DetailRecord: [
+    {
+      FileImage: string;
+      Description: string;
+    }
+  ];
 }
 
 export interface MeasuringData {
