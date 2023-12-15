@@ -14,7 +14,6 @@
                     type="text"
                     name="FileName"
                     placeholder="檔案名稱"
-                    size="large"
                   />
                 </el-form-item>
               </td>
@@ -49,7 +48,6 @@
                     type="text"
                     name="Description"
                     placeholder="說明"
-                    size="large"
                   />
                 </el-form-item>
               </td>

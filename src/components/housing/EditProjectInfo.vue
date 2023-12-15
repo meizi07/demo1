@@ -27,7 +27,6 @@
                   type="date"
                   name="RecordDate"
                   placeholder="選擇紀錄日期"
-                  size="large"
                   value-format="YYYY-MM-DD"
                 />
               </td>
@@ -45,7 +44,6 @@
                   class="m-2"
                   name="Recorder"
                   placeholder="請選擇記錄者"
-                  size="large"
                 >
                   <el-option
                     v-for="item in recorderOptions"

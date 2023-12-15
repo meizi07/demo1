@@ -3,6 +3,7 @@
     ref="addHousingFormRef"
     :model="targetData"
     class="form"
+    size="large"
     id="add_housing_form"
     @submit.prevent="housingStore.submitHousingData"
   >
