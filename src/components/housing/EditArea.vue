@@ -19,7 +19,7 @@
               <tbody class="fw-semibold text-gray-800">
                 <tr v-for="(item, index) in areaData" :key="index">
                   <td class="pe-5 py-10">
-                    <el-form-item>
+                    <el-form-item class="mb-0">
                       <el-input
                         v-model="item.Area"
                         type="text"
@@ -30,7 +30,7 @@
                   </td>
 
                   <td class="px-5 py-10">
-                    <el-form-item>
+                    <el-form-item class="mb-0">
                       <el-input
                         v-model="item.Description"
                         type="text"
@@ -51,6 +51,7 @@
                           :src="img.FileImage"
                           class="w-125px h-125px object-fit-cover rounded"
                         />
+
                         <button
                           type="button"
                           class="btn btn-icon btn-light btn-active-color-primary position-absolute top-0 start-100 w-25px h-25px translate-middle rounded-circle"

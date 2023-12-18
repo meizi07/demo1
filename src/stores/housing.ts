@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useAuthStore } from "@/stores/auth";
 import ApiService from "@/core/services/ApiService";
 import type {
@@ -114,8 +115,19 @@ export const useHousingStore = defineStore("housing", () => {
       if (response.data && response.data.success) {
         alert("新增屋況初始紀錄成功！");
       } else {
+        Swal.fire({
+          text: `新增屋況初始紀錄失敗，狀態： ${response.data.ErrorCode} ${response.data.ErrorMsg}`,
+          icon: "error",
+          buttonsStyling: false,
+          confirmButtonText: "繼續",
+          heightAuto: false,
+          customClass: {
+            confirmButton: "btn btn-primary",
+          },
+        });
+
         console.error(
-          `新增屋況初始紀錄失敗，狀態： ${response.status} ${response.statusText}`
+          `新增屋況初始紀錄失敗，狀態： ${response.data.ErrorCode} ${response.data.ErrorMsg}`
         );
       }
     } catch (error) {

@@ -22,13 +22,23 @@
                 </label>
               </td>
               <td class="fw-bold">
-                <el-date-picker
-                  v-model="projectInfoData.RecordDate"
-                  type="date"
-                  name="RecordDate"
-                  placeholder="選擇紀錄日期"
-                  value-format="YYYY-MM-DD"
-                />
+                <el-form-item
+                  class="mb-0"
+                  prop="RecordDate"
+                  :rules="{
+                    required: true,
+                    message: '請選擇紀錄日期',
+                    trigger: 'blur',
+                  }"
+                >
+                  <el-date-picker
+                    v-model="projectInfoData.RecordDate"
+                    type="date"
+                    name="RecordDate"
+                    placeholder="選擇紀錄日期"
+                    value-format="YYYY-MM-DD"
+                  />
+                </el-form-item>
               </td>
             </tr>
 

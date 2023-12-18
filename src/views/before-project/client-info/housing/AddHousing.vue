@@ -1,11 +1,11 @@
 <template>
   <el-form
-    ref="addHousingFormRef"
-    :model="targetData"
+    ref="housingFormRef"
+    :model="{ ...projectInfoData, measuringData, areaData }"
     class="form"
     size="large"
     id="add_housing_form"
-    @submit.prevent="housingStore.submitHousingData"
+    @submit.prevent="handleHousingSubmit(housingFormRef!)"
   >
     <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
       <button
@@ -96,15 +96,40 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
+import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useHousingStore } from "@/stores/housing";
 import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
 import EditMeasuringRecord from "@/components/housing/EditMeasuringRecord.vue";
 import EditArea from "@/components/housing/EditArea.vue";
 
 const housingStore = useHousingStore();
-const { isLoading } = storeToRefs(housingStore);
+const { projectInfoData, measuringData, areaData, isLoading } =
+  storeToRefs(housingStore);
 
-const addHousingFormRef = ref<null | HTMLFormElement>(null);
+const housingFormRef = ref<HTMLFormElement | null>(null);
 
-const targetData = ref({});
+function handleHousingSubmit(formEl: HTMLFormElement) {
+  if (!formEl) {
+    return;
+  }
+
+  formEl.validate((valid, fields) => {
+    if (valid) {
+      housingStore.submitHousingData();
+    } else {
+      Swal.fire({
+        text: "請檢查是否有未填欄位",
+        icon: "error",
+        buttonsStyling: false,
+        confirmButtonText: "繼續",
+        heightAuto: false,
+        customClass: {
+          confirmButton: "btn btn-primary",
+        },
+      });
+
+      return false;
+    }
+  });
+}
 </script>
