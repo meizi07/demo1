@@ -161,7 +161,6 @@ export default {
           return item; // 如果沒有匹配的類別，則返回原始項目
         });
 
-        // console.log("tab8formItems 更新了:", formattedData);
         emit("update:formData", formattedData);
       },
       { deep: true }
@@ -194,21 +193,6 @@ export default {
         }
       }
     };
-
-    // function getFile(
-    //   file: FileWithRaw,
-    //   fileList: File[],
-    //   index: number
-    // ): Promise<string> {
-    //   return getBase64(file.raw).then((res: string) => {
-    //     const params = res.split(",");
-    //     console.log(params, "params");
-    //     if (params.length > 0) {
-    //       return params[1]; // 返回 base64 字符串
-    //     }
-    //     return ""; // 或返回一個空字符串，如果沒有找到 base64
-    //   });
-    // }
 
     function getFile(file: FileWithRaw, fileList: File[], index: number): void {
       getBase64(file.raw).then((base64: string) => {

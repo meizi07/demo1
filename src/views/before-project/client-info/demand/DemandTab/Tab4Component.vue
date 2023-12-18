@@ -37,55 +37,128 @@
           </div>
           <div class="form-group">
             <div class="align-items-center mw-500px mt-8">
-              <div v-for="(item, itemIndex) in area.items" :key="itemIndex">
-                <div class="input-group-md d-flex mb-3">
-                  <div class="mx-3 d-flex">
-                    <!-- 如果是新項目，顯示可編輯的輸入框 -->
-                    <template v-if="!item.isDefault">
-                      <el-space size="small" class="w-150px d-flex cus_input">
-                        <el-checkbox v-model="item.checked"></el-checkbox>
-                        <el-input
-                          v-model="item.label"
-                          placeholder="其他"
-                          size="large"
-                        ></el-input>
-                      </el-space>
-                    </template>
-                    <!-- 如果是預設項目，顯示固定標籤 -->
-                    <template v-else>
-                      <div class="w-150px">
-                        <el-checkbox
-                          v-model="item.checked"
-                          :label="item.label"
-                          size="large"
-                        />
-                      </div>
-                    </template>
+              <template v-if="area.selectedArea === '廚房'">
+                <div class="mt-8">
+                  <p class="fs-5 fw-bold">廚房形式</p>
+                  <el-radio-group v-model="area.kitchenStyle">
+                    <el-radio label="封閉式">封閉式</el-radio>
+                    <el-radio label="開放式">開放式</el-radio>
+                  </el-radio-group>
+                  <div class="mt-8">
+                    <el-input
+                      v-model="area.kitchenStyleRemark"
+                      placeholder="補充說明"
+                      size="large"
+                    ></el-input>
                   </div>
+                </div>
+                <div class="mt-8">
+                  <p class="fs-5 fw-bold">下廚頻率</p>
                   <el-input
-                    v-model="item.remark"
-                    placeholder="補充說明"
+                    v-model="area.cookingFrequency"
+                    placeholder="下廚頻率"
                     size="large"
                   ></el-input>
-                  <button
-                    v-if="!item.isDefault"
-                    type="button"
-                    @click="removeItem(area, itemIndex)"
-                    class="btn btn-sm btn-icon text-muted text-hover-danger mx-5"
-                  >
-                    <i class="ki-duotone ki-cross fs-1">
-                      <span class="path1"></span>
-                      <span class="path2"></span>
-                    </i>
-                  </button>
                 </div>
-              </div>
-              <div v-if="area.selectedArea === '廚房'">
-                <!-- 廚房形式的選項 -->
-                <el-radio-group v-model="area.kitchenStyle">
-                  <el-radio label="封閉式">封閉式</el-radio>
-                  <el-radio label="開放式">開放式</el-radio>
-                </el-radio-group>
+                <!-- 廚房設備的多選框 -->
+                <div class="mt-8">
+                  <p class="fs-5 fw-bold">廚房設備</p>
+                  <div v-for="(item, itemIndex) in area.items" :key="itemIndex">
+                    <div class="input-group-md d-flex mb-3">
+                      <div class="mx-3 d-flex">
+                        <!-- 如果是新項目，顯示可編輯的輸入框 -->
+                        <template v-if="!item.isDefault">
+                          <el-space
+                            size="small"
+                            class="w-150px d-flex cus_input"
+                          >
+                            <el-checkbox v-model="item.checked"></el-checkbox>
+                            <el-input
+                              v-model="item.label"
+                              placeholder="其他"
+                              size="large"
+                            ></el-input>
+                          </el-space>
+                        </template>
+                        <!-- 如果是預設項目，顯示固定標籤 -->
+                        <template v-else>
+                          <div class="w-150px">
+                            <el-checkbox
+                              v-model="item.checked"
+                              :label="item.label"
+                              size="large"
+                            />
+                          </div>
+                        </template>
+                      </div>
+                      <el-input
+                        v-model="item.remark"
+                        placeholder="補充說明"
+                        size="large"
+                      ></el-input>
+                      <button
+                        v-if="!item.isDefault"
+                        type="button"
+                        @click="removeItem(area, itemIndex)"
+                        class="btn btn-sm btn-icon text-muted text-hover-danger mx-5"
+                      >
+                        <i class="ki-duotone ki-cross fs-1">
+                          <span class="path1"></span>
+                          <span class="path2"></span>
+                        </i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template v-else-if="area.selectedArea === '客浴'">
+                <div class="mt-8">
+                  <p class="fs-5 fw-bold">馬桶</p>
+                  <div v-for="(item, itemIndex) in area.items" :key="itemIndex">
+                    <div class="input-group-md d-flex mb-3">
+                      <div class="mx-3 d-flex">
+                        <template v-if="!item.isDefault">
+                          <el-space
+                            size="small"
+                            class="w-150px d-flex cus_input"
+                          >
+                            <el-checkbox v-model="item.checked"></el-checkbox>
+                            <el-input
+                              v-model="item.label"
+                              placeholder="其他"
+                              size="large"
+                            ></el-input>
+                          </el-space>
+                        </template>
+                        <template v-else>
+                          <div class="w-150px">
+                            <el-checkbox
+                              v-model="item.checked"
+                              :label="item.label"
+                              size="large"
+                            />
+                          </div>
+                        </template>
+                      </div>
+                      <el-input
+                        v-model="item.remark"
+                        placeholder="補充說明"
+                        size="large"
+                      ></el-input>
+                      <button
+                        v-if="!item.isDefault"
+                        type="button"
+                        @click="removeItem(area, itemIndex)"
+                        class="btn btn-sm btn-icon text-muted text-hover-danger mx-5"
+                      >
+                        <i class="ki-duotone ki-cross fs-1">
+                          <span class="path1"></span>
+                          <span class="path2"></span>
+                        </i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
 
                 <!-- 下廚頻率的輸入框 -->
                 <el-input
@@ -102,7 +175,124 @@
                     equipment.label
                   }}</el-checkbox>
                 </div>
-              </div>
+              </template>
+              <template v-else-if="area.selectedArea === '客房'">
+                <div class="mt-8">
+                  <p class="fs-5 fw-bold">房間用途</p>
+                  <el-input
+                    v-model="area.cookingFrequency"
+                    placeholder="ex:書房"
+                    size="large"
+                  ></el-input>
+                </div>
+                <div class="mt-8">
+                  <p class="fs-5 fw-bold">房間形式</p>
+                  <el-radio-group v-model="area.kitchenStyle">
+                    <el-radio label="開放式">開放式</el-radio>
+                    <el-radio label="開放式">半開放式</el-radio>
+                    <el-radio label="封閉式">封閉式</el-radio>
+                  </el-radio-group>
+                  <el-input
+                    v-model="area.cookingFrequency"
+                    placeholder="備註說明"
+                    size="large"
+                  ></el-input>
+                </div>
+
+                <div class="mt-8">
+                  <p class="fs-5 fw-bold">房間設備</p>
+                  <div v-for="(item, itemIndex) in area.items" :key="itemIndex">
+                    <div class="input-group-md d-flex mb-3">
+                      <div class="mx-3 d-flex">
+                        <template v-if="!item.isDefault">
+                          <el-space
+                            size="small"
+                            class="w-150px d-flex cus_input"
+                          >
+                            <el-checkbox v-model="item.checked"></el-checkbox>
+                            <el-input
+                              v-model="item.label"
+                              placeholder="其他"
+                              size="large"
+                            ></el-input>
+                          </el-space>
+                        </template>
+                        <template v-else>
+                          <div class="w-150px">
+                            <el-checkbox
+                              v-model="item.checked"
+                              :label="item.label"
+                              size="large"
+                            />
+                          </div>
+                        </template>
+                      </div>
+                      <el-input
+                        v-model="item.remark"
+                        placeholder="補充說明"
+                        size="large"
+                      ></el-input>
+                      <button
+                        v-if="!item.isDefault"
+                        type="button"
+                        @click="removeItem(area, itemIndex)"
+                        class="btn btn-sm btn-icon text-muted text-hover-danger mx-5"
+                      >
+                        <i class="ki-duotone ki-cross fs-1">
+                          <span class="path1"></span>
+                          <span class="path2"></span>
+                        </i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div v-for="(item, itemIndex) in area.items" :key="itemIndex">
+                  <div class="input-group-md d-flex mb-3">
+                    <div class="mx-3 d-flex">
+                      <!-- 如果是新項目，顯示可編輯的輸入框 -->
+                      <template v-if="!item.isDefault">
+                        <el-space size="small" class="w-150px d-flex cus_input">
+                          <el-checkbox v-model="item.checked"></el-checkbox>
+                          <el-input
+                            v-model="item.label"
+                            placeholder="其他"
+                            size="large"
+                          ></el-input>
+                        </el-space>
+                      </template>
+                      <!-- 如果是預設項目，顯示固定標籤 -->
+                      <template v-else>
+                        <div class="w-150px">
+                          <el-checkbox
+                            v-model="item.checked"
+                            :label="item.label"
+                            size="large"
+                          />
+                        </div>
+                      </template>
+                    </div>
+                    <el-input
+                      v-model="item.remark"
+                      placeholder="補充說明"
+                      size="large"
+                    ></el-input>
+                    <button
+                      v-if="!item.isDefault"
+                      type="button"
+                      @click="removeItem(area, itemIndex)"
+                      class="btn btn-sm btn-icon text-muted text-hover-danger mx-5"
+                    >
+                      <i class="ki-duotone ki-cross fs-1">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                      </i>
+                    </button>
+                  </div>
+                </div>
+              </template>
+
               <button
                 type="button"
                 @click="addItem(area)"
@@ -126,7 +316,7 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent, watchEffect } from "vue";
+import { ref, defineComponent, watchEffect, watch } from "vue";
 
 export default defineComponent({
   name: "Tab4Component",
@@ -167,15 +357,40 @@ export default defineComponent({
       ],
       廚房: [
         { label: "基本三機", checked: false, isDefault: true },
-        { label: "TV", checked: false, isDefault: true },
+        { label: "洗碗機", checked: false, isDefault: true },
+        { label: "蒸爐", checked: false, isDefault: true },
+        { label: "微波爐", checked: false, isDefault: true },
+        { label: "電子鍋", checked: false, isDefault: true },
+        { label: "電鍋", checked: false, isDefault: true },
+        { label: "烤箱", checked: false, isDefault: true },
       ],
-      客浴: [
-        { label: "餐桌", checked: false, isDefault: true },
-        { label: "TV", checked: false, isDefault: true },
-      ],
+      客浴: {
+        馬桶: [
+          { label: "地排式馬桶", checked: false },
+          { label: "壁排式馬桶", checked: false },
+          { label: "隱藏水箱式馬桶", checked: false },
+        ],
+        洗槽型式: [{ label: "洗槽", checked: false }],
+        淋浴型式: [{ label: "淋浴", checked: false }],
+        浴缸型式: [
+          { label: "成型缸", checked: false },
+          { label: "磚砌缸", checked: false },
+          { label: "按摩功能", checked: false },
+        ],
+        換氣型式: [
+          { label: "浴室抽風機", checked: false },
+          { label: "多功能浴室乾燥機", checked: false },
+          { label: "電動逆止閥抽風機", checked: false },
+        ],
+      },
       客房: [
-        { label: "餐桌", checked: false, isDefault: true },
-        { label: "TV", checked: false, isDefault: true },
+        { label: "架高地板", checked: false, isDefault: true },
+        { label: "機能式床", checked: false, isDefault: true },
+        { label: "書櫃", checked: false, isDefault: true },
+        { label: "衣櫃", checked: false, isDefault: true },
+        { label: "雙人床", checked: false, isDefault: true },
+        { label: "單人床", checked: false, isDefault: true },
+        { label: "書桌", checked: false, isDefault: true },
       ],
       更衣室: [
         { label: "長大衣", checked: false, isDefault: true },
@@ -202,19 +417,38 @@ export default defineComponent({
 
     const addArea = () => {
       const newArea = {
-        selectedArea: "", // 預設選項可以是 "玄關" 或其他
+        selectedArea: "玄關", // 預設選項可以是 "玄關" 或其他
         items: [],
         // 廚房特有的屬性，預設為空或預設值
         kitchenStyle: "",
+        kitchenStyleRemark: "",
         cookingFrequency: "",
-        kitchenEquipments: [],
+        // 客浴特有的屬性
+        toilet: "",
+        washbasinStyle: "",
+        showerStyle: "",
+        bathtubStyle: "",
+        ventilationStyle: "",
+        bathroomAccessories: [], // 可新增的浴室配件
+        generalAccessories: [], // 可新增的通用配件
       };
 
       // 如果選擇的是廚房，則添加廚房相關的屬性
       if (newArea.selectedArea === "廚房") {
         newArea.kitchenStyle = ""; // 預設廚房形式
+        newArea.kitchenStyleRemark = "";
         newArea.cookingFrequency = ""; // 預設下廚頻率
-        newArea.kitchenEquipments = defaultItemsForArea.廚房; // 廚房設備
+      }
+
+      // 如果選擇的是客浴，則初始化相關屬性
+      if (newArea.selectedArea === "客浴") {
+        newArea.toilet = "";
+        newArea.washbasinStyle = "";
+        newArea.showerStyle = "";
+        newArea.bathtubStyle = "";
+        newArea.ventilationStyle = "";
+        newArea.bathroomAccessories = [];
+        newArea.generalAccessories = [];
       }
 
       localFormData.value.areas.push(newArea);
@@ -253,6 +487,9 @@ export default defineComponent({
       });
     });
 
+    watch(localFormData, (newValue, oldValue) => {
+      console.log("localFormData 變化了:", newValue);
+    });
     return {
       localFormData,
       addArea,
