@@ -7,6 +7,7 @@ import type {
   EditHousingData,
   ProjectInfo,
   MeasuringData,
+  AreaData,
 } from "@/types/Housing";
 
 export const useHousingStore = defineStore("housing", () => {
@@ -20,6 +21,7 @@ export const useHousingStore = defineStore("housing", () => {
   const allHousingData = ref<AllHousingData[]>([]);
   const projectInfoData = ref<ProjectInfo | null>(null);
   const measuringData = ref<MeasuringData[]>([]);
+  const areaData = ref<AreaData[]>([]);
   const isLoading = ref<boolean>(false);
 
   async function fetchHousingData(formData: FormData) {
@@ -83,11 +85,15 @@ export const useHousingStore = defineStore("housing", () => {
     measuringData.value = data;
   }
 
+  function syncWithAreaData(data: AreaData[]) {
+    areaData.value = data;
+  }
+
   function _packHousingData(): EditHousingData {
     return {
       HousingInfo: {
         ProjectInfo: projectInfoData.value as ProjectInfo,
-        HousingDetail: [],
+        HousingDetail: areaData.value,
       },
       Measure: measuringData.value,
     };
@@ -98,7 +104,6 @@ export const useHousingStore = defineStore("housing", () => {
 
     try {
       const housingData = _packHousingData();
-
       const response = await ApiService.post(
         "projectBefore/addHousingInitData",
         {
@@ -106,7 +111,6 @@ export const useHousingStore = defineStore("housing", () => {
           ...housingData,
         }
       );
-
       if (response.data && response.data.success) {
         alert("新增屋況初始紀錄成功！");
       } else {
@@ -125,12 +129,14 @@ export const useHousingStore = defineStore("housing", () => {
     allHousingData,
     projectInfoData,
     measuringData,
+    areaData,
     isLoading,
     fetchAllHousingData,
     searchHousingWithKeyword,
     searchHousingWithDate,
     syncWithProjectInfoData,
     syncWithMeasuringData,
+    syncWithAreaData,
     submitHousingData,
   };
 });

@@ -119,7 +119,7 @@ async function fetchRecorderOptions() {
 
 fetchRecorderOptions();
 
-watch(projectInfoData.value, () => {
-  housingStore.syncWithProjectInfoData(projectInfoData.value);
+watch(projectInfoData.value, (newValue) => {
+  housingStore.syncWithProjectInfoData(newValue);
 });
 </script>

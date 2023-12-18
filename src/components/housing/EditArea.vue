@@ -121,10 +121,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import type { HousingDetail } from "@/types/Housing";
+import { ref, watch } from "vue";
+import { useHousingStore } from "@/stores/housing";
+import type { AreaData } from "@/types/Housing";
 
-const areaData = ref<HousingDetail[]>([
+const housingStore = useHousingStore();
+
+const areaData = ref<AreaData[]>([
   {
     Area: "",
     Description: "",
@@ -169,4 +172,8 @@ function handleFileChange(index: number, event: Event) {
 function removeThumbnail(index: number, imgIndex: number) {
   areaData.value[index].DetailRecord?.splice(imgIndex, 1);
 }
+
+watch(areaData.value, (newValue) => {
+  housingStore.syncWithAreaData(newValue);
+});
 </script>

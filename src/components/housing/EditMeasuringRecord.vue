@@ -146,7 +146,7 @@ function handleFileChange(
   }
 }
 
-watch(measuringData.value, () => {
-  housingStore.syncWithMeasuringData(measuringData.value);
+watch(measuringData.value, (newValue) => {
+  housingStore.syncWithMeasuringData(newValue);
 });
 </script>
