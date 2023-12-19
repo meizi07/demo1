@@ -9,6 +9,7 @@ import type {
   ProjectInfo,
   MeasuringData,
   AreaData,
+  SingleHousingData,
 } from "@/types/Housing";
 
 export const useHousingStore = defineStore("housing", () => {
@@ -20,6 +21,7 @@ export const useHousingStore = defineStore("housing", () => {
   };
 
   const allHousingData = ref<AllHousingData[]>([]);
+  const singleHousingData = ref<SingleHousingData | null>(null);
   const projectInfoData = ref<ProjectInfo | null>(null);
   const measuringData = ref<MeasuringData[]>([]);
   const areaData = ref<AreaData[]>([]);
@@ -38,7 +40,7 @@ export const useHousingStore = defineStore("housing", () => {
         allHousingData.value = response.data.success.AllHousingInit;
       } else {
         console.error(
-          `獲取屋況初始紀錄失敗，狀態： ${response.status} ${response.statusText}`
+          `獲取屋況初始紀錄失敗，狀態： ${response.data.ErrorCode} ${response.data.ErrorMsg}`
         );
       }
     } catch (error) {
@@ -76,6 +78,60 @@ export const useHousingStore = defineStore("housing", () => {
     formData.append("searchEndDate", endDate);
 
     await fetchHousingData(formData);
+  }
+
+  function _packSingleHousingData(response: any) {
+    singleHousingData.value = {
+      UUID: response.UUID,
+      ProjectID: response.ProjectID,
+      RecordDate: response.RecordDate,
+      Recorder: response.Recorder,
+      Detail: response.Detail.map((detail: any) => ({
+        UUID: detail.UUID,
+        Area: detail.Area,
+        Description: detail.Description,
+        Attachments: detail.Attachments.map((attachment: any) => ({
+          UUID: attachment.UUID,
+          FileName: attachment.FileName,
+          FileUrl: attachment.FileUrl,
+          Description: attachment.Description,
+        })),
+      })),
+      Measure: response.Measure.map((measure: any) => ({
+        UUID: measure.UUID,
+        FileName: measure.FileName,
+        FilePath: measure.FilePath,
+        Description: measure.Description,
+        UploadDate: measure.UploadDate,
+        Uploader: measure.Uploader,
+      })),
+    };
+  }
+
+  async function fetchSingleHousingData(projectId: string) {
+    const formData = authStore.createAuthFormData({
+      orgId: true,
+      account: true,
+    });
+
+    formData.append("projectID", projectId);
+
+    try {
+      const response = await ApiService.post(
+        "projectBefore/getHousingInitData",
+        formData
+      );
+
+      if (response.data && response.data.success) {
+        _packSingleHousingData(response.data.success);
+      } else {
+        console.error(
+          `獲取 ProjectID: ${projectId} 屋況初始紀錄資料失敗，狀態： ${response.data.ErrorCode} ${response.data.ErrorMsg}`
+        );
+      }
+    } catch (error) {
+      console.error("API 請求錯誤：", error);
+    }
   }
 
   function syncWithProjectInfoData(data: ProjectInfo) {
@@ -139,11 +195,13 @@ export const useHousingStore = defineStore("housing", () => {
 
   return {
     allHousingData,
+    singleHousingData,
     projectInfoData,
     measuringData,
     areaData,
     isLoading,
     fetchAllHousingData,
+    fetchSingleHousingData,
     searchHousingWithKeyword,
     searchHousingWithDate,
     syncWithProjectInfoData,
