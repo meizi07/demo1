@@ -4,7 +4,6 @@
     :model="{ ...projectInfoData, measuringData, areaData }"
     class="form"
     size="large"
-    id="add_housing_form"
     @submit.prevent="handleHousingSubmit(housingFormRef!)"
   >
     <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
@@ -113,7 +112,7 @@ function handleHousingSubmit(formEl: HTMLFormElement) {
     return;
   }
 
-  formEl.validate((valid, fields) => {
+  formEl.validate((valid) => {
     if (valid) {
       housingStore.submitHousingData();
     } else {
