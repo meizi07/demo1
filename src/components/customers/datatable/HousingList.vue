@@ -67,7 +67,13 @@
             :items-per-page-dropdown-enabled="true"
           >
             <template v-slot:ProjectID="{ row: housing }">
-              <router-link :to="`/`" class="text-gray-800 text-hover-primary">
+              <router-link
+                :to="{
+                  name: 'bj-housing-details',
+                  params: { projectId: housing.ProjectID },
+                }"
+                class="text-gray-800 text-hover-primary"
+              >
                 {{ housing.ProjectID }}
               </router-link>
             </template>

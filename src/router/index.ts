@@ -178,6 +178,17 @@ const routes: Array<RouteRecordRaw> = [
               pageTitle: "新增屋況初始紀錄",
             },
           },
+          {
+            path: "housing-details/:projectId",
+            name: "bj-housing-details",
+            component: () =>
+              import(
+                "@/views/before-project/client-info/housing/HousingDetails.vue"
+              ),
+            meta: {
+              pageTitle: "屋況初始紀錄",
+            },
+          },
         ],
       },
       {
