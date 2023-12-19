@@ -23,7 +23,7 @@
               </td>
               <td class="fw-bold">
                 <el-form-item
-                  class="mb-0"
+                  class="w-100 mb-0"
                   prop="RecordDate"
                   :rules="{
                     required: true,
@@ -51,7 +51,6 @@
               <td class="fw-bold">
                 <el-select
                   v-model="projectInfoData.Recorder"
-                  class="m-2"
                   name="Recorder"
                   placeholder="請選擇記錄者"
                 >

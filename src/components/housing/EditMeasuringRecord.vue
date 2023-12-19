@@ -77,7 +77,7 @@
                   @click="addNewMeasuringRow"
                   class="btn btn-sm btn-light-primary"
                 >
-                  <i class="ki-duotone ki-plus fs-3"></i>新增項目
+                  <i class="ki-duotone ki-plus fs-3"></i>新增檔案
                 </button>
               </th>
             </tr>

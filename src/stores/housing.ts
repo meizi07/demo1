@@ -1,5 +1,6 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
+import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useAuthStore } from "@/stores/auth";
 import ApiService from "@/core/services/ApiService";
@@ -14,6 +15,7 @@ import type {
 
 export const useHousingStore = defineStore("housing", () => {
   const authStore = useAuthStore();
+  const router = useRouter();
 
   const DEFAULT_QUERY_PARAMS = {
     orgId: authStore.user.orgId,
@@ -146,7 +148,7 @@ export const useHousingStore = defineStore("housing", () => {
     areaData.value = data;
   }
 
-  function _packHousingData(): EditHousingData {
+  function _packSubmitHousingData(): EditHousingData {
     return {
       HousingInfo: {
         ProjectInfo: projectInfoData.value as ProjectInfo,
@@ -160,7 +162,7 @@ export const useHousingStore = defineStore("housing", () => {
     isLoading.value = true;
 
     try {
-      const housingData = _packHousingData();
+      const housingData = _packSubmitHousingData();
       const response = await ApiService.post(
         "projectBefore/addHousingInitData",
         {
@@ -169,7 +171,12 @@ export const useHousingStore = defineStore("housing", () => {
         }
       );
       if (response.data && response.data.success) {
-        alert("新增屋況初始紀錄成功！");
+        router.push({
+          name: "bj-housing-details",
+          params: {
+            projectId: projectInfoData.value?.ProjectID,
+          },
+        });
       } else {
         Swal.fire({
           text: `新增屋況初始紀錄失敗，狀態： ${response.data.ErrorCode} ${response.data.ErrorMsg}`,
