@@ -5,7 +5,7 @@
         <div class="dataTables_wrapper dt-bootstrap4 no-footer">
           <div class="table-responsive">
             <table
-              class="table align-middle table-row-bordered fs-6 gy-5 housing_info_table dataTable no-footer"
+              class="table table-row-bordered fs-6 gy-5 housing_info_table dataTable no-footer"
             >
               <thead>
                 <tr class="text-start text-gray-800 fw-bold fs-7 gs-0">
@@ -44,20 +44,26 @@
                     <div
                       v-for="(img, imgIndex) in item.DetailRecord"
                       :key="imgIndex"
-                      class="d-flex mb-6 align-items-center gap-4"
+                      class="d-flex mb-6 align-items-start gap-6"
                     >
                       <div class="position-relative">
                         <img
                           :src="img.FileImage"
-                          class="w-125px h-125px object-fit-cover rounded"
+                          class="w-80px h-80px object-fit-cover rounded"
                         />
 
                         <button
                           type="button"
-                          class="btn btn-icon btn-light btn-active-color-primary position-absolute top-0 start-100 w-25px h-25px translate-middle rounded-circle"
+                          class="btn btn-icon btn-light btn-active-color-primary position-absolute top-0 start-100 w-20px h-20px translate-middle rounded-circle"
                           @click="removeThumbnail(index, imgIndex)"
                         >
-                          <i class="ki-duotone ki-minus fs-2"></i>
+                          <i class="ki-duotone ki-trash">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                            <span class="path4"></span>
+                            <span class="path5"></span>
+                          </i>
                         </button>
                       </div>
 
@@ -73,10 +79,10 @@
 
                     <label
                       :for="`fileInput${index}`"
-                      class="btn bg-light-secondary d-flex flex-column flex-center w-125px h-125px"
+                      class="btn bg-light-secondary d-flex flex-column flex-center w-80px h-80px"
                       style="border: 1px dashed rgb(220, 223, 230)"
                     >
-                      <i class="ki-duotone ki-plus text-gray-300 fs-4x"></i>
+                      <i class="ki-duotone ki-plus text-gray-300 fs-3x"></i>
                       <input
                         type="file"
                         :id="`fileInput${index}`"
