@@ -149,12 +149,21 @@ export const useHousingStore = defineStore("housing", () => {
   }
 
   function _packSubmitHousingData(): EditHousingData {
+    const excludeEmptyAreaData = areaData.value.filter(
+      (item) =>
+        item.Area || item.Description || (item.DetailRecord?.length ?? 0) > 0
+    );
+
+    const excludeEmptyMeasuringData = measuringData.value.filter(
+      (item) => item.FileName || item.FileImage || item.Description
+    );
+
     return {
       HousingInfo: {
         ProjectInfo: projectInfoData.value as ProjectInfo,
-        HousingDetail: areaData.value,
+        HousingDetail: excludeEmptyAreaData,
       },
-      Measure: measuringData.value,
+      Measure: excludeEmptyMeasuringData,
     };
   }
 
