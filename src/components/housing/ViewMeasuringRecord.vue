@@ -17,7 +17,7 @@
           <span>
             <a
               :href="measuring.FilePath"
-              class="text-gray-800"
+              class="text-gray-800 text-hover-primary"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -63,26 +63,31 @@ const tableHeader = ref([
     columnName: "檔案名稱",
     columnLabel: "FileName",
     sortEnabled: true,
+    columnWidth: 150,
   },
   {
     columnName: "附加檔案",
     columnLabel: "FilePath",
     sortEnabled: true,
+    columnWidth: 240,
   },
   {
     columnName: "說明",
     columnLabel: "Description",
     sortEnabled: true,
+    columnWidth: 320,
   },
   {
     columnName: "檔案上傳日期",
     columnLabel: "UploadDate",
     sortEnabled: true,
+    columnWidth: 150,
   },
   {
     columnName: "檔案上傳者",
     columnLabel: "Uploader",
     sortEnabled: true,
+    columnWidth: 120,
   },
 ]);
 const formatFilePath = computed(() => (filePath: string) => {
