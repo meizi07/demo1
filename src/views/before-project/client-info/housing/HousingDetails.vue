@@ -59,6 +59,7 @@
         role="tabpanel"
       >
         <ViewProjectInfo />
+        <ViewArea />
       </div>
 
       <div
@@ -74,9 +75,10 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import ViewProjectInfo from "@/components/housing/ViewProjectInfo.vue";
-import ViewMeasuringRecord from "@/components/housing/ViewMeasuringRecord.vue";
 import { useHousingStore } from "@/stores/housing";
+import ViewProjectInfo from "@/components/housing/ViewProjectInfo.vue";
+import ViewArea from "@/components/housing/ViewArea.vue";
+import ViewMeasuringRecord from "@/components/housing/ViewMeasuringRecord.vue";
 
 const route = useRoute();
 const projectId = route.params.projectId;
