@@ -65,7 +65,9 @@
         class="tab-pane fade show"
         id="housing_measuring_record"
         role="tabpanel"
-      ></div>
+      >
+        <ViewMeasuringRecord />
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +75,7 @@
 <script setup lang="ts">
 import { useRoute } from "vue-router";
 import ViewProjectInfo from "@/components/housing/ViewProjectInfo.vue";
+import ViewMeasuringRecord from "@/components/housing/ViewMeasuringRecord.vue";
 import { useHousingStore } from "@/stores/housing";
 
 const route = useRoute();
