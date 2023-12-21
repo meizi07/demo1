@@ -24,11 +24,19 @@
             v-for="(attachment, index) in area.Attachments"
             :key="attachment.UUID"
             class="d-flex align-items-start gap-6"
-            :class="area.Attachments.length - 1 === index ? '' : 'mb-6'"
+            :class="area.Attachments.length - 1 === index ? '' : 'mb-4'"
           >
-            <img
-              :src="attachment.FileUrl"
+            <el-image
               class="w-80px h-80px object-fit-cover rounded"
+              :src="attachment.FileUrl"
+              :zoom-rate="1.2"
+              :max-scale="7"
+              :min-scale="0.2"
+              :preview-src-list="generateImgPreviewList(area.Attachments)"
+              :initial-index="
+                getCurrentImgPreviewIndex(area.Attachments, attachment)
+              "
+              fit="cover"
             />
             <span>{{ attachment.Description }}</span>
           </div>
@@ -41,8 +49,8 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import { useHousingStore } from "@/stores/housing";
+import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 
 const housingStore = useHousingStore();
 const { singleHousingData } = storeToRefs(housingStore);
@@ -64,6 +72,16 @@ const tableHeader = ref([
     sortEnabled: true,
   },
 ]);
+
+function generateImgPreviewList(attachments) {
+  return attachments.map((attachment) => attachment.FileUrl);
+}
+
+function getCurrentImgPreviewIndex(attachments, currentAttachment) {
+  return attachments.findIndex(
+    (attachment) => attachment.UUID === currentAttachment.UUID
+  );
+}
 </script>
 
 <style lang="scss">
