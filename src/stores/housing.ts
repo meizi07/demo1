@@ -167,6 +167,31 @@ export const useHousingStore = defineStore("housing", () => {
     };
   }
 
+  function handleHousingSubmit(formEl: HTMLFormElement) {
+    if (!formEl) {
+      return;
+    }
+
+    formEl.validate((valid) => {
+      if (valid) {
+        submitHousingData();
+      } else {
+        Swal.fire({
+          text: "請檢查是否有未填欄位",
+          icon: "error",
+          buttonsStyling: false,
+          confirmButtonText: "繼續",
+          heightAuto: false,
+          customClass: {
+            confirmButton: "btn btn-primary",
+          },
+        });
+
+        return false;
+      }
+    });
+  }
+
   async function submitHousingData() {
     isLoading.value = true;
 
@@ -223,6 +248,7 @@ export const useHousingStore = defineStore("housing", () => {
     syncWithProjectInfoData,
     syncWithMeasuringData,
     syncWithAreaData,
+    handleHousingSubmit,
     submitHousingData,
   };
 });

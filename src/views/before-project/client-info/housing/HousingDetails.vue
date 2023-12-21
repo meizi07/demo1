@@ -17,31 +17,20 @@
         <ul
           class="nav nav-pills nav-pills-custom row position-relative mx-0 mb-3"
         >
-          <li class="nav-item p-0">
-            <a
-              class="nav-link d-flex justify-content-center w-100 border-0 h-100 active"
-              data-bs-toggle="tab"
-              role="tab"
-              href="#housing_init_record"
-            >
-              <span class="nav-text text-gray-800 fw-bold fs-6 mb-3">
-                屋況初始紀錄
-              </span>
-              <span
-                class="bullet-custom position-absolute z-index-2 bottom-0 w-100 h-4px"
-              ></span>
-            </a>
-          </li>
-
-          <li class="nav-item p-0">
+          <li
+            v-for="(tab, index) in HOUSING_TABS"
+            :key="tab.id"
+            class="nav-item p-0"
+          >
             <a
               class="nav-link d-flex justify-content-center w-100 border-0 h-100"
+              :class="{ active: index === 0 }"
               data-bs-toggle="tab"
               role="tab"
-              href="#housing_measuring_record"
+              :href="`#${tab.id}`"
             >
               <span class="nav-text text-gray-800 fw-bold fs-6 mb-3">
-                丈量紀錄
+                {{ tab.title }}
               </span>
               <span
                 class="bullet-custom position-absolute z-index-2 bottom-0 w-100 h-4px"
@@ -54,20 +43,21 @@
 
     <div class="tab-content">
       <div
-        class="tab-pane fade show active"
-        id="housing_init_record"
-        role="tabpanel"
-      >
-        <ViewProjectInfo />
-        <ViewArea />
-      </div>
-
-      <div
+        v-for="(tab, index) in HOUSING_TABS"
+        :key="tab.id"
         class="tab-pane fade show"
-        id="housing_measuring_record"
+        :class="{ active: index === 0 }"
+        :id="tab.id"
         role="tabpanel"
       >
-        <ViewMeasuringRecord />
+        <template v-if="index === 0">
+          <ViewProjectInfo />
+          <ViewArea />
+        </template>
+
+        <template v-if="index === 1">
+          <ViewMeasuringRecord />
+        </template>
       </div>
     </div>
   </div>
@@ -79,6 +69,7 @@ import { useHousingStore } from "@/stores/housing";
 import ViewProjectInfo from "@/components/housing/ViewProjectInfo.vue";
 import ViewArea from "@/components/housing/ViewArea.vue";
 import ViewMeasuringRecord from "@/components/housing/ViewMeasuringRecord.vue";
+import { HOUSING_TABS } from "@/constants/housing";
 
 const route = useRoute();
 const projectId = route.params.projectId;

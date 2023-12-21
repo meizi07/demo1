@@ -4,7 +4,7 @@
     :model="{ ...projectInfoData, measuringData, areaData }"
     class="form"
     size="large"
-    @submit.prevent="handleHousingSubmit(housingFormRef!)"
+    @submit.prevent="housingStore.handleHousingSubmit(housingFormRef!)"
   >
     <div class="toolbtn container-xxl d-flex align-items-center gap-2 gap-lg-3">
       <button
@@ -35,31 +35,20 @@
           <ul
             class="nav nav-pills nav-pills-custom row position-relative mx-0 mb-3"
           >
-            <li class="nav-item p-0">
-              <a
-                class="nav-link d-flex justify-content-center w-100 border-0 h-100 active"
-                data-bs-toggle="tab"
-                role="tab"
-                href="#housing_init_record"
-              >
-                <span class="nav-text text-gray-800 fw-bold fs-6 mb-3">
-                  屋況初始紀錄
-                </span>
-                <span
-                  class="bullet-custom position-absolute z-index-2 bottom-0 w-100 h-4px"
-                ></span>
-              </a>
-            </li>
-
-            <li class="nav-item p-0">
+            <li
+              v-for="(tab, index) in HOUSING_TABS"
+              :key="tab.id"
+              class="nav-item p-0"
+            >
               <a
                 class="nav-link d-flex justify-content-center w-100 border-0 h-100"
+                :class="{ active: index === 0 }"
                 data-bs-toggle="tab"
                 role="tab"
-                href="#housing_measuring_record"
+                :href="`#${tab.id}`"
               >
                 <span class="nav-text text-gray-800 fw-bold fs-6 mb-3">
-                  丈量紀錄
+                  {{ tab.title }}
                 </span>
                 <span
                   class="bullet-custom position-absolute z-index-2 bottom-0 w-100 h-4px"
@@ -72,20 +61,21 @@
 
       <div class="tab-content">
         <div
-          class="tab-pane fade show active"
-          id="housing_init_record"
-          role="tabpanel"
-        >
-          <EditProjectInfo />
-          <EditArea />
-        </div>
-
-        <div
+          v-for="(tab, index) in HOUSING_TABS"
+          :key="tab.id"
           class="tab-pane fade show"
-          id="housing_measuring_record"
+          :class="{ active: index === 0 }"
+          :id="tab.id"
           role="tabpanel"
         >
-          <EditMeasuringRecord />
+          <template v-if="index === 0">
+            <EditProjectInfo />
+            <EditArea />
+          </template>
+
+          <template v-if="index === 1">
+            <EditMeasuringRecord />
+          </template>
         </div>
       </div>
     </div>
@@ -95,40 +85,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
-import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useHousingStore } from "@/stores/housing";
 import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
 import EditMeasuringRecord from "@/components/housing/EditMeasuringRecord.vue";
 import EditArea from "@/components/housing/EditArea.vue";
+import { HOUSING_TABS } from "@/constants/housing";
 
 const housingStore = useHousingStore();
 const { projectInfoData, measuringData, areaData, isLoading } =
   storeToRefs(housingStore);
 
 const housingFormRef = ref<HTMLFormElement | null>(null);
-
-function handleHousingSubmit(formEl: HTMLFormElement) {
-  if (!formEl) {
-    return;
-  }
-
-  formEl.validate((valid) => {
-    if (valid) {
-      housingStore.submitHousingData();
-    } else {
-      Swal.fire({
-        text: "請檢查是否有未填欄位",
-        icon: "error",
-        buttonsStyling: false,
-        confirmButtonText: "繼續",
-        heightAuto: false,
-        customClass: {
-          confirmButton: "btn btn-primary",
-        },
-      });
-
-      return false;
-    }
-  });
-}
 </script>
