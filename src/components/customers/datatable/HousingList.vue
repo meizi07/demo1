@@ -108,7 +108,7 @@
             <template v-slot:Action="{ row: housing }">
               <router-link
                 :to="{
-                  name: 'bj-case-edit',
+                  name: 'bj-housing-edit',
                   params: {
                     projectId: housing.ProjectID,
                   },

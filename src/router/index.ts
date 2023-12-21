@@ -179,6 +179,17 @@ const routes: Array<RouteRecordRaw> = [
             },
           },
           {
+            path: "edit-housing/:projectId",
+            name: "bj-housing-edit",
+            component: () =>
+              import(
+                "@/views/before-project/client-info/housing/EditHousing.vue"
+              ),
+            meta: {
+              pageTitle: "編輯屋況初始紀錄",
+            },
+          },
+          {
             path: "housing-details/:projectId",
             name: "bj-housing-details",
             component: () =>

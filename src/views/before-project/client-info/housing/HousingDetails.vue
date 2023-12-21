@@ -4,7 +4,12 @@
     <!-- <button type="submit" class="btn btn-sm fw-bold btn-success">送簽</button> -->
 
     <router-link
-      :to="`/befort-project/client-info/housing-list`"
+      :to="{
+        name: 'bj-housing-edit',
+        params: {
+          projectId: projectId,
+        },
+      }"
       class="btn btn-sm fw-bold bg-body btn-color-gray-700 btn-active-color-primary"
     >
       編輯
