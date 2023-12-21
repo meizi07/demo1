@@ -65,6 +65,7 @@
             :data="allHousingData"
             :items-per-page="10"
             :items-per-page-dropdown-enabled="true"
+            @on-sort="sort"
           >
             <template v-slot:ProjectID="{ row: housing }">
               <router-link
@@ -128,9 +129,11 @@
 import { onMounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import moment from "moment";
+import arraySort from "array-sort";
 import { useHousingStore } from "@/stores/housing";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
 import { debounce } from "@/utils/function";
+import type { Sort } from "@/components/kt-datatable//table-partials/models";
 
 const housingStore = useHousingStore();
 const { allHousingData } = storeToRefs(housingStore);
@@ -195,6 +198,14 @@ function resetDateSearch() {
       searchDate.value = [];
       housingStore.fetchAllHousingData();
     });
+}
+
+function sort(sort: Sort) {
+  const reverse: boolean = sort.order === "asc";
+
+  if (sort.label) {
+    arraySort(allHousingData.value, sort.label, { reverse });
+  }
 }
 
 onMounted(() => {

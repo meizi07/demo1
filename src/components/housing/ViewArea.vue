@@ -6,6 +6,7 @@
         :data="singleHousingData?.Detail || []"
         :items-per-page="10"
         :items-per-page-dropdown-enabled="true"
+        @on-sort="sort"
       >
         <template v-slot:Area="{ row: area }">
           <span>
@@ -58,8 +59,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { storeToRefs } from "pinia";
+import arraySort from "array-sort";
 import { useHousingStore } from "@/stores/housing";
 import Datatable from "@/components/kt-datatable/KTDataTable.vue";
+import type { Sort } from "@/components/kt-datatable//table-partials/models";
 
 const housingStore = useHousingStore();
 const { singleHousingData } = storeToRefs(housingStore);
@@ -74,13 +77,13 @@ const tableHeader = ref([
   {
     columnName: "說明",
     columnLabel: "Description",
-    sortEnabled: true,
+    sortEnabled: false,
     columnWidth: 240,
   },
   {
     columnName: "照片",
     columnLabel: "Attachments",
-    sortEnabled: true,
+    sortEnabled: false,
     columnWidth: 320,
   },
 ]);
@@ -93,6 +96,14 @@ function getCurrentImgPreviewIndex(attachments, currentAttachment) {
   return attachments.findIndex(
     (attachment) => attachment.UUID === currentAttachment.UUID
   );
+}
+
+function sort(sort: Sort) {
+  const reverse: boolean = sort.order === "asc";
+
+  if (sort.label) {
+    arraySort(singleHousingData.value?.Detail || [], sort.label, { reverse });
+  }
 }
 </script>
 
