@@ -83,7 +83,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onUnmounted, ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useHousingStore } from "@/stores/housing";
 import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
@@ -96,4 +96,8 @@ const { projectInfoData, measuringData, areaData, isLoading } =
   storeToRefs(housingStore);
 
 const housingFormRef = ref<HTMLFormElement | null>(null);
+
+onUnmounted(() => {
+  housingStore.resetHousingData();
+});
 </script>

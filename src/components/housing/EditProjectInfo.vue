@@ -12,7 +12,9 @@
                   案件編號
                 </label>
               </td>
-              <td class="fw-bold">{{ projectInfoData.ProjectID }}</td>
+              <td class="fw-bold">
+                {{ projectInfoData.ProjectID }}
+              </td>
             </tr>
 
             <tr>
@@ -71,7 +73,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import moment from "moment";
 import { useHousingStore } from "@/stores/housing";
@@ -79,10 +82,15 @@ import { useAuthStore } from "@/stores/auth";
 import ApiService from "@/core/services/ApiService";
 import type { Account } from "@/types/Project";
 import type { ProjectInfo } from "@/types/Housing";
+import { EDIT_HOUSING_ROUTE } from "@/constants/housing";
 
 const authStore = useAuthStore();
-const housingStore = useHousingStore();
+
 const route = useRoute();
+const projectId = route.params.projectId;
+
+const housingStore = useHousingStore();
+const { singleHousingData } = storeToRefs(housingStore);
 
 const recorderOptions = ref<Account[]>([]);
 const projectInfoData = ref<ProjectInfo>({
@@ -128,7 +136,29 @@ async function fetchRecorderOptions() {
 
 fetchRecorderOptions();
 
-watch(projectInfoData.value, (newValue) => {
-  housingStore.syncWithProjectInfoData(newValue);
+onMounted(async () => {
+  if (route.name !== EDIT_HOUSING_ROUTE) {
+    return;
+  }
+
+  await housingStore.fetchSingleHousingData(projectId as string);
+
+  if (singleHousingData.value) {
+    projectInfoData.value = {
+      ...projectInfoData.value,
+
+      ProjectID: singleHousingData.value.ProjectID,
+      Recorder: singleHousingData.value.Recorder,
+      RecordDate: singleHousingData.value.RecordDate,
+    };
+  }
 });
+
+watch(
+  projectInfoData,
+  (newValue) => {
+    housingStore.syncWithProjectInfoData(newValue);
+  },
+  { deep: true }
+);
 </script>

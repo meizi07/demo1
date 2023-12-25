@@ -69,6 +69,7 @@
 </template>
 
 <script setup lang="ts">
+import { onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { useHousingStore } from "@/stores/housing";
 import ViewProjectInfo from "@/components/housing/ViewProjectInfo.vue";
@@ -81,4 +82,8 @@ const projectId = route.params.projectId;
 const housingStore = useHousingStore();
 
 housingStore.fetchSingleHousingData(projectId as string);
+
+onUnmounted(() => {
+  housingStore.resetHousingData();
+});
 </script>

@@ -8,3 +8,5 @@ export const HOUSING_TABS = [
     title: "丈量紀錄",
   },
 ];
+
+export const EDIT_HOUSING_ROUTE = "bj-housing-edit";
