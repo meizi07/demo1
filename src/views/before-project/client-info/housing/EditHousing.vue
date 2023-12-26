@@ -69,12 +69,12 @@
           role="tabpanel"
         >
           <template v-if="index === 0">
-            <EditProjectInfo />
-            <EditArea />
+            <EditProjectInfo v-if="shouldDisplay" />
+            <EditArea v-if="shouldDisplay" />
           </template>
 
           <template v-if="index === 1">
-            <EditMeasuringRecord />
+            <EditMeasuringRecord v-if="shouldDisplay" />
           </template>
         </div>
       </div>
@@ -91,16 +91,27 @@ import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
 import EditMeasuringRecord from "@/components/housing/EditMeasuringRecord.vue";
 import EditArea from "@/components/housing/EditArea.vue";
 import { HOUSING_TABS } from "@/constants/housing";
+import { EDIT_HOUSING_ROUTE } from "@/constants/housing";
 
 const route = useRoute();
 const projectId = route.params.projectId;
 const housingStore = useHousingStore();
-const { projectInfoData, measuringData, areaData, isLoading } =
-  storeToRefs(housingStore);
+const {
+  projectInfoData,
+  measuringData,
+  areaData,
+  isLoading,
+  singleHousingData,
+} = storeToRefs(housingStore);
 const housingFormRef = ref<HTMLFormElement | null>(null);
+const shouldDisplay = ref(false);
 
-onMounted(() => {
-  housingStore.fetchSingleHousingData(projectId as string);
+onMounted(async () => {
+  await housingStore.fetchSingleHousingData(projectId as string);
+
+  if (route.name === EDIT_HOUSING_ROUTE && singleHousingData.value) {
+    shouldDisplay.value = true;
+  }
 });
 
 onUnmounted(() => {

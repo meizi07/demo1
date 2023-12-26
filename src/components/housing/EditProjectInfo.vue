@@ -73,9 +73,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch, watchEffect } from "vue";
-import { storeToRefs } from "pinia";
+import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
 import moment from "moment";
 import { useHousingStore } from "@/stores/housing";
 import { useAuthStore } from "@/stores/auth";
@@ -88,7 +88,6 @@ const authStore = useAuthStore();
 const route = useRoute();
 const housingStore = useHousingStore();
 const { singleHousingData } = storeToRefs(housingStore);
-
 const recorderOptions = ref<Account[]>([]);
 const projectInfoData = ref<ProjectInfo>({
   ProjectID: route.query.projectId as string,
@@ -133,18 +132,6 @@ async function fetchRecorderOptions() {
 
 fetchRecorderOptions();
 
-watchEffect(() => {
-  if (route.name === EDIT_HOUSING_ROUTE && singleHousingData.value) {
-    projectInfoData.value = {
-      ...projectInfoData.value,
-
-      ProjectID: singleHousingData.value.ProjectID,
-      Recorder: singleHousingData.value.Recorder,
-      RecordDate: singleHousingData.value.RecordDate,
-    };
-  }
-});
-
 watch(
   projectInfoData,
   (newValue) => {
@@ -152,4 +139,15 @@ watch(
   },
   { deep: true }
 );
+
+onMounted(() => {
+  if (route.name === EDIT_HOUSING_ROUTE && singleHousingData.value) {
+    projectInfoData.value = {
+      ...projectInfoData.value,
+      ProjectID: singleHousingData.value.ProjectID,
+      Recorder: singleHousingData.value.Recorder,
+      RecordDate: singleHousingData.value.RecordDate,
+    };
+  }
+});
 </script>
