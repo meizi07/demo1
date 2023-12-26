@@ -128,11 +128,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
 import { useHousingStore } from "@/stores/housing";
 import type { AreaData } from "@/types/Housing";
+import { EDIT_HOUSING_ROUTE } from "@/constants/housing";
 
+const route = useRoute();
 const housingStore = useHousingStore();
+const { singleHousingData } = storeToRefs(housingStore);
 
 const areaData = ref<AreaData[]>([
   {
@@ -180,7 +185,35 @@ function removeThumbnail(index: number, imgIndex: number) {
   areaData.value[index].DetailRecord?.splice(imgIndex, 1);
 }
 
-watch(areaData.value, (newValue) => {
-  housingStore.syncWithAreaData(newValue);
+watch(
+  areaData,
+  (newValue) => {
+    housingStore.syncWithAreaData(newValue);
+  },
+  { deep: true }
+);
+
+onMounted(() => {
+  if (route.name === EDIT_HOUSING_ROUTE && singleHousingData.value) {
+    const detailData = singleHousingData.value.Detail;
+
+    areaData.value = [];
+
+    detailData?.forEach((item) => {
+      const { Area, Description, Attachments } = item;
+
+      areaData.value = [
+        ...areaData.value,
+        {
+          Area,
+          Description,
+          DetailRecord: Attachments?.map((img) => ({
+            FileImage: img.FileUrl,
+            Description: img.Description,
+          })),
+        },
+      ];
+    });
+  }
 });
 </script>
