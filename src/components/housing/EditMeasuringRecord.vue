@@ -22,6 +22,7 @@
                 <label class="form-label">附加檔案</label>
 
                 <el-upload
+                  :file-list="[fileLists[index]]"
                   :ref="(el) => (fileRef[index] = el)"
                   action="#"
                   :limit="1"
@@ -89,13 +90,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
+import { storeToRefs } from "pinia";
+import { useRoute } from "vue-router";
 import { genFileId } from "element-plus";
 import type { UploadInstance, UploadRawFile, UploadFile } from "element-plus";
 import { useHousingStore } from "@/stores/housing";
 import type { MeasuringData } from "@/types/Housing";
+import { EDIT_HOUSING_ROUTE } from "@/constants/housing";
 
+const route = useRoute();
 const housingStore = useHousingStore();
+const { singleHousingData } = storeToRefs(housingStore);
 
 const fileRef = ref<Array<UploadInstance | null>>([]);
 const measuringData = ref<MeasuringData[]>([
@@ -105,6 +111,8 @@ const measuringData = ref<MeasuringData[]>([
     Description: "",
   },
 ]);
+
+const fileLists = ref([{}]);
 
 function addNewMeasuringRow() {
   measuringData.value.push({
@@ -146,7 +154,49 @@ function handleFileChange(
   }
 }
 
-watch(measuringData.value, (newValue) => {
-  housingStore.syncWithMeasuringData(newValue);
+onMounted(() => {
+  if (route.name === EDIT_HOUSING_ROUTE && singleHousingData.value) {
+    const rawData = singleHousingData.value.Measure || [];
+
+    measuringData.value = rawData.map((item) => {
+      return {
+        FileName: item.FileName,
+        FileImage: item.FilePath,
+        Description: item.Description,
+      };
+    });
+
+    // if no data.FilePath, then it's a empty object
+    fileLists.value = rawData.map((data) => {
+      if (data.FilePath) {
+        return {
+          name: data.FileName,
+          url: data.FilePath,
+        };
+      } else {
+        return {};
+      }
+    });
+
+    // TODO: 排除沒有上傳檔案的情況
+
+    // fileLists.value = rawData.map((data) => ({
+    //   name: data.FileName,
+    //   url: data.FilePath,
+    // }));
+  }
+
+  console.group("👻 in CHILD: 丈量記錄");
+  console.log("singleHousingData: ", singleHousingData.value);
+  console.log(fileLists.value);
+  console.groupEnd();
 });
+
+watch(
+  measuringData,
+  (newValue) => {
+    housingStore.syncWithMeasuringData(newValue);
+  },
+  { deep: true }
+);
 </script>
