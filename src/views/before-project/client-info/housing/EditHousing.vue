@@ -83,7 +83,8 @@
 </template>
 
 <script setup lang="ts">
-import { onUnmounted, ref } from "vue";
+import { onMounted, onUnmounted, ref } from "vue";
+import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
 import { useHousingStore } from "@/stores/housing";
 import EditProjectInfo from "@/components/housing/EditProjectInfo.vue";
@@ -91,10 +92,16 @@ import EditMeasuringRecord from "@/components/housing/EditMeasuringRecord.vue";
 import EditArea from "@/components/housing/EditArea.vue";
 import { HOUSING_TABS } from "@/constants/housing";
 
+const route = useRoute();
+const projectId = route.params.projectId;
 const housingStore = useHousingStore();
 const { projectInfoData, measuringData, areaData, isLoading } =
   storeToRefs(housingStore);
 const housingFormRef = ref<HTMLFormElement | null>(null);
+
+onMounted(() => {
+  housingStore.fetchSingleHousingData(projectId as string);
+});
 
 onUnmounted(() => {
   housingStore.resetHousingData();

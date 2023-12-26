@@ -73,7 +73,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, watchEffect } from "vue";
 import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import moment from "moment";
@@ -85,10 +85,7 @@ import type { ProjectInfo } from "@/types/Housing";
 import { EDIT_HOUSING_ROUTE } from "@/constants/housing";
 
 const authStore = useAuthStore();
-
 const route = useRoute();
-const projectId = route.params.projectId;
-
 const housingStore = useHousingStore();
 const { singleHousingData } = storeToRefs(housingStore);
 
@@ -136,14 +133,8 @@ async function fetchRecorderOptions() {
 
 fetchRecorderOptions();
 
-onMounted(async () => {
-  if (route.name !== EDIT_HOUSING_ROUTE) {
-    return;
-  }
-
-  await housingStore.fetchSingleHousingData(projectId as string);
-
-  if (singleHousingData.value) {
+watchEffect(() => {
+  if (route.name === EDIT_HOUSING_ROUTE && singleHousingData.value) {
     projectInfoData.value = {
       ...projectInfoData.value,
 

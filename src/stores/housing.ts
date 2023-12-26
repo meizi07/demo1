@@ -1,6 +1,6 @@
 import { ref } from "vue";
 import { defineStore } from "pinia";
-import { useRouter, useRoute } from "vue-router";
+import { useRouter } from "vue-router";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import { useAuthStore } from "@/stores/auth";
 import ApiService from "@/core/services/ApiService";
@@ -16,7 +16,6 @@ import type {
 export const useHousingStore = defineStore("housing", () => {
   const authStore = useAuthStore();
   const router = useRouter();
-  const route = useRoute();
 
   const DEFAULT_QUERY_PARAMS = {
     orgId: authStore.user.orgId,
@@ -29,7 +28,6 @@ export const useHousingStore = defineStore("housing", () => {
   const measuringData = ref<MeasuringData[]>([]);
   const areaData = ref<AreaData[]>([]);
   const isLoading = ref<boolean>(false);
-  const isSingleHousingDataFetched = ref<boolean>(false);
 
   async function fetchHousingData(formData: FormData) {
     allHousingData.value = [];
@@ -113,10 +111,6 @@ export const useHousingStore = defineStore("housing", () => {
   }
 
   async function fetchSingleHousingData(projectId: string) {
-    if (isSingleHousingDataFetched.value) {
-      return;
-    }
-
     const formData = authStore.createAuthFormData({
       orgId: true,
       account: true,
@@ -132,7 +126,6 @@ export const useHousingStore = defineStore("housing", () => {
 
       if (response.data && response.data.success) {
         _packSingleHousingData(response.data.success);
-        isSingleHousingDataFetched.value = true;
       } else {
         console.error(
           `獲取 ProjectID: ${projectId} 屋況初始紀錄資料失敗，狀態： ${response.data.ErrorCode} ${response.data.ErrorMsg}`
@@ -243,7 +236,6 @@ export const useHousingStore = defineStore("housing", () => {
 
   function resetHousingData() {
     singleHousingData.value = null;
-    isSingleHousingDataFetched.value = false;
     projectInfoData.value = null;
     measuringData.value = [];
     areaData.value = [];
@@ -256,7 +248,6 @@ export const useHousingStore = defineStore("housing", () => {
     measuringData,
     areaData,
     isLoading,
-    isSingleHousingDataFetched,
     fetchAllHousingData,
     fetchSingleHousingData,
     searchHousingWithKeyword,
