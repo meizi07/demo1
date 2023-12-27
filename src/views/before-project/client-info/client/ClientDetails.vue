@@ -242,7 +242,6 @@ export default {
 
         console.log(successData);
         // const formattedAllCustomer = response.data.success.map(formatDates);
-        
 
         // 更新 tableData1
         tableData1.value[0].value = successData.Contactor;

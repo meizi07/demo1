@@ -265,6 +265,12 @@ export default {
       tab3Data.value = newData;
     };
 
+    // 頁籤4 初始化
+    const tab4Data = ref({});
+    const updateTab4Data = (newData) => {
+      tab4Data.value = newData;
+    };
+
     // 頁籤5 初始化
     const tab5Data = ref([]);
     const updateTab5Data = (newData) => {
@@ -412,7 +418,7 @@ export default {
             totalPin: tab3Data.value.totalPin,
             format: tab3Data.value.format,
 
-            renovationRequest: "",
+            renovationRequest: tab4Data.value.areas,
             style: tab5Data.value,
             security: tab6Data.value,
             totalBudget: tab7Data.value.budget,
@@ -422,6 +428,7 @@ export default {
           };
           console.log(requestData);
 
+          console.log(tab4Data.value.areas);
           ApiService.post("/projectBefore/addRequirement", requestData)
             .then((response) => {
               loading.value = false;
@@ -457,7 +464,7 @@ export default {
             })
             .catch((error) => {
               loading.value = false;
-              console.error("API 请求错误：", error);
+              console.error("API 請求錯誤：", error);
             });
         } else {
           Swal.fire({
@@ -492,6 +499,8 @@ export default {
       projectID,
       tab3Data,
       updateTab3Data,
+      tab4Data,
+      updateTab4Data,
       tab5Data,
       updateTab5Data,
       tab6Data,

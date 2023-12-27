@@ -61,7 +61,7 @@
         <InfoCard :tableData="tab3tableData"></InfoCard>
       </div>
       <div class="tab-pane fade show" id="demand_tab_pane_4" role="tabpanel">
-        <TableCard :tableHeaders="tab4HeaderData" :tableData="apiData4" />
+        <FoldCard :tableHeaders="tab4HeaderData" :tableData="apiData4" />
       </div>
       <div class="tab-pane fade show" id="demand_tab_pane_5" role="tabpanel">
         <TableCard :tableHeaders="tab5HeaderData" :tableData="apiData5" />
@@ -88,6 +88,7 @@ import { useAuthStore } from "@/stores/auth";
 import { useIdStore } from "@/stores/useId";
 import InfoCard from "@/components/customers/cards/overview/InfoCard.vue";
 import TableCard from "@/components/customers/cards/overview/TableCard.vue";
+import FoldCard from "@/components/customers/cards/overview/FoldCard.vue";
 import { DrawerComponent } from "@/assets/ts/components/_DrawerComponent";
 import ChangeRecords from "@/layouts/main-layout/extras/ChangeRecords.vue";
 import type { Housing } from "@/utils/share";
@@ -162,7 +163,7 @@ export interface Style {
 }
 
 export default {
-  components: { InfoCard, TableCard, ChangeRecords },
+  components: { InfoCard, TableCard, ChangeRecords, FoldCard },
   name: "bj-demand-details",
   setup() {
     const authStore = useAuthStore();
